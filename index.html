@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EZVMS — AI-First Workforce Management. 100% Free.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #fff; color: #0B1220; font-family: 'Instrument Sans', sans-serif; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+
+    @keyframes ez-blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
+    @keyframes ez-feed  { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes ez-bar   { from { width:0; } }
+
+    /* NAV */
+    .nav-link:hover { color: #0B1220 !important; }
+    .btn-demo:hover { transform: translateY(-1px); }
+    .btn-outline:hover { border-color: #8A93A8 !important; }
+
+    /* CARDS */
+    .who-card:hover { border-color: #B7CFF6 !important; transform: translateY(-3px); }
+    .agent-tile:hover { border-color: #B7CFF6 !important; }
+    .cta-primary:hover { transform: translateY(-2px); }
+    .cta-outline:hover { border-color: #8A93A8 !important; }
+
+    /* FOOTER LINKS */
+    .foot-link:hover { color: #0B1220 !important; }
+
+    /* DESIGN SWITCHER */
+    .ds-opt:hover { background: #F5F7FC; }
+  </style>
+</head>
+<body>
+
+<!-- DESIGN SWITCHER -->
+<div id="ds-wrap" style="position:fixed;top:14px;right:14px;z-index:9999;user-select:none;font-family:'JetBrains Mono',monospace;">
+  <button id="ds-btn" style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid #D6E2FB;border-radius:999px;padding:8px 16px 8px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;color:#0B1220;cursor:pointer;box-shadow:0 2px 12px rgba(37,99,235,.12);white-space:nowrap;line-height:1;">
+    <span style="width:7px;height:7px;border-radius:50%;background:#93A8D0;display:inline-block;flex:none;"></span>
+    Light
+    <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#8A93A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div id="ds-menu" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid #E2E8F1;border-radius:14px;box-shadow:0 12px 40px rgba(11,18,32,.14);min-width:176px;overflow:hidden;padding:5px;">
+    <a href="v3.html" class="ds-opt" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;color:#3A4254;transition:background .15s;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#2563EB;flex:none;"></span>Bold
+    </a>
+    <div style="background:#EEF3FE;border-radius:9px;display:flex;align-items:center;gap:10px;padding:10px 14px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#2563EB;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#93A8D0;flex:none;"></span>Light
+    </div>
+    <a href="v1.html" class="ds-opt" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:500;color:#3A4254;transition:background .15s;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#0C0E0D;flex:none;"></span>Dark
+    </a>
+  </div>
+</div>
+<script>
+(function(){
+  const btn=document.getElementById('ds-btn'),menu=document.getElementById('ds-menu');
+  btn.addEventListener('click',function(e){e.stopPropagation();menu.style.display=menu.style.display==='none'?'block':'none';});
+  document.addEventListener('click',function(){menu.style.display='none';});
+})();
+</script>
+
+<div id="root" style="--accent:#2563EB;--ink:#FFFFFF;background:#FFFFFF;min-height:100vh;">
+
+  <!-- NAV -->
+  <header id="nav" style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid #E7EBF3;transition:background .2s,border-color .2s;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:18px 32px;">
+      <div style="display:flex;align-items:center;gap:40px;">
+        <a href="index.html" style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-0.02em;color:#0B1220;">EZVMS</a>
+        <nav style="display:flex;gap:26px;font-family:'JetBrains Mono',monospace;font-size:13px;color:#59647A;">
+          <a href="#platform" class="nav-link" style="transition:color .2s;">platform</a>
+          <a href="#pricing" class="nav-link" style="transition:color .2s;">pricing</a>
+          <a href="#integrations" class="nav-link" style="transition:color .2s;">integrations</a>
+          <a href="#api" class="nav-link" style="transition:color .2s;">developers</a>
+        </nav>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:13px;color:#59647A;cursor:pointer;">sign in</span>
+        <a href="#demo" class="btn-demo" style="background:var(--accent);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;transition:transform .2s;">Book a demo</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="platform" style="max-width:1200px;margin:0 auto;padding:80px 32px 88px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;color:#59647A;background:#F0F4FF;border:1px solid #D4E0FF;border-radius:999px;padding:6px 14px;margin-bottom:28px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span> AI-NATIVE WORKFORCE OS
+        </div>
+        <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:72px;line-height:1.0;letter-spacing:-0.04em;color:#0B1220;margin:0 0 4px;">100% Free VMS.</h1>
+        <h1 style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:72px;line-height:1.0;letter-spacing:-0.04em;color:var(--accent);margin:0 0 28px;">No Catch, No Fine Print.</h1>
+        <p style="font-size:18px;line-height:1.5;color:#4A5468;max-width:480px;margin:0 0 6px;font-weight:600;">The AI-first VMS that automates <span style="color:var(--accent);">requisitions.</span></p>
+        <p style="font-size:16px;line-height:1.6;color:#59647A;max-width:480px;margin:0 0 32px;">No licensing fees. No percentage of spend. No fine print, no hidden charges. The only thing you'll ever pay for is a small data-migration fee — and only if you need it.</p>
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:24px;flex-wrap:wrap;">
+          <a href="#demo" class="cta-primary" style="background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;padding:15px 28px;border-radius:999px;transition:transform .2s;">Get started free →</a>
+          <a href="#demo" class="btn-outline" style="border:1.5px solid #0B1220;color:#0B1220;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;padding:14px 28px;border-radius:999px;transition:border-color .2s;">Book a 30-min demo</a>
+        </div>
+        <div style="display:flex;gap:14px;font-family:'Space Grotesk',sans-serif;font-size:13px;color:#8A93A8;flex-wrap:wrap;">
+          <span>no credit card</span><span>·</span><span>no lock-in</span><span>·</span><span>migrate from any platform</span>
+        </div>
+      </div>
+
+      <!-- live agent terminal -->
+      <div style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:14px;overflow:hidden;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #ECEFF5;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#59647A;">agent.run() — live</span>
+          <span style="display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;animation:ez-blink 1.4s infinite;"></span>active
+          </span>
+        </div>
+        <div id="feed" style="padding:18px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.95;color:#37415A;min-height:230px;">
+          <div><span style="color:#8A93A8;">09:41</span> <span style="color:var(--accent);">→</span> created REQ-4827 · Sr. Data Engineer</div>
+          <div><span style="color:#8A93A8;">09:41</span> <span style="color:var(--accent);">→</span> routed to 3 approvers</div>
+          <div><span style="color:#8A93A8;">09:43</span> <span style="color:var(--accent);">→</span> dispatched to 12 suppliers</div>
+          <div><span style="color:#8A93A8;">09:52</span> <span style="color:var(--accent);">→</span> screened 41 submissions</div>
+          <div><span style="color:#8A93A8;">09:53</span> <span style="color:var(--accent);">→</span> shortlisted 6 · flagged 2 compliance</div>
+          <div style="color:#0B1220;"><span style="color:#8A93A8;">09:53</span> <span style="color:var(--accent);">→</span> interviews proposed<span style="display:inline-block;width:8px;height:15px;background:var(--accent);margin-left:3px;vertical-align:-2px;animation:ez-blink 1s infinite;"></span></div>
+        </div>
+        <div style="display:flex;border-top:1px solid #ECEFF5;">
+          <div style="flex:1;padding:14px 18px;border-right:1px solid #ECEFF5;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#0B1220;">12 min</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A93A8;margin-top:2px;">req → shortlist</div>
+          </div>
+          <div style="flex:1;padding:14px 18px;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#0B1220;">0 manual</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A93A8;margin-top:2px;">touchpoints</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE STRIP -->
+  <section style="border-top:1px solid #E7EBF3;border-bottom:1px solid #E7EBF3;background:#F5F7FC;">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);">
+      <div style="padding:30px 32px;border-right:1px solid #E7EBF3;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:var(--accent);letter-spacing:-0.02em;">50%+</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;margin-top:6px;">less admin work</div>
+      </div>
+      <div style="padding:30px 32px;border-right:1px solid #E7EBF3;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:#0B1220;letter-spacing:-0.02em;">minutes</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;margin-top:6px;">reporting, not hours</div>
+      </div>
+      <div style="padding:30px 32px;border-right:1px solid #E7EBF3;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:#0B1220;letter-spacing:-0.02em;">real-time</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;margin-top:6px;">program visibility</div>
+      </div>
+      <div style="padding:30px 32px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:#0B1220;letter-spacing:-0.02em;">automated</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;margin-top:6px;">supplier comms</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NO CATCH BAND -->
+  <section style="border-bottom:1px solid #E7EBF3;background:#FFFFFF;">
+    <div style="max-width:1200px;margin:0 auto;padding:34px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:#0B1220;letter-spacing:-0.01em;">Read the fine print. <span style="color:#8A93A8;">There isn't any.</span></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No licensing fees</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No percentage of spend</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No hidden charges</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No catch</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section data-reveal style="max-width:1200px;margin:0 auto;padding:96px 32px;opacity:0;transform:translateY(16px);">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:16px;">// WHO IT'S FOR</div>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-0.03em;color:#0B1220;margin:0 0 44px;max-width:620px;">One platform for everyone who touches the workforce program.</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div class="who-card" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:14px;">01</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:#0B1220;margin-bottom:10px;">Enterprise Clients</div>
+        <div style="font-size:14px;line-height:1.55;color:#59647A;">Manage contingent labor, SOW workers, suppliers, compliance, onboarding and spend from a single platform.</div>
+      </div>
+      <div class="who-card" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:14px;">02</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:#0B1220;margin-bottom:10px;">MSPs</div>
+        <div style="font-size:14px;line-height:1.55;color:#59647A;">Operate workforce programs more efficiently with AI-powered automation and modern integrations.</div>
+      </div>
+      <div class="who-card" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:14px;">03</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:#0B1220;margin-bottom:10px;">Staffing Suppliers</div>
+        <div style="font-size:14px;line-height:1.55;color:#59647A;">Gain greater visibility, faster communication and streamlined engagement processes.</div>
+      </div>
+      <div class="who-card" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-bottom:14px;">04</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:#0B1220;margin-bottom:10px;">Workforce Programs</div>
+        <div style="font-size:14px;line-height:1.55;color:#59647A;">Reduce administrative workload while improving hiring speed, compliance and supplier performance.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI WORKFORCE AGENTS -->
+  <section id="integrations" data-reveal style="border-top:1px solid #E7EBF3;background:#F5F7FC;opacity:0;transform:translateY(16px);">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 32px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:16px;">// AI WORKFORCE AGENTS</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-bottom:44px;">
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-0.03em;color:#0B1220;margin:0;">Not a traditional VMS with AI bolted on. AI is the foundation.</h2>
+        <p style="font-size:18px;line-height:1.6;color:#4A5468;margin:0;align-self:center;">Digital workforce assistants handle the busywork end to end — so your team hires faster and does more with less. Built from the ground up for the AI era.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Create requisitions</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Route approvals</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Communicate with suppliers</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Screen submissions</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Coordinate interviews</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Monitor compliance</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Generate reports</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Analyze spend</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Identify bottlenecks</div>
+        <div class="agent-tile" style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:12px;padding:18px;font-size:13.5px;color:#37415A;line-height:1.4;transition:border-color .25s;">Recommend actions</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" data-reveal style="max-width:1200px;margin:0 auto;padding:96px 32px;opacity:0;transform:translateY(16px);">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:16px;">// PRICING THAT MAKES SENSE</div>
+    <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-0.03em;color:#0B1220;margin:0 0 44px;max-width:600px;">100% free to use. The only thing you ever pay for is data migration.</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:#FFFFFF;border:1px solid #B7CFF6;border-radius:18px;padding:36px;position:relative;">
+        <div style="position:absolute;top:24px;right:28px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);background:var(--accent);padding:5px 10px;border-radius:6px;">NO CATCH</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;margin-bottom:10px;">THE PLATFORM</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px;">
+          <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:#0B1220;letter-spacing:-0.02em;">Free Forever</span>
+          <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:var(--accent);letter-spacing:-0.02em;">$0</span>
+        </div>
+        <p style="font-size:15px;line-height:1.55;color:#59647A;margin:0 0 24px;">The complete AI-first platform, free forever. No fine print, no hidden charges, no catch. The only thing you'll ever pay is a small data-migration fee — and only if you need one.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #ECEFF5;padding-top:22px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#37415A;"><span style="color:var(--accent);">✓</span> Full AI-first platform &amp; agents</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#37415A;"><span style="color:var(--accent);">✓</span> Open APIs &amp; integrations included</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#59647A;"><span style="color:#8A93A8;">+</span> Data migration $1,000 – $10,000 (only if needed)</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(180deg,#EEF3FE,#FFFFFF);border:1px solid #B7CFF6;border-radius:18px;padding:36px;position:relative;">
+        <div style="position:absolute;top:24px;right:28px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#59647A;border:1px solid #C4D7F6;padding:5px 10px;border-radius:6px;">OPTIONAL</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;margin-bottom:10px;">OPTIONAL ADD-ON</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;color:#0B1220;letter-spacing:-0.02em;margin-bottom:6px;">Continuous Innovation</div>
+        <p style="font-size:15px;line-height:1.55;color:#59647A;margin:0 0 18px;">Entirely optional — the free platform is complete on its own. Want every new feature, AI agent and integration as it ships? Add it for only <span style="color:var(--accent);font-weight:600;">10% of what you pay your current VMS provider.</span></p>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:22px;">
+          <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:46px;color:var(--accent);letter-spacing:-0.03em;">10%</span>
+          <span style="font-size:14px;color:#59647A;">of your current VMS spend</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #C4D7F6;padding-top:22px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#37415A;"><span style="color:var(--accent);">✓</span> All new features &amp; AI agents</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#37415A;"><span style="color:var(--accent);">✓</span> New integrations &amp; product updates</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:#37415A;"><span style="color:var(--accent);">✓</span> Ongoing innovation, always included</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COST COMPARISON -->
+  <section data-reveal style="border-top:1px solid #E7EBF3;background:#F5F7FC;opacity:0;transform:translateY(16px);">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 32px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:16px;">// SIMPLE COST COMPARISON</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-0.03em;color:#0B1220;margin:0 0 40px;max-width:560px;">What you pay for elsewhere is included here.</h2>
+      <div style="border:1px solid #E2E8F1;border-radius:14px;overflow:hidden;">
+        <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;background:#FFFFFF;border-bottom:1px solid #E2E8F1;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;color:#8A93A8;">
+          <div style="padding:16px 24px;"></div>
+          <div style="padding:16px 24px;border-left:1px solid #E2E8F1;">TRADITIONAL VMS</div>
+          <div style="padding:16px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">EZVMS</div>
+        </div>
+        <div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid #E7EBF3;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">Annual licensing fees</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">Charged</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">Included</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid #E7EBF3;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">Percentage of spend</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">Yes</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">None</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid #E7EBF3;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">AI agents</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">—</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">Included</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid #E7EBF3;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">Open APIs</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">Limited</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">Included</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid #E7EBF3;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">ERP integrations</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">Six-figure projects</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">Included</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid #E7EBF3;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">Continuous innovation</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">Slow roadmap</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">Available</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;border-bottom:1px solid #E7EBF3;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">Source code escrow protection</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">Rare</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">Available</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.6fr 1fr 1fr;font-size:14.5px;">
+            <div style="padding:15px 24px;color:#37415A;">Vendor lock-in</div>
+            <div style="padding:15px 24px;border-left:1px solid #E7EBF3;color:#59647A;">Yes</div>
+            <div style="padding:15px 24px;border-left:1px solid #C4D7F6;background:#EEF3FE;color:var(--accent);">No</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPEN API -->
+  <section id="api" data-reveal style="max-width:1200px;margin:0 auto;padding:96px 32px;opacity:0;transform:translateY(16px);">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:16px;">// OPEN API ARCHITECTURE</div>
+    <div style="display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;">
+      <div>
+        <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-0.03em;color:#0B1220;margin:0 0 20px;">Your software should adapt to your process. Not the other way around.</h2>
+        <p style="font-size:18px;line-height:1.6;color:#4A5468;margin:0 0 28px;">Every component of EZVMS is designed around APIs. Connect your ERP, HRIS, ATS, payroll, compliance and BI tools — without six-figure integration projects.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:7px 14px;">ERP</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:7px 14px;">HRIS</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:7px 14px;">ATS</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:7px 14px;">Payroll</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:7px 14px;">Compliance</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#37415A;border:1px solid #E2E8F1;border-radius:999px;padding:7px 14px;">BI &amp; Reporting</span>
+        </div>
+      </div>
+      <div style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:14px;overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid #ECEFF5;font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;">
+          <span style="width:9px;height:9px;border-radius:50%;background:#C9D2E0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#C9D2E0;"></span>
+          <span style="width:9px;height:9px;border-radius:50%;background:#C9D2E0;"></span>
+          <span style="margin-left:8px;">requisitions.create</span>
+        </div>
+        <div style="padding:20px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.95;color:#37415A;">
+          <div><span style="color:#8A93A8;">POST</span> /v1/requisitions</div>
+          <div style="color:#8A93A8;">{</div>
+          <div style="padding-left:18px;">"title": <span style="color:var(--accent);">"Sr. Data Engineer"</span>,</div>
+          <div style="padding-left:18px;">"suppliers": <span style="color:var(--accent);">"auto"</span>,</div>
+          <div style="padding-left:18px;">"approval_chain": <span style="color:var(--accent);">"finance_v2"</span></div>
+          <div style="color:#8A93A8;">}</div>
+          <div style="margin-top:12px;color:#1A7F46;">201 · req_4827 created</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY EZVMS -->
+  <section data-reveal style="border-top:1px solid #E7EBF3;background:#F5F7FC;opacity:0;transform:translateY(16px);">
+    <div style="max-width:1200px;margin:0 auto;padding:96px 32px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:16px;">// WHY EZVMS</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:42px;line-height:1.06;letter-spacing:-0.03em;color:#0B1220;margin:0 0 40px;max-width:560px;">Everything modern. Nothing legacy.</h2>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px 32px;">
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> AI-first architecture</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> API-first platform</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Free core platform</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Up to 90% lower cost</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Open integration strategy</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Modern user experience</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Agentic workforce automation</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> ERP &amp; HRIS connectivity</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Source code escrow protection</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Built by staffing industry experts</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> No vendor lock-in</div>
+        <div style="display:flex;align-items:center;gap:12px;font-size:15.5px;color:#37415A;padding:6px 0;"><span style="color:var(--accent);font-weight:600;">✓</span> Migrate from any platform</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO CTA -->
+  <section id="demo" data-reveal style="max-width:1200px;margin:0 auto;padding:120px 32px;opacity:0;transform:translateY(16px);">
+    <div style="background:linear-gradient(135deg,#EEF3FE 0%,#FFFFFF 60%);border:1px solid #B7CFF6;border-radius:24px;padding:72px 56px;text-align:center;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.14em;color:var(--accent);margin-bottom:20px;">// SCHEDULE A DEMO</div>
+      <h2 style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:52px;line-height:1.03;letter-spacing:-0.035em;color:#0B1220;margin:0 auto 22px;max-width:720px;">Modernize your workforce program. <span style="color:var(--accent);">In 30 minutes.</span></h2>
+      <p style="font-size:18px;line-height:1.55;color:#4A5468;max-width:560px;margin:0 auto 36px;">See how EZVMS reduces operating cost and dramatically improves hiring efficiency — with a free migration assessment.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="#" class="cta-primary" style="background:var(--accent);color:var(--ink);font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;padding:16px 30px;border-radius:8px;transition:transform .2s;">Book a demo →</a>
+        <a href="#pricing" class="btn-outline" style="border:1px solid #C2CCDB;color:#0B1220;font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;padding:15px 30px;border-radius:8px;transition:border-color .2s;">See pricing</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid #E7EBF3;background:#FFFFFF;">
+    <div style="max-width:1200px;margin:0 auto;padding:56px 32px 40px;">
+      <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;margin-bottom:48px;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:21px;letter-spacing:-0.02em;color:#0B1220;margin-bottom:14px;">EZVMS</div>
+          <p style="font-size:14px;line-height:1.6;color:#8A93A8;max-width:280px;margin:0 0 16px;">AI-first workforce management for the next decade. Backed by ApTask — 16+ years supporting enterprise workforce programs.</p>
+          <div style="display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>all systems operational
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:#8A93A8;margin-bottom:16px;">PLATFORM</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:#59647A;">
+            <a href="#platform" class="foot-link">AI Agents</a>
+            <a href="#integrations" class="foot-link">Integrations</a>
+            <a href="#api" class="foot-link">Open API</a>
+            <a href="#pricing" class="foot-link">Pricing</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:#8A93A8;margin-bottom:16px;">COMPANY</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:#59647A;">
+            <a href="#" class="foot-link">About ApTask</a>
+            <a href="#" class="foot-link">Migration services</a>
+            <a href="#" class="foot-link">Source code escrow</a>
+            <a href="#demo" class="foot-link">Book a demo</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.12em;color:#8A93A8;margin-bottom:16px;">CONTACT</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:#59647A;">
+            <a href="#" class="foot-link">EZVMS.com</a>
+            <a href="#" class="foot-link">Sales</a>
+            <a href="#" class="foot-link">Support</a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #E7EBF3;padding-top:24px;display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:12px;color:#8A93A8;flex-wrap:wrap;gap:10px;">
+        <span>© 2026 EZVMS · Built by ApTask</span>
+        <span>AI-First Workforce Management for the Next Decade.</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  // Sticky nav depth
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    const s = window.scrollY > 12;
+    nav.style.borderBottomColor = s ? '#D5DDEA' : '#E7EBF3';
+    nav.style.background = s ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.72)';
+  }, { passive: true });
+
+  // Scroll reveal
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.style.transition = 'opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1)';
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('[data-reveal]').forEach(el => {
+      el.style.opacity = '1';
+      el.style.transform = 'none';
+    });
+  }
+</script>
+</body>
+</html>
