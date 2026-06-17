@@ -200,8 +200,9 @@ h1,h2{{font-family:var(--font-display);}}
   <div class="wrap">
     <div class="save-band">
       <div class="eyebrow" style="color:#7FA8F4;justify-content:center;">// THE HIDDEN COST, MADE VISIBLE</div>
-      <div class="num">~<span>$500k+</span>/yr</div>
-      <p>On a $25M program, a typical 2% supplier-funded VMS fee is roughly <strong style="color:#fff;">$500,000 a year</strong> — paid out of supplier margin and recovered through your bill rates. On EZVMS that line is $0. <a href="../index.html#savings" style="color:#9DBCF7;text-decoration:underline;">Run your own numbers →</a></p>
+      <div class="num">~<span>$500k</span>/yr*</div>
+      <p><strong style="color:#fff;">Illustrative example:</strong> if a $25M program were charged a 2% supplier-funded VMS fee, that would be about <strong style="color:#fff;">$500,000 a year</strong> — fees of this kind are typically paid out of supplier margin and recovered through your bill rates. On EZVMS that line is $0. Your actual numbers will differ — <a href="../index.html#savings" style="color:#9DBCF7;text-decoration:underline;">run your own →</a></p>
+      <p style="color:#8A93A8;font-size:11.5px;margin-top:14px;font-family:var(--font-mono);">*Illustrative figure based on a 2% assumption — not a statement about any specific vendor's pricing.</p>
     </div>
   </div>
 </section>
