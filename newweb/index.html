@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EZVMS — The Free, AI-First VMS. Switch from Fieldglass, Beeline, Flextrack &amp; IQNavigator.</title>
+  <meta name="description" content="EZVMS is a 100% free, AI-first Vendor Management System from ApTask. No licensing fees, no percentage of spend, no conflict of interest. Switch from SAP Fieldglass, Beeline, Flextrack or IQNavigator — free migration assessment.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== TOKENS ===== */
+    :root{
+      --accent:#2563EB; --accent-700:#1D4FD7; --accent-050:#EEF3FE; --accent-025:#F5F8FF;
+      --ink:#0B1220; --text:#37415A; --text-2:#4A5468; --text-3:#59647A; --muted:#8A93A8; --faint:#A4AEC0;
+      --bg:#FFFFFF; --panel:#F5F7FC; --panel-2:#FAFBFE;
+      --line:#E2E8F1; --line-2:#E7EBF3; --line-blue:#C4D7F6; --line-blue-2:#B7CFF6;
+      --green:#16A34A; --green-bg:#E7F6EE; --warn:#D97706; --warn-bg:#FEF3E6;
+      --r-sm:9px; --r:12px; --r-md:14px; --r-lg:18px; --r-xl:24px; --r-pill:999px;
+      --shadow-card:0 1px 2px rgba(11,18,32,.04), 0 8px 24px -16px rgba(11,18,32,.18);
+      --shadow-float:0 26px 64px -30px rgba(11,18,32,.22);
+      --font-display:'Space Grotesk',sans-serif; --font-body:'Instrument Sans',sans-serif; --font-mono:'JetBrains Mono',monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    :focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:4px; }
+    .wrap{ max-width:1200px; margin:0 auto; padding:0 32px; }
+    .eyebrow{ font-family:var(--font-mono); font-size:12px; letter-spacing:.14em; color:var(--accent); margin-bottom:16px; }
+    h1,h2{ font-family:var(--font-display); }
+    .h2{ font-family:var(--font-display); font-weight:600; font-size:42px; line-height:1.06; letter-spacing:-0.03em; color:var(--ink); margin:0 0 40px; }
+
+    @keyframes ez-blink { 0%,49% { opacity:1; } 50%,100% { opacity:0; } }
+    @keyframes ez-feed  { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes ez-marq  { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+    /* ===== HERO AUTOPILOT CONSOLE ===== */
+    .ezap{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-float);}
+    .ezap-head{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid #ECEFF5;background:linear-gradient(180deg,#FBFCFE,#FFF);}
+    .ezap-head-r{display:flex;align-items:center;gap:12px;}
+    .ezap-ctrl{display:flex;align-items:center;gap:6px;}
+    .ezap-cbtn{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:6px;padding:3px 7px;cursor:pointer;line-height:1;transition:.15s;}
+    .ezap-cbtn:hover{border-color:var(--accent);color:var(--accent);}
+    .ezap-cbtn.on{background:var(--accent);border-color:var(--accent);color:#fff;}
+    .ezap-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;animation:ezap-pulse 1.7s infinite;}
+    @keyframes ezap-pulse{0%{box-shadow:0 0 0 0 rgba(37,99,235,.45);}70%{box-shadow:0 0 0 7px rgba(37,99,235,0);}100%{box-shadow:0 0 0 0 rgba(37,99,235,0);}}
+    .ezap-body{display:flex;min-height:284px;}
+    .ezap-rail{flex:none;width:174px;border-right:1px solid #ECEFF5;padding:11px 9px;background:var(--panel-2);display:flex;flex-direction:column;gap:1px;position:relative;}
+    .ezap-mod{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:9px;font-family:var(--font-mono);font-size:11.5px;color:#9AA3B5;transition:background .3s,color .3s;cursor:default;position:relative;}
+    .ezap-mod .md-ic{width:15px;height:15px;border-radius:5px;border:1.5px solid #D4DBE8;flex:none;display:flex;align-items:center;justify-content:center;font-size:9px;line-height:1;color:#fff;transition:.3s;}
+    .ezap-mod.is-active{background:var(--accent-050);color:var(--ink);}
+    .ezap-mod.is-active .md-ic{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px rgba(37,99,235,.14);}
+    .ezap-mod.is-done{color:var(--text-3);}
+    .ezap-mod.is-done .md-ic{border-color:var(--accent);background:var(--accent);}
+    .ezap-tip{position:absolute;left:calc(100% + 8px);top:50%;transform:translateY(-50%);width:210px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow-float);padding:10px 12px;font-family:var(--font-body);font-size:11.5px;line-height:1.45;color:var(--text-2);opacity:0;pointer-events:none;transition:opacity .18s;z-index:5;}
+    .ezap-mod:hover .ezap-tip,.ezap-mod:focus-within .ezap-tip{opacity:1;}
+    .ezap-feedwrap{flex:1;min-width:0;display:flex;flex-direction:column;}
+    .ezap-scene{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px 4px;}
+    .ezap-scene-h{font-family:var(--font-display);font-weight:600;font-size:13.5px;color:var(--ink);letter-spacing:-0.01em;}
+    .ezap-saved{font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:var(--green);background:var(--green-bg);border-radius:999px;padding:3px 9px;white-space:nowrap;opacity:0;transform:scale(.85);transition:opacity .3s,transform .3s;}
+    .ezap-saved.show{opacity:1;transform:none;}
+    .ezap-feed{flex:1;padding:8px 16px 14px;font-family:var(--font-mono);font-size:12px;line-height:1.85;color:var(--text);}
+    .ezap-line{display:flex;gap:8px;opacity:0;transform:translateY(5px);animation:ez-feed .42s ease forwards;}
+    .ezap-line .ln-t{color:var(--faint);flex:none;}
+    .ezap-line .ln-a{color:var(--accent);flex:none;}
+    .ezap-caret{display:inline-block;width:7px;height:13px;background:var(--accent);margin-left:1px;vertical-align:-2px;animation:ez-blink 1s steps(1) infinite;}
+    .ezap-foot{display:flex;border-top:1px solid #ECEFF5;}
+    .ezap-stat{flex:1;padding:12px 15px;border-right:1px solid #ECEFF5;}
+    .ezap-stat:last-child{border-right:none;}
+    .ezap-stat .sv{font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--ink);letter-spacing:-0.01em;}
+    .ezap-stat .sv.accent{color:var(--accent);}
+    .ezap-stat .sl{font-family:var(--font-mono);font-size:9.5px;color:var(--muted);margin-top:3px;line-height:1.3;}
+    @media (max-width:980px){.ezap-rail{width:152px;}.ezap-tip{display:none;}}
+    @media (max-width:560px){.ezap-rail{display:none;}}
+    @media (prefers-reduced-motion:reduce){.ezap-dot{animation:none;}.ezap-line{animation:none;opacity:1;transform:none;}.ezap-caret{animation:none;}}
+
+    /* ===== NAV ===== */
+    .nav-link:hover { color: var(--ink) !important; }
+    .btn-demo:hover { transform: translateY(-1px); }
+    .btn-outline:hover { border-color: var(--muted) !important; }
+    .navdd{position:relative;}
+    .navdd-btn{display:flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:13px;color:var(--text-3);background:none;border:none;cursor:pointer;transition:color .2s;}
+    .navdd-btn:hover{color:var(--ink);}
+    .navdd-menu{display:none;position:absolute;top:calc(100% + 12px);left:0;background:#fff;border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--shadow-float);min-width:200px;overflow:hidden;padding:5px;z-index:60;}
+    .navdd-menu.open{display:block;}
+    .navdd-item{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--text);cursor:pointer;transition:background .15s;}
+    .navdd-item:hover{background:var(--panel);}
+    .navdd-item .dot{width:8px;height:8px;border-radius:50%;background:var(--warn);flex:none;}
+
+    /* ===== BUTTONS / CARDS ===== */
+    .cta-primary{background:var(--accent);color:#fff;font-family:var(--font-display);font-size:15px;font-weight:600;padding:15px 28px;border-radius:var(--r-pill);transition:transform .2s,background .2s;display:inline-block;border:none;cursor:pointer;}
+    .cta-primary:hover{transform:translateY(-2px);background:var(--accent-700);}
+    .cta-outline{border:1.5px solid var(--ink);color:var(--ink);font-family:var(--font-display);font-size:15px;font-weight:600;padding:14px 28px;border-radius:var(--r-pill);transition:border-color .2s;display:inline-block;background:none;cursor:pointer;}
+    .cta-outline:hover{border-color:var(--muted);}
+    .who-card:hover { border-color: var(--line-blue-2) !important; transform: translateY(-3px); }
+    .agent-tile:hover { border-color: var(--line-blue-2) !important; }
+    .foot-link:hover { color: var(--ink) !important; }
+    .ds-opt:hover { background: var(--panel); }
+
+    /* ===== LOGO / SOCIAL BAND ===== */
+    .logoband{border-top:1px solid var(--line-2);border-bottom:1px solid var(--line-2);background:var(--panel);}
+    .logoband-row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;}
+    .logo-chip{font-family:var(--font-mono);font-size:12.5px;color:var(--text-3);background:#fff;border:1px solid var(--line);border-radius:var(--r-pill);padding:9px 16px;}
+
+    /* ===== AGENT MINI DEMO ===== */
+    .demo2{display:grid;grid-template-columns:1fr 64px 1fr;gap:18px;align-items:stretch;}
+    .demo2-pane{border:1px solid var(--line);border-radius:var(--r-md);background:#fff;padding:20px;}
+    .demo2-pane.old{background:var(--panel-2);}
+    .demo2-h{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;margin-bottom:14px;text-transform:uppercase;}
+    .demo2-h.old{color:var(--warn);}
+    .demo2-h.new{color:var(--accent);}
+    .demo2-step{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line-2);font-size:13.5px;color:var(--text-2);}
+    .demo2-step:last-child{border-bottom:none;}
+    .demo2-step .num{width:20px;height:20px;border-radius:6px;border:1.5px solid #D4DBE8;flex:none;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;color:var(--muted);transition:.25s;}
+    .demo2-step.new-step{opacity:.35;transition:opacity .3s;}
+    .demo2-step.new-step.lit{opacity:1;}
+    .demo2-step.new-step.lit .num{background:var(--green);border-color:var(--green);color:#fff;}
+    .demo2-clock{margin-left:auto;font-family:var(--font-mono);font-size:11px;color:var(--faint);}
+    .demo2-mid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;}
+    .demo2-arrow{font-size:22px;color:var(--accent);}
+    .demo2-run{font-family:var(--font-display);font-size:12.5px;font-weight:600;color:#fff;background:var(--accent);border:none;border-radius:var(--r-pill);padding:9px 14px;cursor:pointer;white-space:nowrap;transition:transform .15s,background .2s;}
+    .demo2-run:hover{transform:translateY(-1px);background:var(--accent-700);}
+    .demo2-saved{margin-top:16px;text-align:center;font-family:var(--font-mono);font-size:12px;font-weight:600;color:var(--green);background:var(--green-bg);border-radius:var(--r-pill);padding:8px 14px;display:inline-block;opacity:0;transition:opacity .35s;}
+    .demo2-saved.show{opacity:1;}
+    @media (max-width:760px){.demo2{grid-template-columns:1fr;}.demo2-mid{flex-direction:row;padding:6px 0;}.demo2-arrow{transform:rotate(90deg);}}
+
+    /* ===== COMPARISON TABS ===== */
+    .ctabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+    .ctab{font-family:var(--font-mono);font-size:13px;padding:9px 16px;border:1px solid var(--line);border-radius:var(--r-pill);color:var(--text-3);background:#fff;cursor:pointer;transition:.15s;}
+    .ctab:hover{border-color:var(--line-blue-2);}
+    .ctab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+    .ctable{border:1px solid var(--line);border-radius:var(--r-md);overflow:hidden;}
+    .crow{display:grid;grid-template-columns:1.6fr 1fr 1fr;font-size:14.5px;border-bottom:1px solid var(--line-2);}
+    .crow:last-child{border-bottom:none;}
+    .crow.head{background:#fff;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--muted);}
+    .ccell{padding:15px 22px;color:var(--text);}
+    .ccell.lab{color:var(--text);}
+    .ccell.legacy{border-left:1px solid var(--line-2);color:var(--text-3);}
+    .ccell.legacy.head{color:var(--warn);}
+    .ccell.ez{border-left:1px solid var(--line-blue);background:var(--accent-050);color:var(--accent);}
+    .ccell.ez.head{color:var(--accent);}
+    .ccell .cdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--warn);margin-right:7px;vertical-align:1px;}
+    #ctbody{transition:opacity .12s;}
+    .cnote{margin-top:16px;font-size:14px;color:var(--text-2);display:flex;align-items:center;gap:10px;}
+    .cnote .arrow{color:var(--accent);}
+    .cnote a{color:var(--accent);font-weight:600;}
+    .cnote a:hover{text-decoration:underline;}
+    @media (max-width:760px){
+      .crow{grid-template-columns:1fr;}
+      .crow.head{display:none;}
+      .ccell{padding:10px 16px;}
+      .ccell.lab{font-weight:600;color:var(--ink);padding-bottom:4px;border-top:1px solid var(--line);}
+      .crow:first-child .ccell.lab{border-top:none;}
+      .ccell.legacy,.ccell.ez{border-left:none;display:flex;justify-content:space-between;}
+      .ccell.legacy::before{content:"Legacy VMS";font-family:var(--font-mono);font-size:10px;color:var(--warn);}
+      .ccell.ez::before{content:"EZVMS";font-family:var(--font-mono);font-size:10px;color:var(--accent);}
+    }
+
+    /* ===== ROI CALCULATOR ===== */
+    .calc{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:start;}
+    .calc-field{margin-bottom:22px;}
+    .calc-flabel{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+    .calc-flabel .lab{font-size:14px;color:var(--text);font-weight:500;}
+    .calc-flabel .val{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-050);border-radius:6px;padding:3px 9px;}
+    input[type=range]{ -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:var(--r-pill);background:var(--line);outline:none;accent-color:var(--accent);}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:var(--shadow-card);cursor:pointer;}
+    input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:2px solid var(--accent);box-shadow:var(--shadow-card);cursor:pointer;}
+    .calc-seg{display:flex;gap:8px;}
+    .calc-segbtn{flex:1;font-family:var(--font-display);font-size:13.5px;font-weight:600;padding:11px;border:1.5px solid var(--line);border-radius:var(--r);background:#fff;color:var(--text-3);cursor:pointer;transition:.15s;}
+    .calc-segbtn.on{border-color:var(--accent);background:var(--accent-050);color:var(--accent);}
+    .calc-out{background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:28px;box-shadow:var(--shadow-card);}
+    .calc-out .lead{font-size:14px;color:var(--text-3);margin:0 0 4px;}
+    .calc-save{font-family:var(--font-display);font-weight:700;font-size:46px;letter-spacing:-0.03em;color:var(--accent);line-height:1;margin-bottom:4px;}
+    .calc-save-sub{font-size:13px;color:var(--text-3);margin-bottom:22px;}
+    .bar-row{margin-bottom:14px;}
+    .bar-lab{display:flex;justify-content:space-between;font-size:12.5px;margin-bottom:6px;}
+    .bar-track{height:30px;border-radius:8px;background:var(--panel);overflow:hidden;}
+    .bar-fill{height:100%;border-radius:8px;transition:width .7s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;padding:0 10px;font-family:var(--font-mono);font-size:11px;color:#fff;white-space:nowrap;}
+    .bar-fill.legacy{background:var(--warn);}
+    .bar-fill.ez{background:var(--accent);min-width:46px;}
+    .calc-pill{margin-top:6px;display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11.5px;font-weight:600;color:var(--green);background:var(--green-bg);border-radius:var(--r-pill);padding:6px 12px;opacity:0;transition:opacity .4s;}
+    .calc-pill.show{opacity:1;}
+    .calc-tiles{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:22px;border-top:1px solid var(--line-2);padding-top:20px;}
+    .calc-tile .tv{font-family:var(--font-display);font-weight:700;font-size:18px;color:var(--ink);}
+    .calc-tile .tl{font-family:var(--font-mono);font-size:9.5px;color:var(--muted);margin-top:3px;line-height:1.3;}
+    .calc-foot{font-family:var(--font-mono);font-size:10.5px;color:var(--faint);margin-top:18px;line-height:1.5;}
+    @media (max-width:760px){.calc{grid-template-columns:1fr;}.calc-tiles{grid-template-columns:1fr;}}
+
+    /* ===== MIGRATION TIMELINE ===== */
+    .mtl{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:8px;}
+    .mtl-step{position:relative;padding:0 18px;}
+    .mtl-node{width:34px;height:34px;border-radius:50%;background:#fff;border:2px solid var(--accent);color:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:700;font-size:14px;position:relative;z-index:2;}
+    .mtl-line{position:absolute;top:17px;left:50%;width:100%;height:2px;background:var(--line-blue);z-index:1;}
+    .mtl-step:last-child .mtl-line{display:none;}
+    .mtl-chip{font-family:var(--font-mono);font-size:10.5px;color:var(--accent);background:var(--accent-050);border-radius:var(--r-pill);padding:3px 9px;display:inline-block;margin:16px 0 8px;}
+    .mtl-t{font-family:var(--font-display);font-weight:600;font-size:16px;color:var(--ink);margin-bottom:6px;}
+    .mtl-d{font-size:13.5px;line-height:1.5;color:var(--text-3);}
+    @media (max-width:760px){.mtl{grid-template-columns:1fr;gap:24px;}.mtl-line{display:none;}}
+
+    /* ===== SECURITY BADGES ===== */
+    .secgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;}
+    .secbadge{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:var(--r);padding:16px;background:#fff;}
+    .secbadge .ic{width:30px;height:30px;border-radius:8px;background:var(--accent-050);color:var(--accent);display:flex;align-items:center;justify-content:center;flex:none;}
+    .secbadge .bl{font-family:var(--font-display);font-weight:600;font-size:14px;color:var(--ink);}
+    .secbadge .bd{font-size:12px;color:var(--text-3);margin-top:3px;line-height:1.4;}
+
+    /* ===== FAQ ===== */
+    .faq-item{border-bottom:1px solid var(--line-2);}
+    .faq-q{width:100%;text-align:left;background:none;border:none;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:18px;padding:22px 4px;font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);}
+    .faq-ic{flex:none;width:22px;height:22px;color:var(--accent);font-size:22px;line-height:1;transition:transform .25s;}
+    .faq-q[aria-expanded=true] .faq-ic{transform:rotate(45deg);}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+    .faq-a-inner{padding:0 4px 22px;font-size:15.5px;line-height:1.65;color:var(--text-2);max-width:760px;}
+
+    /* ===== PRICING ===== */
+    .price-cap{font-family:var(--font-mono);font-size:11.5px;color:var(--accent);margin-top:14px;}
+
+    /* ===== BOOK-A-DEMO MODAL ===== */
+    .dm-overlay{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(11,18,32,.55);backdrop-filter:blur(4px);opacity:0;transition:opacity .22s ease;}
+    .dm-overlay.dm-open{display:flex;opacity:1;}
+    .dm-card{position:relative;width:100%;max-width:920px;max-height:92vh;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(11,18,32,.28);transform:translateY(12px) scale(.985);transition:transform .24s cubic-bezier(.2,.7,.3,1);}
+    .dm-overlay.dm-open .dm-card{transform:none;}
+    .dm-close{position:absolute;top:14px;right:14px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;background:#F0F3F9;color:#4A5468;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+    .dm-close:hover{background:#E2E8F1;color:var(--ink);}
+    .dm-body{display:flex;flex:1;min-height:0;overflow:auto;font-family:var(--font-body);}
+    .dm-info{flex:none;width:294px;padding:34px 28px;border-right:1px solid #EDF1F8;background:linear-gradient(180deg,#F7FAFF,#FFF);}
+    .dm-brand{display:flex;align-items:center;gap:9px;font-family:var(--font-display);font-weight:700;font-size:18px;color:var(--ink);margin-bottom:20px;}
+    .dm-brand-dot{width:27px;height:27px;border-radius:7px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+    .dm-host{font-size:14px;color:var(--muted);margin:0 0 4px;}
+    .dm-title{font-family:var(--font-display);font-weight:600;font-size:25px;line-height:1.15;color:var(--ink);margin:0 0 18px;}
+    .dm-meta{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:var(--text-2);margin-bottom:11px;line-height:1.45;}
+    .dm-meta svg{flex:none;color:var(--muted);margin-top:1px;}
+    .dm-desc{font-size:13.5px;line-height:1.6;color:var(--text-3);margin-top:18px;border-top:1px solid #EDF1F8;padding-top:16px;}
+    .dm-pick{flex:1;min-width:0;padding:26px 28px;display:flex;gap:24px;}
+    .dm-cal{flex:1;min-width:0;}
+    .dm-pick-h{font-family:var(--font-display);font-weight:600;font-size:19px;color:var(--ink);margin:0 0 16px;}
+    .dm-cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .dm-month{font-family:var(--font-display);font-weight:600;font-size:15px;color:var(--ink);}
+    .dm-navbtn{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:#fff;color:#4A5468;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s;}
+    .dm-navbtn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+    .dm-navbtn:disabled{opacity:.35;cursor:default;}
+    .dm-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+    .dm-dow{text-align:center;font-family:var(--font-mono);font-size:10px;letter-spacing:.04em;color:var(--faint);padding:5px 0;}
+    .dm-day{aspect-ratio:1;border:none;background:#F4F7FC;border-radius:9px;font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--accent);cursor:pointer;transition:.12s;display:flex;align-items:center;justify-content:center;padding:0;}
+    .dm-day:hover:not(:disabled){background:var(--accent);color:#fff;}
+    .dm-day:disabled{background:transparent;color:#C9D0DC;cursor:default;font-weight:400;}
+    .dm-day.dm-sel{background:var(--accent);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3);}
+    .dm-day.dm-today:not(.dm-sel){box-shadow:inset 0 0 0 1.5px var(--accent);}
+    .dm-day-empty{aspect-ratio:1;}
+    .dm-times{flex:none;width:188px;display:flex;flex-direction:column;min-height:0;}
+    .dm-times-h{font-size:13.5px;color:var(--text-2);margin:0 0 12px;font-weight:600;}
+    .dm-times-scroll{overflow-y:auto;max-height:312px;display:flex;flex-direction:column;gap:8px;padding-right:4px;}
+    .dm-slot{padding:12px;border:1.5px solid var(--line-blue);border-radius:9px;background:#fff;color:var(--accent);font-family:var(--font-display);font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:.12s;flex:none;}
+    .dm-slot:hover{border-color:var(--accent);background:#F2F6FE;}
+    .dm-empty-times{font-size:13px;color:var(--faint);text-align:center;padding-top:36px;line-height:1.6;}
+    .dm-confirm{padding:30px;max-width:460px;margin:0 auto;width:100%;}
+    .dm-field{margin-bottom:15px;}
+    .dm-label{display:block;font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;}
+    .dm-input{width:100%;padding:12px 14px;border:1.5px solid var(--line-blue);border-radius:9px;font-family:var(--font-body);font-size:14px;color:var(--ink);outline:none;transition:border-color .15s;}
+    .dm-input:focus{border-color:var(--accent);}
+    .dm-cta{display:block;width:100%;padding:14px;border:none;border-radius:999px;background:var(--accent);color:#fff;font-family:var(--font-display);font-size:15px;font-weight:600;cursor:pointer;transition:transform .15s;}
+    .dm-cta:hover{transform:translateY(-1px);}
+    .dm-link{background:none;border:none;color:var(--muted);font-size:13.5px;cursor:pointer;font-family:var(--font-body);padding:8px;}
+    .dm-link:hover{color:var(--ink);}
+    .dm-sel-pill{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--ink);background:#F2F6FE;border:1px solid var(--line-blue);border-radius:9px;padding:12px 14px;margin-bottom:20px;}
+    .dm-note{font-family:var(--font-mono);font-size:10.5px;color:var(--faint);text-align:center;margin-top:14px;line-height:1.5;}
+    .dm-success{padding:48px 30px;text-align:center;max-width:440px;margin:0 auto;}
+    .dm-success .dm-title{font-size:26px;margin-bottom:10px;}
+    .dm-success p{color:var(--text-2);font-size:15px;line-height:1.6;margin:0 0 4px;}
+    .dm-check{width:60px;height:60px;border-radius:50%;background:var(--green-bg);color:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px;}
+    .dm-when{font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--accent);margin:10px 0 6px;}
+    @media (max-width:760px){
+      .dm-info{display:none;}
+      .dm-pick{flex-direction:column;padding:22px;}
+      .dm-times{width:100%;}
+      .dm-times-scroll{max-height:220px;}
+      .dm-card{max-height:94vh;}
+    }
+
+    /* responsive type */
+    @media (max-width:760px){
+      .hero-grid{grid-template-columns:1fr !important;}
+      .h1-big{font-size:clamp(40px,11vw,72px) !important;}
+      .h2{font-size:clamp(30px,7vw,42px);}
+      .two-col{grid-template-columns:1fr !important;}
+      .four-grid{grid-template-columns:1fr 1fr !important;}
+      .agent-grid{grid-template-columns:1fr 1fr !important;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- PREVIEW RIBBON (review build) -->
+<div style="background:var(--ink);color:#fff;font-family:var(--font-mono);font-size:11.5px;text-align:center;padding:7px 16px;letter-spacing:.03em;">
+  NEWWEB PREVIEW · VMS-switcher concept for review &nbsp;·&nbsp; <a href="../index.html" style="color:#9DBCF7;text-decoration:underline;">← view current live site</a>
+</div>
+
+<!-- DESIGN SWITCHER -->
+<div id="ds-wrap" style="position:fixed;top:42px;right:14px;z-index:9999;user-select:none;font-family:var(--font-mono);">
+  <button id="ds-btn" style="display:flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line-blue);border-radius:999px;padding:8px 16px 8px 12px;font-family:var(--font-mono);font-size:12px;color:var(--ink);cursor:pointer;box-shadow:0 2px 12px rgba(37,99,235,.12);white-space:nowrap;line-height:1;">
+    <span style="width:7px;height:7px;border-radius:50%;background:#93A8D0;display:inline-block;flex:none;"></span>
+    Light
+    <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#8A93A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div id="ds-menu" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 40px rgba(11,18,32,.14);min-width:176px;overflow:hidden;padding:5px;">
+    <a href="../v3.html" class="ds-opt" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-family:var(--font-display);font-size:14px;font-weight:500;color:#3A4254;transition:background .15s;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#2563EB;flex:none;"></span>Bold
+    </a>
+    <div style="background:var(--accent-050);border-radius:9px;display:flex;align-items:center;gap:10px;padding:10px 14px;font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--accent);">
+      <span style="width:8px;height:8px;border-radius:50%;background:#93A8D0;flex:none;"></span>Light
+    </div>
+    <a href="../v1.html" class="ds-opt" style="display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:9px;font-family:var(--font-display);font-size:14px;font-weight:500;color:#3A4254;transition:background .15s;">
+      <span style="width:8px;height:8px;border-radius:50%;background:#0C0E0D;flex:none;"></span>Dark
+    </a>
+  </div>
+</div>
+<script>
+(function(){
+  var btn=document.getElementById('ds-btn'),menu=document.getElementById('ds-menu');
+  btn.addEventListener('click',function(e){e.stopPropagation();menu.style.display=menu.style.display==='none'?'block':'none';});
+  document.addEventListener('click',function(){menu.style.display='none';});
+})();
+</script>
+
+<div id="root">
+
+  <!-- NAV -->
+  <header id="nav" style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,0.72);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line-2);transition:background .2s,border-color .2s;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:16px 32px;">
+      <div style="display:flex;align-items:center;gap:36px;">
+        <a href="index.html" style="font-family:var(--font-display);font-weight:700;font-size:21px;letter-spacing:-0.02em;color:var(--ink);">EZVMS</a>
+        <nav style="display:flex;gap:24px;font-family:var(--font-mono);font-size:13px;color:var(--text-3);align-items:center;" id="nav-links">
+          <a href="#platform" class="nav-link" style="transition:color .2s;">platform</a>
+          <a href="#compare" class="nav-link" style="transition:color .2s;">compare</a>
+          <a href="#savings" class="nav-link" style="transition:color .2s;">savings</a>
+          <div class="navdd" id="navdd">
+            <button class="navdd-btn" id="navdd-btn" aria-haspopup="true" aria-expanded="false">switch from
+              <svg width="9" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="#8A93A8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="navdd-menu" id="navdd-menu" role="menu">
+              <div class="navdd-item" role="menuitem" data-comp="fieldglass"><span class="dot"></span>SAP Fieldglass</div>
+              <div class="navdd-item" role="menuitem" data-comp="beeline"><span class="dot"></span>Beeline</div>
+              <div class="navdd-item" role="menuitem" data-comp="flextrack"><span class="dot"></span>Flextrack</div>
+              <div class="navdd-item" role="menuitem" data-comp="iqnavigator"><span class="dot"></span>IQNavigator</div>
+              <div class="navdd-item" role="menuitem" data-comp="generic"><span class="dot" style="background:var(--muted);"></span>Other / generic VMS</div>
+            </div>
+          </div>
+          <a href="#pricing" class="nav-link" style="transition:color .2s;">pricing</a>
+        </nav>
+      </div>
+      <div style="display:flex;align-items:center;gap:18px;">
+        <span style="font-family:var(--font-mono);font-size:13px;color:var(--text-3);cursor:pointer;">sign in</span>
+        <a href="#demo" class="btn-demo" data-demo style="background:var(--accent);color:#fff;font-family:var(--font-display);font-size:14px;font-weight:600;padding:10px 20px;border-radius:8px;transition:transform .2s;">Get free assessment</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section id="platform" style="max-width:1200px;margin:0 auto;padding:72px 32px 80px;">
+    <div class="hero-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-display);font-size:13px;font-weight:500;color:var(--text-3);background:#F0F4FF;border:1px solid #D4E0FF;border-radius:999px;padding:6px 14px;margin-bottom:24px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span> AI-NATIVE WORKFORCE OS
+        </div>
+        <h1 class="h1-big" style="font-family:var(--font-display);font-weight:700;font-size:68px;line-height:1.0;letter-spacing:-0.04em;color:var(--ink);margin:0 0 4px;">The free VMS your<br>suppliers don't fund.</h1>
+        <p style="font-size:18px;line-height:1.55;color:var(--text-2);max-width:500px;margin:18px 0 8px;font-weight:600;">Legacy VMS platforms take a cut of your spend. EZVMS takes <span style="color:var(--accent);">nothing</span> — and lets agentic AI run the busywork.</p>
+        <p style="font-size:16px;line-height:1.6;color:var(--text-3);max-width:500px;margin:0 0 30px;">A 100% free, AI-first VMS from ApTask. No licensing fees. No percentage of spend. No conflict of interest. The only thing you might ever pay is a one-time migration fee — and only if you need it.</p>
+        <div style="display:flex;gap:14px;align-items:center;margin-bottom:22px;flex-wrap:wrap;">
+          <a href="#demo" data-demo class="cta-primary">Get a free migration assessment →</a>
+          <a href="#savings" class="cta-outline">See your savings</a>
+        </div>
+        <div style="display:flex;gap:12px;font-family:var(--font-display);font-size:13px;color:var(--muted);flex-wrap:wrap;">
+          <span>SOC 2 in progress</span><span>·</span><span>SSO / SAML</span><span>·</span><span>source-code escrow</span><span>·</span><span>no lock-in</span>
+        </div>
+      </div>
+
+      <!-- Autopilot console v2 -->
+      <div class="ezap" id="ezap" role="img" aria-label="EZVMS Autopilot running the full requisition-to-pay workflow across eight AI agents with zero manual touchpoints — over 1,280 analyst-hours saved per month.">
+        <div class="ezap-head">
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-3);">ezvms&nbsp;·&nbsp;autopilot</span>
+          <div class="ezap-head-r">
+            <div class="ezap-ctrl">
+              <button class="ezap-cbtn" id="ezap-speed" title="Playback speed">1×</button>
+              <button class="ezap-cbtn" id="ezap-replay" title="Run again">↻</button>
+            </div>
+            <span style="display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:11px;color:var(--accent);">
+              <span class="ezap-dot"></span>live&nbsp;·&nbsp;<span id="ezap-clock">00:00</span>
+            </span>
+          </div>
+        </div>
+        <div class="ezap-body">
+          <div class="ezap-rail" id="ezap-rail"></div>
+          <div class="ezap-feedwrap">
+            <div class="ezap-scene">
+              <span class="ezap-scene-h" id="ezap-scene-h">Intake &amp; requisitions</span>
+              <span class="ezap-saved" id="ezap-saved">saved +0h</span>
+            </div>
+            <div class="ezap-feed" id="ezap-feed"></div>
+          </div>
+        </div>
+        <div class="ezap-foot">
+          <div class="ezap-stat"><div class="sv accent" id="ezap-tally">1,284</div><div class="sl">analyst-hrs saved / mo</div></div>
+          <div class="ezap-stat"><div class="sv">8 agents</div><div class="sl">working in parallel</div></div>
+          <div class="ezap-stat"><div class="sv">$0</div><div class="sl">platform cost</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOGO / SOCIAL BAND -->
+  <section class="logoband">
+    <div class="wrap" style="padding-top:38px;padding-bottom:38px;">
+      <div style="text-align:center;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--muted);margin-bottom:20px;">// BUILT FOR ENTERPRISE WORKFORCE PROGRAMS COMING OFF LEGACY VMS</div>
+      <div class="logoband-row">
+        <span class="logo-chip">Fortune 500 IT services</span>
+        <span class="logo-chip">Global MSPs</span>
+        <span class="logo-chip">Healthcare staffing</span>
+        <span class="logo-chip">Financial services</span>
+        <span class="logo-chip">Public sector</span>
+        <span class="logo-chip">Manufacturing &amp; logistics</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUE STRIP -->
+  <section style="border-bottom:1px solid var(--line-2);background:var(--panel);">
+    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);" class="four-grid">
+      <div style="padding:30px 32px;border-right:1px solid var(--line-2);">
+        <div class="vs-num" data-to="50" data-suffix="%+" style="font-family:var(--font-display);font-weight:700;font-size:30px;color:var(--accent);letter-spacing:-0.02em;">50%+</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:6px;">less admin work</div>
+      </div>
+      <div style="padding:30px 32px;border-right:1px solid var(--line-2);">
+        <div style="font-family:var(--font-display);font-weight:700;font-size:30px;color:var(--ink);letter-spacing:-0.02em;">$0</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:6px;">platform &amp; AI agents</div>
+      </div>
+      <div style="padding:30px 32px;border-right:1px solid var(--line-2);">
+        <div class="vs-num" data-to="8" data-suffix=" agents" style="font-family:var(--font-display);font-weight:700;font-size:30px;color:var(--ink);letter-spacing:-0.02em;">8 agents</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:6px;">autonomous, end to end</div>
+      </div>
+      <div style="padding:30px 32px;">
+        <div style="font-family:var(--font-display);font-weight:700;font-size:30px;color:var(--ink);letter-spacing:-0.02em;">~30 days</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-top:6px;">to migrate &amp; go live</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NO CATCH BAND -->
+  <section id="no-catch" style="border-bottom:1px solid var(--line-2);background:#fff;">
+    <div style="max-width:1200px;margin:0 auto;padding:34px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:18px;">
+      <div style="font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);letter-spacing:-0.01em;">Read the fine print. <span style="color:var(--muted);">There isn't any.</span></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No licensing fees</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No percentage of spend</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No conflict of interest</span>
+        <span style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:8px 14px;"><span style="color:var(--accent);">✓</span> No catch</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHO IT'S FOR -->
+  <section data-reveal style="max-width:1200px;margin:0 auto;padding:90px 32px;opacity:0;transform:translateY(16px);">
+    <div class="eyebrow">// WHO IT'S FOR</div>
+    <h2 class="h2" style="max-width:640px;">Built for everyone stuck inside a legacy VMS.</h2>
+    <div class="four-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;">
+      <div class="who-card" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);margin-bottom:14px;">01</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);margin-bottom:10px;">Enterprise Clients</div>
+        <div style="font-size:14px;line-height:1.55;color:var(--text-3);">Tired of paying for Fieldglass or Beeline through inflated bill rates? Run contingent labor, SOW, suppliers and compliance from one free platform.</div>
+      </div>
+      <div class="who-card" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);margin-bottom:14px;">02</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);margin-bottom:10px;">MSPs</div>
+        <div style="font-size:14px;line-height:1.55;color:var(--text-3);">Run more programs at higher margin with agentic automation and open integrations — without a per-seat or % of-spend tax eating your delivery economics.</div>
+      </div>
+      <div class="who-card" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);margin-bottom:14px;">03</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);margin-bottom:10px;">Staffing Suppliers</div>
+        <div style="font-size:14px;line-height:1.55;color:var(--text-3);">No funding fee skimmed from your margin. Faster requisitions, clearer communication and a level, transparent playing field.</div>
+      </div>
+      <div class="who-card" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px;transition:border-color .25s,transform .25s;">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--accent);margin-bottom:14px;">04</div>
+        <div style="font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);margin-bottom:10px;">Workforce Programs (VMO)</div>
+        <div style="font-size:14px;line-height:1.55;color:var(--text-3);">Cut administrative workload while improving hiring speed, compliance and supplier performance — with real-time, always-on insight.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI AGENTS + WATCH AN AGENT WORK -->
+  <section id="agents" data-reveal style="border-top:1px solid var(--line-2);background:var(--panel);opacity:0;transform:translateY(16px);">
+    <div style="max-width:1200px;margin:0 auto;padding:90px 32px;">
+      <div class="eyebrow">// AI WORKFORCE AGENTS</div>
+      <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-bottom:36px;">
+        <h2 class="h2" style="margin:0;">Their AI is a chatbot. Ours is an operator.</h2>
+        <p style="font-size:18px;line-height:1.6;color:var(--text-2);margin:0;align-self:center;">Legacy VMS platforms bolt a copilot onto a 20-year-old workflow engine. EZVMS was built AI-first: digital workers <strong>complete</strong> the task end to end — they don't just summarize a screen.</p>
+      </div>
+
+      <!-- watch an agent work -->
+      <div data-reveal style="background:#fff;border:1px solid var(--line);border-radius:var(--r-lg);padding:26px;box-shadow:var(--shadow-card);margin-bottom:30px;opacity:0;transform:translateY(16px);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:18px;">
+          <div style="font-family:var(--font-display);font-weight:600;font-size:18px;color:var(--ink);">Watch one requisition get done — old way vs. EZVMS</div>
+          <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">one Sr. Data Engineer req</div>
+        </div>
+        <div class="demo2">
+          <div class="demo2-pane old">
+            <div class="demo2-h old">The old way · ~9 hrs over 6 days</div>
+            <div class="demo2-step"><span class="num">1</span>Post to 12 suppliers by email<span class="demo2-clock">~45m</span></div>
+            <div class="demo2-step"><span class="num">2</span>Chase &amp; collect submissions<span class="demo2-clock">2d</span></div>
+            <div class="demo2-step"><span class="num">3</span>Read &amp; dedupe 41 resumes<span class="demo2-clock">~3h</span></div>
+            <div class="demo2-step"><span class="num">4</span>Schedule interviews by email<span class="demo2-clock">~2h</span></div>
+            <div class="demo2-step"><span class="num">5</span>Manual compliance checklist<span class="demo2-clock">~1.5h</span></div>
+            <div class="demo2-step"><span class="num">6</span>Draft &amp; route the offer<span class="demo2-clock">~1h</span></div>
+          </div>
+          <div class="demo2-mid">
+            <button class="demo2-run" id="demo2-run">▶ Run autopilot</button>
+            <div class="demo2-arrow">→</div>
+          </div>
+          <div class="demo2-pane">
+            <div class="demo2-h new">With EZVMS Autopilot · ~14 min</div>
+            <div class="demo2-step new-step" data-i="0"><span class="num">✓</span>Auto-broadcast to ranked suppliers</div>
+            <div class="demo2-step new-step" data-i="1"><span class="num">✓</span>Submissions ingested in real time</div>
+            <div class="demo2-step new-step" data-i="2"><span class="num">✓</span>Scored &amp; shortlisted top 6</div>
+            <div class="demo2-step new-step" data-i="3"><span class="num">✓</span>Interviews self-scheduled</div>
+            <div class="demo2-step new-step" data-i="4"><span class="num">✓</span>Compliance auto-verified</div>
+            <div class="demo2-step new-step" data-i="5"><span class="num">✓</span>Offer generated &amp; e-signed</div>
+          </div>
+        </div>
+        <div style="text-align:center;"><span class="demo2-saved" id="demo2-saved">saved 8.7 analyst-hours on a single requisition</span></div>
+      </div>
+
+      <div class="agent-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Create requisitions</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Route approvals</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Broadcast to suppliers</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Screen &amp; rank submissions</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Coordinate interviews</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Monitor compliance</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Offer &amp; onboard</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Timesheets &amp; billing</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Analyze spend</div>
+        <div class="agent-tile" style="background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:13.5px;color:var(--text);line-height:1.4;transition:border-color .25s;">Recommend actions</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPETITOR COMPARISON -->
+  <section id="compare" data-reveal style="max-width:1200px;margin:0 auto;padding:90px 32px;opacity:0;transform:translateY(16px);">
+    <div class="eyebrow">// HOW WE COMPARE</div>
+    <h2 class="h2" style="max-width:680px;">Everything you pay extra for elsewhere — included, and modernized.</h2>
+    <div class="ctabs" id="ctabs" role="tablist">
+      <button class="ctab active" role="tab" aria-selected="true" data-comp="fieldglass">SAP Fieldglass</button>
+      <button class="ctab" role="tab" aria-selected="false" data-comp="beeline">Beeline</button>
+      <button class="ctab" role="tab" aria-selected="false" data-comp="flextrack">Flextrack</button>
+      <button class="ctab" role="tab" aria-selected="false" data-comp="iqnavigator">IQNavigator</button>
+      <button class="ctab" role="tab" aria-selected="false" data-comp="generic">Generic VMS</button>
+    </div>
+    <div class="ctable" role="tabpanel">
+      <div class="crow head">
+        <div class="ccell lab"></div>
+        <div class="ccell legacy head" id="ccol-name">SAP Fieldglass</div>
+        <div class="ccell ez head">EZVMS</div>
+      </div>
+      <div id="ctbody"><!-- rows injected --></div>
+    </div>
+    <div class="cnote"><span class="arrow">→</span><span id="cnote-text"></span> &nbsp;<a id="cnote-link" href="switch/fieldglass.html">See the full comparison →</a></div>
+  </section>
+
+  <!-- ROI CALCULATOR -->
+  <section id="savings" data-reveal style="border-top:1px solid var(--line-2);background:var(--panel);opacity:0;transform:translateY(16px);">
+    <div style="max-width:1200px;margin:0 auto;padding:90px 32px;">
+      <div class="eyebrow">// WHAT YOU'D SAVE</div>
+      <h2 class="h2" style="max-width:640px;">Put in your numbers. Watch the line drop to zero.</h2>
+      <div class="calc">
+        <div>
+          <div class="calc-field">
+            <div class="calc-flabel"><span class="lab">Annual contingent spend</span><span class="val" id="v-spend">$25M</span></div>
+            <input type="range" id="i-spend" min="1" max="500" step="1" value="25" aria-label="Annual contingent spend in millions">
+          </div>
+          <div class="calc-field">
+            <div class="calc-flabel"><span class="lab">How does your current VMS charge?</span></div>
+            <div class="calc-seg" id="i-model">
+              <button class="calc-segbtn on" data-model="pct">% of spend (supplier-funded)</button>
+              <button class="calc-segbtn" data-model="flat">Flat license</button>
+            </div>
+          </div>
+          <div class="calc-field" id="field-pct">
+            <div class="calc-flabel"><span class="lab">Typical VMS funding fee</span><span class="val" id="v-pct">2.0%</span></div>
+            <input type="range" id="i-pct" min="5" max="30" step="1" value="20" aria-label="VMS funding fee percent">
+            <div style="font-family:var(--font-mono);font-size:10.5px;color:var(--faint);margin-top:8px;line-height:1.5;">Supplier-funded fees come out of supplier margin and get recovered through your bill rates — so you pay them, you just don't see them.</div>
+          </div>
+          <div class="calc-field" id="field-flat" style="display:none;">
+            <div class="calc-flabel"><span class="lab">Annual license / subscription</span><span class="val" id="v-flat">$300k</span></div>
+            <input type="range" id="i-flat" min="50" max="2000" step="10" value="300" aria-label="Annual license cost in thousands">
+          </div>
+          <div class="calc-field">
+            <div class="calc-flabel"><span class="lab">Workers / reqs per year</span><span class="val" id="v-workers">2,500</span></div>
+            <input type="range" id="i-workers" min="100" max="25000" step="100" value="2500" aria-label="Workers or requisitions per year">
+          </div>
+        </div>
+        <div class="calc-out">
+          <p class="lead">Your hidden VMS cost, made visible</p>
+          <div class="calc-save" id="o-save">$500,000</div>
+          <div class="calc-save-sub">avoided in year one — and every year after</div>
+          <div class="bar-row">
+            <div class="bar-lab"><span style="color:var(--warn);" id="o-legacy-name">Your current VMS</span><span style="color:var(--warn);font-weight:600;" id="o-legacy-val">$500k/yr</span></div>
+            <div class="bar-track"><div class="bar-fill legacy" id="bar-legacy" style="width:100%;">paid via bill rates</div></div>
+          </div>
+          <div class="bar-row">
+            <div class="bar-lab"><span style="color:var(--accent);">EZVMS</span><span style="color:var(--accent);font-weight:600;">$0/yr</span></div>
+            <div class="bar-track"><div class="bar-fill ez" id="bar-ez" style="width:2%;">$0</div></div>
+          </div>
+          <span class="calc-pill" id="o-pill">↓ 100% of licensing + % of spend</span>
+          <div class="calc-tiles">
+            <div class="calc-tile"><div class="tv" id="o-hours">3,250</div><div class="tl">analyst-hrs saved / yr</div></div>
+            <div class="calc-tile"><div class="tv">Day 1</div><div class="tl">payback period</div></div>
+            <div class="calc-tile"><div class="tv">$1k–$10k</div><div class="tl">one-time migration</div></div>
+          </div>
+          <div style="margin-top:20px;"><a href="#demo" data-demo class="cta-primary" style="width:100%;text-align:center;padding:13px;">Get my detailed savings report →</a></div>
+          <div class="calc-foot">Estimate based on your inputs. The fee % is illustrative and editable — it computes <em>your own</em> number, not a claim about any vendor's contract. EZVMS core platform is $0; you pay only one-time migration if you need it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPEN API -->
+  <section id="api" data-reveal style="max-width:1200px;margin:0 auto;padding:90px 32px;opacity:0;transform:translateY(16px);">
+    <div class="eyebrow">// OPEN, AI-NATIVE API</div>
+    <div class="two-col" style="display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;">
+      <div>
+        <h2 class="h2" style="margin:0 0 20px;">Your software should adapt to your process. Not the other way around.</h2>
+        <p style="font-size:18px;line-height:1.6;color:var(--text-2);margin:0 0 28px;">Every component of EZVMS is built around APIs — and exposed as agent-callable tools. Connect your ERP, HRIS, ATS, payroll, compliance and BI tools without six-figure integration projects.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;">
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:7px 14px;">SAP</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:7px 14px;">Workday</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:7px 14px;">Oracle</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:7px 14px;">ATS</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:7px 14px;">Payroll</span>
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text);border:1px solid var(--line);border-radius:999px;padding:7px 14px;">BI &amp; Reporting</span>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;">
+        <div style="display:flex;align-items:center;gap:6px;padding:11px 16px;border-bottom:1px solid #ECEFF5;font-family:var(--font-mono);font-size:12px;color:var(--muted);">
+          <button class="api-tab on" data-api="rest" style="border:none;background:var(--accent-050);color:var(--accent);font-family:var(--font-mono);font-size:11px;border-radius:6px;padding:4px 9px;cursor:pointer;">REST</button>
+          <button class="api-tab" data-api="webhook" style="border:none;background:none;color:var(--muted);font-family:var(--font-mono);font-size:11px;border-radius:6px;padding:4px 9px;cursor:pointer;">Webhook</button>
+          <button class="api-tab" data-api="mcp" style="border:none;background:none;color:var(--muted);font-family:var(--font-mono);font-size:11px;border-radius:6px;padding:4px 9px;cursor:pointer;">MCP / agent tool</button>
+        </div>
+        <div style="padding:20px;font-family:var(--font-mono);font-size:13px;line-height:1.95;color:var(--text);" id="api-body">
+          <div><span style="color:var(--muted);">POST</span> /v1/requisitions</div>
+          <div style="color:var(--muted);">{</div>
+          <div style="padding-left:18px;">"title": <span style="color:var(--accent);">"Sr. Data Engineer"</span>,</div>
+          <div style="padding-left:18px;">"suppliers": <span style="color:var(--accent);">"auto"</span>,</div>
+          <div style="padding-left:18px;">"approval_chain": <span style="color:var(--accent);">"finance_v2"</span></div>
+          <div style="color:var(--muted);">}</div>
+          <div style="margin-top:12px;color:#1A7F46;">201 · req_4827 created</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MIGRATION TIMELINE -->
+  <section data-reveal style="border-top:1px solid var(--line-2);background:var(--panel);opacity:0;transform:translateY(16px);">
+    <div style="max-width:1200px;margin:0 auto;padding:90px 32px;">
+      <div class="eyebrow">// SWITCHING IS EASIER THAN STAYING</div>
+      <h2 class="h2" style="max-width:680px;">From <span id="mtl-comp" style="color:var(--accent);">Fieldglass</span> to live in ~30 days. We do the lifting.</h2>
+      <div class="mtl">
+        <div class="mtl-step"><div class="mtl-line"></div><div class="mtl-node">1</div><div class="mtl-chip">Day 0 · free</div><div class="mtl-t">Assess</div><div class="mtl-d">We map your current setup, suppliers, rate cards and approval chains — and quote a fixed migration cost up front.</div></div>
+        <div class="mtl-step"><div class="mtl-line"></div><div class="mtl-node">2</div><div class="mtl-chip">~1–2 weeks</div><div class="mtl-t">Migrate data</div><div class="mtl-d">We import your historical data, workers and configuration. You review and sign off — no open-ended consulting bill.</div></div>
+        <div class="mtl-step"><div class="mtl-line"></div><div class="mtl-node">3</div><div class="mtl-chip">~1 week</div><div class="mtl-t">Parallel run</div><div class="mtl-d">Run EZVMS alongside your current VMS until your team is confident. Zero pressure to flip a switch early.</div></div>
+        <div class="mtl-step"><div class="mtl-node">4</div><div class="mtl-chip">Go live</div><div class="mtl-t">Cut over</div><div class="mtl-d">Switch over with full data export available any time. Open APIs + source-code escrow mean you're never locked in.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY / TRUST BAND -->
+  <section data-reveal style="max-width:1200px;margin:0 auto;padding:90px 32px;opacity:0;transform:translateY(16px);">
+    <div class="eyebrow">// ENTERPRISE-GRADE BY DEFAULT</div>
+    <div class="two-col" style="display:grid;grid-template-columns:.85fr 1.15fr;gap:40px;align-items:start;margin-bottom:30px;">
+      <h2 class="h2" style="margin:0;">Free does not mean fragile.</h2>
+      <p style="font-size:17px;line-height:1.6;color:var(--text-2);margin:0;align-self:center;">EZVMS runs on the same controls enterprises require from any paid VMS — audited, encrypted, SSO-secured, and escrow-protected so you're never held hostage by lock-in.</p>
+    </div>
+    <div class="secgrid">
+      <div class="secbadge"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><div class="bl">SOC 2 Type II</div><div class="bd">In progress — confirm status before publishing</div></div></div>
+      <div class="secbadge"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></svg></div><div><div class="bl">ISO 27001</div><div class="bd">Information security management</div></div></div>
+      <div class="secbadge"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div><div><div class="bl">SSO / SAML / SCIM</div><div class="bd">Enterprise identity &amp; provisioning</div></div></div>
+      <div class="secbadge"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></svg></div><div><div class="bl">Data residency</div><div class="bd">US / EU hosting options</div></div></div>
+      <div class="secbadge"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7l8-4 8 4v6c0 5-4 7-8 8-4-1-8-3-8-8z"/><path d="M9 12l2 2 4-4"/></svg></div><div><div class="bl">Source-code escrow</div><div class="bd">Continuity even worst-case — no hostage lock-in</div></div></div>
+      <div class="secbadge"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></div><div><div class="bl">99.9% uptime</div><div class="bd">Audit trails, encryption in transit &amp; at rest</div></div></div>
+    </div>
+  </section>
+
+  <!-- APTASK CREDIBILITY -->
+  <section data-reveal style="border-top:1px solid var(--line-2);background:var(--accent-050);opacity:0;transform:translateY(16px);">
+    <div style="max-width:1200px;margin:0 auto;padding:90px 32px;">
+      <div class="eyebrow">// WHY IT'S REALLY FREE</div>
+      <div class="two-col" style="display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;">
+        <div>
+          <h2 class="h2" style="margin:0 0 20px;">Free, because ApTask already gets paid to run programs like yours.</h2>
+          <p style="font-size:17px;line-height:1.65;color:var(--text-2);margin:0 0 16px;">ApTask has been a staffing and workforce-solutions company for 16+ years. <strong>That's</strong> our business and our revenue. EZVMS is how we show enterprises and MSPs what modern, AI-first workforce technology feels like — for free.</p>
+          <p style="font-size:17px;line-height:1.65;color:var(--text-2);margin:0;">If we earn the right to be one of your staffing suppliers or your MSP, great. If we don't, you keep EZVMS — free, forever. Unlike legacy VMS vendors, we take <strong>no percentage of your spend</strong>, so we have zero financial incentive in how big your program gets. The software is the relationship; staffing is the business.</p>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div style="background:#fff;border:1px solid var(--line-blue);border-radius:var(--r-md);padding:24px;"><div style="font-family:var(--font-display);font-weight:700;font-size:34px;color:var(--accent);letter-spacing:-0.02em;">16+</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:6px;">years in workforce solutions</div></div>
+          <div style="background:#fff;border:1px solid var(--line-blue);border-radius:var(--r-md);padding:24px;"><div style="font-family:var(--font-display);font-weight:700;font-size:34px;color:var(--ink);letter-spacing:-0.02em;">0%</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:6px;">of your spend, ever</div></div>
+          <div style="background:#fff;border:1px solid var(--line-blue);border-radius:var(--r-md);padding:24px;"><div style="font-family:var(--font-display);font-weight:700;font-size:34px;color:var(--ink);letter-spacing:-0.02em;">Backed</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:6px;">not bootstrapped</div></div>
+          <div style="background:#fff;border:1px solid var(--line-blue);border-radius:var(--r-md);padding:24px;"><div style="font-family:var(--font-display);font-weight:700;font-size:34px;color:var(--ink);letter-spacing:-0.02em;">Escrow</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-top:6px;">source-code protected</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" data-reveal style="max-width:1200px;margin:0 auto;padding:90px 32px;opacity:0;transform:translateY(16px);">
+    <div class="eyebrow">// PRICING THAT MAKES SENSE</div>
+    <h2 class="h2" style="max-width:600px;">100% free to use. The only thing you ever pay for is data migration.</h2>
+    <div class="two-col" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div style="background:#fff;border:1px solid var(--line-blue-2);border-radius:18px;padding:36px;position:relative;">
+        <div style="position:absolute;top:24px;right:28px;font-family:var(--font-mono);font-size:11px;color:#fff;background:var(--accent);padding:5px 10px;border-radius:6px;">NO CATCH</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-bottom:10px;">THE PLATFORM</div>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:6px;">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:30px;color:var(--ink);letter-spacing:-0.02em;">Free Forever</span>
+          <span style="font-family:var(--font-display);font-weight:700;font-size:30px;color:var(--accent);letter-spacing:-0.02em;">$0</span>
+        </div>
+        <p style="font-size:15px;line-height:1.55;color:var(--text-3);margin:0 0 8px;">The complete AI-first platform, free forever. No fine print, no hidden charges, no catch. The only thing you'll ever pay is a small data-migration fee — and only if you need one.</p>
+        <div class="price-cap">Most teams stop here →</div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #ECEFF5;padding-top:22px;margin-top:18px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--text);"><span style="color:var(--accent);">✓</span> Full AI-first platform &amp; 8 agents</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--text);"><span style="color:var(--accent);">✓</span> Open APIs &amp; integrations included</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--text-3);"><span style="color:var(--muted);">+</span> Data migration $1,000 – $10,000 (only if needed)</div>
+        </div>
+      </div>
+      <div style="background:linear-gradient(180deg,var(--accent-050),#fff);border:1px solid var(--line-blue-2);border-radius:18px;padding:36px;position:relative;">
+        <div style="position:absolute;top:24px;right:28px;font-family:var(--font-mono);font-size:11px;color:var(--text-3);border:1px solid var(--line-blue);padding:5px 10px;border-radius:6px;">OPTIONAL</div>
+        <div style="font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-bottom:10px;">OPTIONAL ADD-ON</div>
+        <div style="font-family:var(--font-display);font-weight:700;font-size:30px;color:var(--ink);letter-spacing:-0.02em;margin-bottom:6px;">Continuous Innovation</div>
+        <p style="font-size:15px;line-height:1.55;color:var(--text-3);margin:0 0 18px;">Entirely optional — the free platform is complete on its own. Want every new feature, AI agent and integration as it ships? Add it for only <span style="color:var(--accent);font-weight:600;">10% of what you pay your current VMS provider.</span></p>
+        <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:22px;">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:46px;color:var(--accent);letter-spacing:-0.03em;">10%</span>
+          <span style="font-size:14px;color:var(--text-3);">of your current VMS spend</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line-blue);padding-top:22px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--text);"><span style="color:var(--accent);">✓</span> All new features &amp; AI agents</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--text);"><span style="color:var(--accent);">✓</span> New integrations &amp; product updates</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:14.5px;color:var(--text);"><span style="color:var(--accent);">✓</span> Ongoing innovation, always included</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE CATCH FAQ -->
+  <section id="faq" data-reveal style="border-top:1px solid var(--line-2);background:var(--panel);opacity:0;transform:translateY(16px);">
+    <div style="max-width:900px;margin:0 auto;padding:90px 32px;">
+      <div class="eyebrow">// THE PART YOU'RE SKEPTICAL ABOUT</div>
+      <h2 class="h2">Okay — what's the catch?</h2>
+      <div id="faq-list">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="true"><span>Is EZVMS really free, with no per-seat or per-req fees?</span><span class="faq-ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Yes — $0, forever. No per-seat fees, no per-requisition fees, and no percentage of your spend. The only thing you might pay is a one-time data-migration fee ($1,000–$10,000, only if you need our help moving off your old platform). That's the entire commercial model for the core product.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span>Then how does ApTask actually make money?</span><span class="faq-ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Staffing and workforce solutions — ApTask's 16-year core business. EZVMS is a strategic wedge, not a profit center: it earns trust and relationships. If we become one of your suppliers or your MSP, we earn it on merit. If we don't, you still keep EZVMS free, forever.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span>Do I have to use ApTask as a staffing supplier?</span><span class="faq-ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">No — never a requirement. Use any suppliers you want. EZVMS stays free regardless, and because we take no funding fee, we're not skimming your supplier base either. Supplier participation is earned on merit and fully transparent in the platform.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span>What does migration cost and how long does it take?</span><span class="faq-ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">The assessment is free. If you want our help migrating, it's a fixed $1,000–$10,000 range depending on data complexity — quoted up front, never an open-ended consulting bill. Most programs go live in around 30 days, including a parallel-run period alongside your current VMS.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span>Is my data safe, and who owns it?</span><span class="faq-ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Your data is yours, exportable any time via open APIs — no exit tax. Enterprise-grade security: encryption in transit and at rest, role-based access, audit trails, SSO/SAML, and data-residency options. (Confirm exact certification status with our team before relying on specific badges.)</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span>What if EZVMS changes the deal or goes away?</span><span class="faq-ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Source-code escrow plus open, documented APIs plus standard data export. You are never locked in — which is more than any incumbent VMS can say. The whole product thesis is the opposite of lock-in.</div></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false"><span>How is this different from the AI in Fieldglass or Beeline?</span><span class="faq-ic">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner">Their AI is a copilot or chatbot bolted onto a 20-year-old workflow engine — it summarizes a screen. EZVMS was built AI-first: agents complete the work end to end (intake, broadcast, screen, comply, coordinate, onboard, bill, analyze). AI is the operator, not a feature.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO CTA -->
+  <section id="demo" data-reveal style="max-width:1200px;margin:0 auto;padding:110px 32px;opacity:0;transform:translateY(16px);">
+    <div style="background:linear-gradient(135deg,var(--accent-050) 0%,#fff 60%);border:1px solid var(--line-blue-2);border-radius:24px;padding:68px 56px;text-align:center;">
+      <div class="eyebrow" style="margin-bottom:20px;">// FREE MIGRATION ASSESSMENT</div>
+      <h2 style="font-family:var(--font-display);font-weight:600;font-size:50px;line-height:1.03;letter-spacing:-0.035em;color:var(--ink);margin:0 auto 22px;max-width:760px;">See what your current VMS is really costing you. <span style="color:var(--accent);">In 30 minutes.</span></h2>
+      <p style="font-size:18px;line-height:1.55;color:var(--text-2);max-width:600px;margin:0 auto 36px;">We'll map your current Fieldglass / Beeline / Flextrack / IQNavigator setup, estimate your hidden VMS fees, and give you a fixed migration quote and go-live timeline — no obligation, no sales pressure. Keep the assessment whether or not you switch.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="#" data-demo class="cta-primary" style="padding:16px 30px;">Get a free migration assessment →</a>
+        <a href="#savings" class="cta-outline" style="border-color:#C2CCDB;">See your savings</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="border-top:1px solid var(--line-2);background:#fff;">
+    <div style="max-width:1200px;margin:0 auto;padding:56px 32px 40px;">
+      <div class="four-grid" style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:32px;margin-bottom:48px;">
+        <div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:21px;letter-spacing:-0.02em;color:var(--ink);margin-bottom:14px;">EZVMS</div>
+          <p style="font-size:14px;line-height:1.6;color:var(--muted);max-width:300px;margin:0 0 16px;">The free, AI-first VMS. Backed by ApTask — 16+ years supporting enterprise workforce programs. No licensing fees, no percentage of spend, no conflict of interest.</p>
+          <div style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:12px;color:var(--accent);">
+            <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span>all systems operational
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);margin-bottom:16px;">SWITCH FROM</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:var(--text-3);">
+            <a href="switch/fieldglass.html" class="foot-link">SAP Fieldglass</a>
+            <a href="switch/beeline.html" class="foot-link">Beeline</a>
+            <a href="switch/flextrack.html" class="foot-link">Flextrack</a>
+            <a href="switch/iqnavigator.html" class="foot-link">IQNavigator</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);margin-bottom:16px;">PLATFORM</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:var(--text-3);">
+            <a href="#agents" class="foot-link">AI Agents</a>
+            <a href="#compare" class="foot-link">Compare</a>
+            <a href="#savings" class="foot-link">Savings calculator</a>
+            <a href="#pricing" class="foot-link">Pricing</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-family:var(--font-mono);font-size:11px;letter-spacing:.12em;color:var(--muted);margin-bottom:16px;">COMPANY</div>
+          <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:var(--text-3);">
+            <a href="#" class="foot-link">About ApTask</a>
+            <a href="#faq" class="foot-link">Why it's free</a>
+            <a href="#" class="foot-link">Source code escrow</a>
+            <a href="#demo" data-demo class="foot-link">Book a demo</a>
+          </div>
+        </div>
+      </div>
+      <div style="border-top:1px solid var(--line-2);padding-top:24px;display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--muted);flex-wrap:wrap;gap:10px;">
+        <span>© 2026 EZVMS · Built by ApTask</span>
+        <span>The free, AI-first VMS your suppliers don't fund.</span>
+      </div>
+    </div>
+  </footer>
+
+</div>
+
+<!-- ============================================================ BOOK A DEMO MODAL ============================================================ -->
+<div id="dm-overlay" class="dm-overlay" role="dialog" aria-modal="true" aria-label="Schedule a demo">
+  <div class="dm-card">
+    <button class="dm-close" id="dm-close" aria-label="Close">&times;</button>
+    <div class="dm-body" id="dm-body"></div>
+  </div>
+</div>
+
+<script>
+/* ===== shared count-up util ===== */
+function ezAnimate(el, from, to, dur, fmt){
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  fmt=fmt||function(v){return Math.round(v);};
+  if(reduce){ el.textContent=fmt(to); return; }
+  var t0=null;
+  function step(ts){ if(!t0)t0=ts; var p=Math.min(1,(ts-t0)/dur); var e=1-Math.pow(1-p,3); el.textContent=fmt(from+(to-from)*e); if(p<1) requestAnimationFrame(step); }
+  requestAnimationFrame(step);
+}
+function ezReduce(){ return window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches; }
+
+/* ===== AUTOPILOT CONSOLE v2 ===== */
+(function(){
+  var feed=document.getElementById('ezap-feed'); if(!feed) return;
+  var rail=document.getElementById('ezap-rail'), sceneH=document.getElementById('ezap-scene-h'),
+      savedEl=document.getElementById('ezap-saved'), clockEl=document.getElementById('ezap-clock'),
+      tallyEl=document.getElementById('ezap-tally'),
+      speedBtn=document.getElementById('ezap-speed'), replayBtn=document.getElementById('ezap-replay');
+  var reduce=ezReduce(), speed=1;
+
+  var MODULES=[
+    {rail:'intake',title:'Intake & requisitions',tip:'Turns a plain-English need into a structured, compliant req in minutes.',saved:2.4,steps:[['09:41','created REQ-4827 · Sr. Data Engineer'],['09:41','parsed JD · extracted 14 must-have skills'],['09:42','routed to 3 approvers · cleared in 40s']]},
+    {rail:'broadcast',title:'Supplier broadcast',tip:'Auto-routes to the right suppliers by fit, performance and SLA.',saved:3.1,steps:[['09:43','dispatched to 12 suppliers + internal bench'],['09:44','matched 4 ready candidates from talent pool'],['09:46','negotiated bill rate · $82/hr ↓ 6%']]},
+    {rail:'screen',title:'Screen & match',tip:'Replaces ~6.8 analyst-hrs/req of resume triage.',saved:6.8,steps:[['09:50','ingested 41 submissions'],['09:52','scored & ranked · surfaced top 6'],['09:52','deduped 3 · flagged 1 rate outlier']]},
+    {rail:'compliance',title:'Compliance & documents',tip:'Auto-validates docs, certs and right-to-work; flags exceptions only.',saved:2.0,steps:[['09:53','verified right-to-work · 6 / 6 clear'],['09:54','checked certifications & insurance'],['09:55','flagged 2 documents expiring < 30d']]},
+    {rail:'interview',title:'Interview coordination',tip:'Self-scheduling across calendars — no email ping-pong.',saved:1.7,steps:[['09:56','proposed 9 interview slots'],['09:58','synced 3 calendars · booked 4 panels'],['10:01','sent prep packs + auto reminders']]},
+    {rail:'onboard',title:'Offer & onboarding',tip:'Generates offers and orchestrates day-1 readiness end to end.',saved:2.9,steps:[['10:03','generated offer · e-signed in 11 min'],['10:05','provisioned access · day-1 ready'],['10:06','kicked off background check']]},
+    {rail:'billing',title:'Timesheets & billing',tip:'Captures, validates and reconciles — exception-only review.',saved:4.2,steps:[['10:08','auto-approved 38 timesheets'],['10:09','reconciled invoices · 0 exceptions'],['10:10','flagged 1 overtime breach for review']]},
+    {rail:'insights',title:'Spend & insights',tip:'Always-on analytics with proactive savings alerts.',saved:1.5,steps:[['10:12','analyzed $1.2M program spend'],['10:13','detected bottleneck · approval stage'],['10:14','recommended 2 cost-saving actions']]}
+  ];
+
+  var mods=MODULES.map(function(m){
+    var el=document.createElement('div'); el.className='ezap-mod'; el.tabIndex=0;
+    el.innerHTML='<span class="md-ic">&#10003;</span><span>'+m.rail+'</span><span class="ezap-tip">'+m.tip+'</span>';
+    rail.appendChild(el); return el;
+  });
+
+  var tally=1284;
+  function setTally(v){ tallyEl.textContent=Math.round(v).toLocaleString('en-US'); }
+  setTally(tally);
+  function bumpTally(a){ var s=tally,e=tally+a; tally=e; ezAnimate(tallyEl,s,e,900,function(v){return Math.round(v).toLocaleString('en-US');}); }
+
+  function mmss(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+  var clockSec=0, clockTimer=null;
+  function startClock(){ clockSec=0; clockEl.textContent='00:00'; clearInterval(clockTimer); clockTimer=setInterval(function(){clockSec++;clockEl.textContent=mmss(clockSec);},1000); }
+
+  var timers=[];
+  function later(fn,ms){ var id=setTimeout(fn,ms/speed); timers.push(id); return id; }
+  function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+
+  function typeLine(s, done){
+    var d=document.createElement('div'); d.className='ezap-line';
+    d.innerHTML='<span class="ln-t">'+s[0]+'</span><span class="ln-a">&#8594;</span><span class="ln-x"></span><span class="ezap-caret"></span>';
+    feed.appendChild(d);
+    var txt=d.querySelector('.ln-x'), caret=d.querySelector('.ezap-caret'), full=s[1], i=0;
+    (function tick(){
+      if(i<=full.length){ txt.textContent=full.slice(0,i); i++; later(tick,22); }
+      else { if(caret)caret.remove(); done&&done(); }
+    })();
+  }
+
+  function typeSteps(m, si, done){
+    if(si>=m.steps.length){ done(); return; }
+    typeLine(m.steps[si], function(){ later(function(){ typeSteps(m,si+1,done); }, 240); });
+  }
+
+  function runModule(i){
+    clearTimers();
+    var m=MODULES[i];
+    mods.forEach(function(el,k){ el.classList.toggle('is-done',k<i); el.classList.toggle('is-active',k===i); });
+    sceneH.textContent=m.title; savedEl.classList.remove('show'); feed.innerHTML='';
+    typeSteps(m,0,function(){
+      savedEl.textContent='saved +'+m.saved+'h'; savedEl.classList.add('show'); bumpTally(m.saved);
+      later(function(){
+        mods[i].classList.remove('is-active'); mods[i].classList.add('is-done');
+        var next=i+1;
+        if(next>=MODULES.length){ later(function(){ mods.forEach(function(el){el.classList.remove('is-done','is-active');}); startClock(); runModule(0); },1700); }
+        else runModule(next);
+      }, 820);
+    });
+  }
+
+  if(reduce){
+    mods.forEach(function(el){ el.classList.add('is-done'); });
+    var m=MODULES[2]; sceneH.textContent=m.title;
+    m.steps.forEach(function(s){ var d=document.createElement('div'); d.className='ezap-line'; d.innerHTML='<span class="ln-t">'+s[0]+'</span><span class="ln-a">&#8594;</span><span>'+s[1]+'</span>'; feed.appendChild(d); });
+    savedEl.textContent='saved +24.6h'; savedEl.classList.add('show'); setTally(1308); clockEl.textContent='33:00';
+    return;
+  }
+
+  speedBtn.addEventListener('click',function(){ speed=speed===1?2:1; speedBtn.textContent=speed+'×'; speedBtn.classList.toggle('on',speed===2); });
+  replayBtn.addEventListener('click',function(){ clearTimers(); mods.forEach(function(el){el.classList.remove('is-done','is-active');}); startClock(); runModule(0); });
+
+  var started=false;
+  function go(){ if(started)return; started=true; startClock(); runModule(0); }
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ go(); io.disconnect(); } }); },{threshold:0.2});
+    io.observe(document.getElementById('ezap'));
+  } else go();
+})();
+
+/* ===== VALUE STRIP COUNT-UP ===== */
+(function(){
+  var nums=document.querySelectorAll('.vs-num'); if(!nums.length) return;
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ var el=e.target,to=+el.getAttribute('data-to'),suf=el.getAttribute('data-suffix')||''; ezAnimate(el,0,to,1100,function(v){return Math.round(v)+suf;}); io.unobserve(el); } }); },{threshold:0.5});
+    nums.forEach(function(n){ io.observe(n); });
+  }
+})();
+
+/* ===== COMPETITOR COMPARISON TABS ===== */
+(function(){
+  var ROWS=[
+    {k:'licensing',lab:'Annual licensing fees'},
+    {k:'spend',lab:'Percentage of your spend'},
+    {k:'ai',lab:'AI agents'},
+    {k:'apis',lab:'Open APIs'},
+    {k:'erp',lab:'ERP / HRIS integrations'},
+    {k:'impl',lab:'Implementation'},
+    {k:'innov',lab:'Innovation cadence'},
+    {k:'escrow',lab:'Source-code escrow'},
+    {k:'lockin',lab:'Vendor lock-in'}
+  ];
+  var EZ={licensing:'Included',spend:'None',ai:'AI-first / agentic',apis:'Open, included',erp:'Included',impl:'Weeks, migration-assisted',innov:'Continuous',escrow:'Available',lockin:'No'};
+  var WARN={licensing:1,spend:1,erp:1,impl:1,innov:1,lockin:1,apis:1,ai:1,escrow:1};
+  var COMP={
+    fieldglass:{name:'SAP Fieldglass',note:'Coming from Fieldglass? We import your suppliers, rate cards and approval chains.',link:'switch/fieldglass.html',rows:{licensing:'Charged',spend:'Supplier-funded %',ai:'Bolted-on copilot',apis:'SAP-centric',erp:'Six-figure projects',impl:'Multi-quarter, PS-heavy',innov:'Slow roadmap',escrow:'Rare',lockin:'High (SAP gravity)'}},
+    beeline:{name:'Beeline',note:'On Beeline through an MSP? Get direct ownership of your own platform — no middle layer.',link:'switch/beeline.html',rows:{licensing:'Charged',spend:'Supplier-funded %',ai:'Bolted-on analytics',apis:'Paid integrations',erp:'Paid projects',impl:'Long, config-heavy',innov:'Split with migration',escrow:'Rare',lockin:'High (MSP + config)'}},
+    flextrack:{name:'Flextrack',note:'Liked Flextrack’s modern feel? EZVMS gives you that — free, and AI-first by architecture.',link:'switch/flextrack.html',rows:{licensing:'Subscription',spend:'Subscription / spend-based',ai:'Recent AI layer',apis:'Limited ecosystem',erp:'Limited',impl:'Faster, vendor-led',innov:'Smaller R&D',escrow:'Rare',lockin:'Medium'}},
+    iqnavigator:{name:'IQNavigator',note:'You’re migrating off legacy IQN regardless — migrate somewhere genuinely better, for free.',link:'switch/iqnavigator.html',rows:{licensing:'Charged',spend:'Supplier-funded %',ai:'Not native',apis:'Legacy',erp:'Legacy',impl:'Forced migration underway',innov:'Sunset path',escrow:'Rare',lockin:'High (forced path)'}},
+    generic:{name:'Generic VMS',note:'Whatever you run today, EZVMS imports it and costs you nothing to operate.',link:'#demo',rows:{licensing:'Charged',spend:'Usually % of spend',ai:'Bolted-on',apis:'Limited / paid',erp:'Paid projects',impl:'Long',innov:'Slow',escrow:'Rare',lockin:'Yes'}}
+  };
+  var tbody=document.getElementById('ctbody'); if(!tbody) return;
+  var colName=document.getElementById('ccol-name'), noteText=document.getElementById('cnote-text'),
+      noteLink=document.getElementById('cnote-link'), mtlComp=document.getElementById('mtl-comp');
+  var tabs=Array.prototype.slice.call(document.querySelectorAll('#ctabs .ctab'));
+
+  function render(key){
+    var c=COMP[key];
+    tbody.style.opacity='0';
+    setTimeout(function(){
+      tbody.innerHTML=ROWS.map(function(r){
+        var lv=c.rows[r.k], warn=WARN[r.k]?'<span class="cdot"></span>':'';
+        return '<div class="crow"><div class="ccell lab">'+r.lab+'</div>'
+          +'<div class="ccell legacy">'+warn+lv+'</div>'
+          +'<div class="ccell ez">'+EZ[r.k]+'</div></div>';
+      }).join('');
+      colName.textContent=c.name;
+      noteText.textContent=c.note;
+      noteLink.setAttribute('href',c.link);
+      if(mtlComp) mtlComp.textContent=c.name==='Generic VMS'?'your VMS':c.name.replace('SAP ','');
+      tbody.style.opacity='1';
+    },120);
+  }
+
+  function select(key){
+    tabs.forEach(function(t){ var on=t.getAttribute('data-comp')===key; t.classList.toggle('active',on); t.setAttribute('aria-selected',on?'true':'false'); });
+    render(key);
+  }
+  tabs.forEach(function(t,idx){
+    t.addEventListener('click',function(){ select(t.getAttribute('data-comp')); });
+    t.addEventListener('keydown',function(e){
+      if(e.key==='ArrowRight'||e.key==='ArrowLeft'){ e.preventDefault(); var n=(idx+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length; tabs[n].focus(); tabs[n].click(); }
+    });
+  });
+  render('fieldglass');
+
+  // expose for nav dropdown
+  window.ezSelectCompetitor=function(key){ select(key); var sec=document.getElementById('compare'); if(sec) sec.scrollIntoView({behavior:'smooth'}); };
+})();
+
+/* ===== NAV "SWITCH FROM" DROPDOWN ===== */
+(function(){
+  var btn=document.getElementById('navdd-btn'), menu=document.getElementById('navdd-menu'); if(!btn) return;
+  btn.addEventListener('click',function(e){ e.stopPropagation(); var open=menu.classList.toggle('open'); btn.setAttribute('aria-expanded',open?'true':'false'); });
+  document.addEventListener('click',function(){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); } });
+  menu.querySelectorAll('.navdd-item').forEach(function(it){
+    it.addEventListener('click',function(){ menu.classList.remove('open'); btn.setAttribute('aria-expanded','false'); if(window.ezSelectCompetitor) window.ezSelectCompetitor(it.getAttribute('data-comp')); });
+  });
+})();
+
+/* ===== ROI CALCULATOR + COST-TO-ZERO BAR ===== */
+(function(){
+  var iSpend=document.getElementById('i-spend'), iPct=document.getElementById('i-pct'),
+      iFlat=document.getElementById('i-flat'), iWorkers=document.getElementById('i-workers');
+  if(!iSpend) return;
+  var vSpend=document.getElementById('v-spend'), vPct=document.getElementById('v-pct'),
+      vFlat=document.getElementById('v-flat'), vWorkers=document.getElementById('v-workers');
+  var fieldPct=document.getElementById('field-pct'), fieldFlat=document.getElementById('field-flat');
+  var oSave=document.getElementById('o-save'), oLegacyVal=document.getElementById('o-legacy-val'),
+      oHours=document.getElementById('o-hours'), oPill=document.getElementById('o-pill'),
+      barLegacy=document.getElementById('bar-legacy'), barEz=document.getElementById('bar-ez');
+  var segBtns=Array.prototype.slice.call(document.querySelectorAll('#i-model .calc-segbtn'));
+  var model='pct', prevSave=500000, MIG=5000;
+
+  function fmt$(n){
+    if(n>=1e9) return '$'+(n/1e9).toFixed(n%1e9?1:0)+'B';
+    if(n>=1e6) return '$'+(n/1e6).toFixed(n%1e6?1:0)+'M';
+    if(n>=1e3) return '$'+Math.round(n/1e3)+'k';
+    return '$'+Math.round(n);
+  }
+  function fmtFull(n){ return '$'+Math.round(n).toLocaleString('en-US'); }
+
+  function compute(){
+    var spend=+iSpend.value*1e6;
+    var pct=+iPct.value/10;       // 5..30 -> 0.5..3.0
+    var flat=+iFlat.value*1e3;    // 50..2000 -> 50k..2000k
+    var workers=+iWorkers.value;
+    vSpend.textContent=fmt$(spend);
+    vPct.textContent=pct.toFixed(1)+'%';
+    vFlat.textContent=fmt$(flat);
+    vWorkers.textContent=workers.toLocaleString('en-US');
+
+    var legacy = model==='pct' ? spend*(pct/100) : flat;
+    var save = legacy;
+    var hours = Math.round(workers*1.3);
+
+    // count-up save
+    ezAnimate(oSave, prevSave, save, 900, fmtFull); prevSave=save;
+    oLegacyVal.textContent=fmt$(legacy)+'/yr';
+    ezAnimate(oHours, +oHours.textContent.replace(/[^0-9]/g,'')||0, hours, 800, function(v){return Math.round(v).toLocaleString('en-US');});
+
+    // bars
+    var ezW = Math.max(2, Math.min(12, (MIG/Math.max(legacy,1))*100));
+    barLegacy.style.width='100%';
+    barEz.style.width=ezW+'%';
+    oPill.classList.remove('show'); setTimeout(function(){ oPill.classList.add('show'); },300);
+  }
+
+  [iSpend,iPct,iFlat,iWorkers].forEach(function(el){ el.addEventListener('input',compute); });
+  segBtns.forEach(function(b){ b.addEventListener('click',function(){
+    model=b.getAttribute('data-model');
+    segBtns.forEach(function(x){ x.classList.toggle('on',x===b); });
+    fieldPct.style.display = model==='pct'?'':'none';
+    fieldFlat.style.display = model==='flat'?'':'none';
+    compute();
+  }); });
+  compute();
+})();
+
+/* ===== AGENT MINI-DEMO ===== */
+(function(){
+  var btn=document.getElementById('demo2-run'); if(!btn) return;
+  var steps=Array.prototype.slice.call(document.querySelectorAll('.demo2-step.new-step'));
+  var saved=document.getElementById('demo2-saved'), played=false, running=false;
+  function reset(){ steps.forEach(function(s){ s.classList.remove('lit'); }); saved.classList.remove('show'); }
+  function run(){
+    if(running) return; running=true; reset();
+    steps.forEach(function(s,i){ setTimeout(function(){ s.classList.add('lit'); if(i===steps.length-1){ saved.classList.add('show'); btn.textContent='↻ Run again'; running=false; } },260*(i+1)); });
+  }
+  if(ezReduce()){ steps.forEach(function(s){s.classList.add('lit');}); saved.classList.add('show'); btn.textContent='↻ Run again'; }
+  btn.addEventListener('click',run);
+  if('IntersectionObserver' in window && !ezReduce()){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting && !played){ played=true; setTimeout(run,400); io.disconnect(); } }); },{threshold:0.4});
+    io.observe(btn);
+  }
+})();
+
+/* ===== API TABS ===== */
+(function(){
+  var body=document.getElementById('api-body'); if(!body) return;
+  var snippets={
+    rest:'<div><span style="color:var(--muted);">POST</span> /v1/requisitions</div><div style="color:var(--muted);">{</div><div style="padding-left:18px;">"title": <span style="color:var(--accent);">"Sr. Data Engineer"</span>,</div><div style="padding-left:18px;">"suppliers": <span style="color:var(--accent);">"auto"</span>,</div><div style="padding-left:18px;">"approval_chain": <span style="color:var(--accent);">"finance_v2"</span></div><div style="color:var(--muted);">}</div><div style="margin-top:12px;color:#1A7F46;">201 · req_4827 created</div>',
+    webhook:'<div><span style="color:var(--muted);">POST</span> https://you.example/hooks</div><div style="color:var(--muted);">event: requisition.filled</div><div style="color:var(--muted);">{</div><div style="padding-left:18px;">"req_id": <span style="color:var(--accent);">"req_4827"</span>,</div><div style="padding-left:18px;">"worker_id": <span style="color:var(--accent);">"wk_99"</span>,</div><div style="padding-left:18px;">"bill_rate": <span style="color:var(--accent);">82.00</span></div><div style="color:var(--muted);">}</div><div style="margin-top:12px;color:#1A7F46;">200 · delivered</div>',
+    mcp:'<div style="color:var(--muted);">// agent tool call</div><div>tool: <span style="color:var(--accent);">ezvms.create_requisition</span></div><div style="color:var(--muted);">{</div><div style="padding-left:18px;">"title": <span style="color:var(--accent);">"Sr. Data Engineer"</span>,</div><div style="padding-left:18px;">"auto_broadcast": <span style="color:var(--accent);">true</span></div><div style="color:var(--muted);">}</div><div style="margin-top:12px;color:#1A7F46;">→ agent created &amp; broadcast REQ-4827</div>'
+  };
+  document.querySelectorAll('.api-tab').forEach(function(t){
+    t.addEventListener('click',function(){
+      document.querySelectorAll('.api-tab').forEach(function(x){ x.classList.remove('on'); x.style.background='none'; x.style.color='var(--muted)'; });
+      t.classList.add('on'); t.style.background='var(--accent-050)'; t.style.color='var(--accent)';
+      body.innerHTML=snippets[t.getAttribute('data-api')];
+    });
+  });
+})();
+
+/* ===== FAQ ACCORDION ===== */
+(function(){
+  document.querySelectorAll('.faq-q').forEach(function(q){
+    var a=q.nextElementSibling;
+    function setOpen(open){ q.setAttribute('aria-expanded',open?'true':'false'); a.style.maxHeight=open?a.scrollHeight+'px':'0'; q.querySelector('.faq-ic').textContent='+'; }
+    if(q.getAttribute('aria-expanded')==='true'){ a.style.maxHeight=a.scrollHeight+'px'; }
+    q.addEventListener('click',function(){ var open=q.getAttribute('aria-expanded')==='true'; setOpen(!open); });
+  });
+  window.addEventListener('resize',function(){ document.querySelectorAll('.faq-q[aria-expanded=true]').forEach(function(q){ q.nextElementSibling.style.maxHeight=q.nextElementSibling.scrollHeight+'px'; }); });
+})();
+
+/* ===== STICKY NAV + SCROLL REVEAL ===== */
+(function(){
+  var nav=document.getElementById('nav');
+  window.addEventListener('scroll',function(){ var s=window.scrollY>12; nav.style.borderBottomColor=s?'#D5DDEA':'#E7EBF3'; nav.style.background=s?'rgba(255,255,255,0.9)':'rgba(255,255,255,0.72)'; },{passive:true});
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ e.target.style.transition='opacity .7s cubic-bezier(0.22,1,0.36,1), transform .7s cubic-bezier(0.22,1,0.36,1)'; e.target.style.opacity='1'; e.target.style.transform='translateY(0)'; io.unobserve(e.target); } }); },{threshold:0.12});
+    document.querySelectorAll('[data-reveal]').forEach(function(el){ io.observe(el); });
+  } else { document.querySelectorAll('[data-reveal]').forEach(function(el){ el.style.opacity='1'; el.style.transform='none'; }); }
+})();
+
+/* ===== BOOK A DEMO MODAL ===== */
+(function(){
+  var DEMO_BOOKING_URL="";
+  var overlay=document.getElementById('dm-overlay'), body=document.getElementById('dm-body'); if(!overlay||!body) return;
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DOW=['SUN','MON','TUE','WED','THU','FRI','SAT'], DOWF=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var SLOTS=['9:00am','9:30am','10:00am','10:30am','11:00am','11:30am','1:00pm','1:30pm','2:00pm','2:30pm','3:00pm','3:30pm','4:00pm','4:30pm'];
+  var ICO_CLOCK='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  var ICO_CAM='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3"/></svg>';
+  var ICO_CAL='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>';
+  var state={};
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function sameDay(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();}
+  function fmtSel(d){return DOWF[d.getDay()]+', '+MONTHS[d.getMonth()]+' '+d.getDate();}
+  function open(){ var n=new Date(); state={step:'pick',view:{y:n.getFullYear(),m:n.getMonth()},sel:null,time:null,name:''}; render(); overlay.classList.add('dm-open'); document.body.style.overflow='hidden'; }
+  function close(){ overlay.classList.remove('dm-open'); document.body.style.overflow=''; }
+  function info(){ return '<div class="dm-info"><div class="dm-brand"><span class="dm-brand-dot">E</span>EZVMS</div><p class="dm-host">EZVMS Team</p><h3 class="dm-title">Free Migration Assessment</h3><div class="dm-meta">'+ICO_CLOCK+'<span>30 min</span></div><div class="dm-meta">'+ICO_CAM+'<span>Web conferencing details provided upon confirmation.</span></div><p class="dm-desc">We’ll map your current VMS setup, estimate your hidden fees, and give you a fixed migration quote and timeline &mdash; no obligation.</p></div>'; }
+  function renderPick(){
+    var y=state.view.y,m=state.view.m,first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate(),today=new Date();today.setHours(0,0,0,0);
+    var canPrev=!(y===today.getFullYear()&&m===today.getMonth()),cells='';
+    for(var i=0;i<first;i++)cells+='<div class="dm-day-empty"></div>';
+    for(var d=1;d<=days;d++){ var dt=new Date(y,m,d),dis=(dt<today)||dt.getDay()===0||dt.getDay()===6,cls='dm-day'; if(sameDay(dt,today))cls+=' dm-today'; if(state.sel&&sameDay(dt,state.sel))cls+=' dm-sel'; cells+='<button class="'+cls+'" '+(dis?'disabled':('data-day="'+d+'"'))+'>'+d+'</button>'; }
+    var times;
+    if(state.sel){ var dd=state.sel.getDate(),avail=SLOTS.filter(function(s,i){return (dd+i)%6!==0;}); times='<div class="dm-times"><p class="dm-times-h">'+fmtSel(state.sel)+'</p><div class="dm-times-scroll">'+avail.map(function(s){return '<button class="dm-slot" data-time="'+s+'">'+s+'</button>';}).join('')+'</div></div>'; }
+    else times='<div class="dm-times"><div class="dm-empty-times">Select a day to see<br>available times</div></div>';
+    body.innerHTML=info()+'<div class="dm-pick"><div class="dm-cal"><p class="dm-pick-h">Select a Date &amp; Time</p><div class="dm-cal-nav"><button class="dm-navbtn" id="dm-prev"'+(canPrev?'':' disabled')+'>&lsaquo;</button><span class="dm-month">'+MONTHS[m]+' '+y+'</span><button class="dm-navbtn" id="dm-next">&rsaquo;</button></div><div class="dm-grid">'+DOW.map(function(x){return '<div class="dm-dow">'+x+'</div>';}).join('')+cells+'</div></div>'+times+'</div>';
+  }
+  function renderConfirm(){ body.innerHTML=info()+'<div class="dm-confirm"><p class="dm-pick-h">Enter Details</p><div class="dm-sel-pill">'+ICO_CAL+'<span><strong>'+state.time+'</strong> &middot; '+fmtSel(state.sel)+'</span></div><div class="dm-field"><label class="dm-label">Name *</label><input class="dm-input" id="dm-name" placeholder="Jane Doe"></div><div class="dm-field"><label class="dm-label">Work email *</label><input class="dm-input" id="dm-email" type="email" placeholder="jane@company.com"></div><div class="dm-field"><label class="dm-label">Current VMS</label><input class="dm-input" id="dm-company" placeholder="Fieldglass / Beeline / Flextrack / IQN"></div><button class="dm-cta" id="dm-schedule">Book my assessment</button><div style="text-align:center;margin-top:4px;"><button class="dm-link" id="dm-back">&lsaquo; Back to calendar</button></div><p class="dm-note">MOCK CONFIRMATION &mdash; no email is sent yet.</p></div>'; }
+  function renderSuccess(){ body.innerHTML='<div class="dm-success"><div class="dm-check">&#10003;</div><h3 class="dm-title">You are scheduled</h3><p>A calendar invitation for your <strong>Free Migration Assessment</strong> '+(state.name?('with '+esc(state.name)+' '):'')+'has been booked for:</p><p class="dm-when">'+state.time+' &middot; '+fmtSel(state.sel)+'</p><button class="dm-cta" id="dm-done" style="max-width:200px;margin:18px auto 0;">Done</button><p class="dm-note" style="margin-top:20px;">This is a mock confirmation. Real booking goes live once the Calendly / Cal.com link is connected.</p></div>'; }
+  function render(){ if(DEMO_BOOKING_URL){ body.innerHTML='<iframe class="dm-iframe" src="'+DEMO_BOOKING_URL+'" title="Schedule a demo" allow="camera;microphone;fullscreen" style="width:100%;height:680px;max-height:86vh;border:none;display:block;"></iframe>'; return; } if(state.step==='confirm')renderConfirm(); else if(state.step==='success')renderSuccess(); else renderPick(); }
+  function navMonth(dir){ var n=new Date(),m=state.view.m+dir,y=state.view.y; if(m<0){m=11;y--;} if(m>11){m=0;y++;} if(y<n.getFullYear()||(y===n.getFullYear()&&m<n.getMonth()))return; state.view={y:y,m:m}; renderPick(); }
+  body.addEventListener('click',function(e){
+    var t=e.target.closest('button'); if(!t)return;
+    if(t.id==='dm-prev')navMonth(-1);
+    else if(t.id==='dm-next')navMonth(1);
+    else if(t.hasAttribute('data-day')){ state.sel=new Date(state.view.y,state.view.m,parseInt(t.getAttribute('data-day'),10)); state.time=null; renderPick(); }
+    else if(t.hasAttribute('data-time')){ state.time=t.getAttribute('data-time'); state.step='confirm'; render(); }
+    else if(t.id==='dm-schedule'){ var nm=document.getElementById('dm-name'),em=document.getElementById('dm-email'); if(!nm.value.trim()){nm.style.borderColor='#EF4444';nm.focus();return;} if(!em.value.trim()||em.value.indexOf('@')<1){em.style.borderColor='#EF4444';em.focus();return;} state.name=nm.value.trim(); state.step='success'; render(); }
+    else if(t.id==='dm-back'){ state.step='pick'; render(); }
+    else if(t.id==='dm-done')close();
+  });
+  document.getElementById('dm-close').addEventListener('click',close);
+  overlay.addEventListener('click',function(e){ if(e.target===overlay)close(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape')close(); });
+  document.querySelectorAll('[data-demo]').forEach(function(el){ el.addEventListener('click',function(e){ e.preventDefault(); open(); }); });
+})();
+</script>
+
+</body>
+</html>
