@@ -17,6 +17,38 @@
     @keyframes ez-feed  { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
     @keyframes ez-bar   { from { width:0; } }
 
+    /* ===== HERO AUTOPILOT CONSOLE (animated AI automation engine) ===== */
+    .ezap{background:#fff;border:1px solid #E2E8F1;border-radius:16px;overflow:hidden;box-shadow:0 26px 64px -30px rgba(11,18,32,.22);}
+    .ezap-head{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid #ECEFF5;background:linear-gradient(180deg,#FBFCFE,#FFF);}
+    .ezap-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;animation:ezap-pulse 1.7s infinite;}
+    @keyframes ezap-pulse{0%{box-shadow:0 0 0 0 rgba(37,99,235,.45);}70%{box-shadow:0 0 0 7px rgba(37,99,235,0);}100%{box-shadow:0 0 0 0 rgba(37,99,235,0);}}
+    .ezap-body{display:flex;min-height:284px;}
+    .ezap-rail{flex:none;width:174px;border-right:1px solid #ECEFF5;padding:11px 9px;background:#FAFBFE;display:flex;flex-direction:column;gap:1px;}
+    .ezap-mod{display:flex;align-items:center;gap:9px;padding:8px 9px;border-radius:9px;font-family:'JetBrains Mono',monospace;font-size:11.5px;color:#9AA3B5;transition:background .3s,color .3s;}
+    .ezap-mod .md-ic{width:15px;height:15px;border-radius:5px;border:1.5px solid #D4DBE8;flex:none;display:flex;align-items:center;justify-content:center;font-size:9px;line-height:1;color:#fff;transition:.3s;}
+    .ezap-mod.is-active{background:#EEF3FE;color:#0B1220;}
+    .ezap-mod.is-active .md-ic{border-color:var(--accent);background:var(--accent);box-shadow:0 0 0 4px rgba(37,99,235,.14);}
+    .ezap-mod.is-done{color:#59647A;}
+    .ezap-mod.is-done .md-ic{border-color:var(--accent);background:var(--accent);}
+    .ezap-feedwrap{flex:1;min-width:0;display:flex;flex-direction:column;}
+    .ezap-scene{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px 4px;}
+    .ezap-scene-h{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:13.5px;color:#0B1220;letter-spacing:-0.01em;}
+    .ezap-saved{font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:600;color:#16A34A;background:#E7F6EE;border-radius:999px;padding:3px 9px;white-space:nowrap;opacity:0;transform:scale(.85);transition:opacity .3s,transform .3s;}
+    .ezap-saved.show{opacity:1;transform:none;}
+    .ezap-feed{flex:1;padding:8px 16px 14px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.85;color:#37415A;}
+    .ezap-line{display:flex;gap:8px;opacity:0;transform:translateY(5px);animation:ez-feed .42s ease forwards;}
+    .ezap-line .ln-t{color:#A4AEC0;flex:none;}
+    .ezap-line .ln-a{color:var(--accent);flex:none;}
+    .ezap-foot{display:flex;border-top:1px solid #ECEFF5;}
+    .ezap-stat{flex:1;padding:12px 15px;border-right:1px solid #ECEFF5;}
+    .ezap-stat:last-child{border-right:none;}
+    .ezap-stat .sv{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;color:#0B1220;letter-spacing:-0.01em;}
+    .ezap-stat .sv.accent{color:var(--accent);}
+    .ezap-stat .sl{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:#8A93A8;margin-top:3px;line-height:1.3;}
+    @media (max-width:980px){.ezap-rail{width:152px;}}
+    @media (max-width:560px){.ezap-rail{display:none;}}
+    @media (prefers-reduced-motion:reduce){.ezap-dot{animation:none;}.ezap-line{animation:none;opacity:1;transform:none;}}
+
     /* NAV */
     .nav-link:hover { color: #0B1220 !important; }
     .btn-demo:hover { transform: translateY(-1px); }
@@ -33,6 +65,89 @@
 
     /* DESIGN SWITCHER */
     .ds-opt:hover { background: #F5F7FC; }
+
+    /* ===== BOOK-A-DEMO SCHEDULING MODAL ===== */
+    .dm-overlay{position:fixed;inset:0;z-index:10000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(11,18,32,.55);backdrop-filter:blur(4px);opacity:0;transition:opacity .22s ease;}
+    .dm-overlay.dm-open{display:flex;opacity:1;}
+    .dm-card{position:relative;width:100%;max-width:920px;max-height:92vh;background:#fff;border-radius:20px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 30px 80px rgba(11,18,32,.28);transform:translateY(12px) scale(.985);transition:transform .24s cubic-bezier(.2,.7,.3,1);}
+    .dm-overlay.dm-open .dm-card{transform:none;}
+    .dm-close{position:absolute;top:14px;right:14px;z-index:3;width:34px;height:34px;border-radius:50%;border:none;background:#F0F3F9;color:#4A5468;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;}
+    .dm-close:hover{background:#E2E8F1;color:#0B1220;}
+    .dm-body{display:flex;flex:1;min-height:0;overflow:auto;font-family:'Instrument Sans',sans-serif;}
+    .dm-info{flex:none;width:294px;padding:34px 28px;border-right:1px solid #EDF1F8;background:linear-gradient(180deg,#F7FAFF,#FFF);}
+    .dm-brand{display:flex;align-items:center;gap:9px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#0B1220;margin-bottom:20px;}
+    .dm-brand-dot{width:27px;height:27px;border-radius:7px;background:var(--accent,#2563EB);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;}
+    .dm-host{font-size:14px;color:#8A93A8;margin:0 0 4px;}
+    .dm-title{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:25px;line-height:1.15;color:#0B1220;margin:0 0 18px;}
+    .dm-meta{display:flex;align-items:flex-start;gap:9px;font-size:13.5px;color:#4A5468;margin-bottom:11px;line-height:1.45;}
+    .dm-meta svg{flex:none;color:#8A93A8;margin-top:1px;}
+    .dm-desc{font-size:13.5px;line-height:1.6;color:#6B7486;margin-top:18px;border-top:1px solid #EDF1F8;padding-top:16px;}
+    .dm-pick{flex:1;min-width:0;padding:26px 28px;display:flex;gap:24px;}
+    .dm-cal{flex:1;min-width:0;}
+    .dm-pick-h{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:19px;color:#0B1220;margin:0 0 16px;}
+    .dm-cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+    .dm-month{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:#0B1220;}
+    .dm-navbtn{width:30px;height:30px;border-radius:8px;border:1px solid #E2E8F1;background:#fff;color:#4A5468;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:.15s;}
+    .dm-navbtn:hover:not(:disabled){border-color:var(--accent,#2563EB);color:var(--accent,#2563EB);}
+    .dm-navbtn:disabled{opacity:.35;cursor:default;}
+    .dm-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+    .dm-dow{text-align:center;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.04em;color:#A4AEC0;padding:5px 0;}
+    .dm-day{aspect-ratio:1;border:none;background:#F4F7FC;border-radius:9px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:var(--accent,#2563EB);cursor:pointer;transition:.12s;display:flex;align-items:center;justify-content:center;padding:0;}
+    .dm-day:hover:not(:disabled){background:var(--accent,#2563EB);color:#fff;}
+    .dm-day:disabled{background:transparent;color:#C9D0DC;cursor:default;font-weight:400;}
+    .dm-day.dm-sel{background:var(--accent,#2563EB);color:#fff;box-shadow:0 4px 12px rgba(37,99,235,.3);}
+    .dm-day.dm-today:not(.dm-sel){box-shadow:inset 0 0 0 1.5px var(--accent,#2563EB);}
+    .dm-day-empty{aspect-ratio:1;}
+    .dm-times{flex:none;width:188px;display:flex;flex-direction:column;min-height:0;}
+    .dm-times-h{font-size:13.5px;color:#4A5468;margin:0 0 12px;font-weight:600;}
+    .dm-times-scroll{overflow-y:auto;max-height:312px;display:flex;flex-direction:column;gap:8px;padding-right:4px;}
+    .dm-slot{padding:12px;border:1.5px solid #D6E2FB;border-radius:9px;background:#fff;color:var(--accent,#2563EB);font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;text-align:center;transition:.12s;flex:none;}
+    .dm-slot:hover{border-color:var(--accent,#2563EB);background:#F2F6FE;}
+    .dm-empty-times{font-size:13px;color:#A4AEC0;text-align:center;padding-top:36px;line-height:1.6;}
+    .dm-confirm{padding:30px;max-width:460px;margin:0 auto;width:100%;}
+    .dm-field{margin-bottom:15px;}
+    .dm-label{display:block;font-size:13px;font-weight:600;color:#0B1220;margin-bottom:6px;}
+    .dm-input{width:100%;padding:12px 14px;border:1.5px solid #D6E2FB;border-radius:9px;font-family:'Instrument Sans',sans-serif;font-size:14px;color:#0B1220;outline:none;transition:border-color .15s;}
+    .dm-input:focus{border-color:var(--accent,#2563EB);}
+    .dm-cta{display:block;width:100%;padding:14px;border:none;border-radius:999px;background:var(--accent,#2563EB);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:transform .15s;}
+    .dm-cta:hover{transform:translateY(-1px);}
+    .dm-link{background:none;border:none;color:#8A93A8;font-size:13.5px;cursor:pointer;font-family:'Instrument Sans',sans-serif;padding:8px;}
+    .dm-link:hover{color:#0B1220;}
+    .dm-sel-pill{display:flex;align-items:center;gap:9px;font-size:14px;color:#0B1220;background:#F2F6FE;border:1px solid #D6E2FB;border-radius:9px;padding:12px 14px;margin-bottom:20px;}
+    .dm-note{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#A4AEC0;text-align:center;margin-top:14px;line-height:1.5;}
+    .dm-success{padding:48px 30px;text-align:center;max-width:440px;margin:0 auto;}
+    .dm-success .dm-title{font-size:26px;margin-bottom:10px;}
+    .dm-success p{color:#4A5468;font-size:15px;line-height:1.6;margin:0 0 4px;}
+    .dm-check{width:60px;height:60px;border-radius:50%;background:#E7F6EE;color:#16A34A;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px;}
+    .dm-when{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;color:var(--accent,#2563EB);margin:10px 0 6px;}
+    .dm-iframe{width:100%;height:680px;max-height:86vh;border:none;display:block;}
+    @media (max-width:760px){
+      .dm-info{display:none;}
+      .dm-pick{flex-direction:column;padding:22px;}
+      .dm-times{width:100%;}
+      .dm-times-scroll{max-height:220px;}
+      .dm-card{max-height:94vh;}
+    }
+
+    /* ===== LOGIN MODAL ===== */
+    .lm-card{max-width:430px;}
+    .lm-wrap{padding:40px 38px 32px;}
+    .lm-sub{font-size:14px;color:#8A93A8;margin:0 0 24px;}
+    .lm-row{display:flex;align-items:center;justify-content:space-between;margin:2px 0 20px;}
+    .lm-remember{display:flex;align-items:center;gap:8px;font-size:13.5px;color:#4A5468;cursor:pointer;user-select:none;}
+    .lm-remember input{width:16px;height:16px;accent-color:var(--accent,#2563EB);cursor:pointer;}
+    .lm-forgot{font-size:13.5px;color:var(--accent,#2563EB);font-weight:600;cursor:pointer;background:none;border:none;font-family:'Instrument Sans',sans-serif;}
+    .lm-forgot:hover{text-decoration:underline;}
+    .lm-div{display:flex;align-items:center;gap:12px;margin:20px 0;color:#A4AEC0;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:.08em;}
+    .lm-div::before,.lm-div::after{content:"";flex:1;height:1px;background:#E7EBF3;}
+    .lm-sso{display:block;width:100%;padding:13px;border:1.5px solid #D6E2FB;border-radius:999px;background:#fff;color:#0B1220;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:.15s;}
+    .lm-sso:hover{border-color:var(--accent,#2563EB);background:#F7FAFF;}
+    .lm-foot{text-align:center;font-size:13.5px;color:#8A93A8;margin-top:22px;}
+    .lm-foot button{color:var(--accent,#2563EB);font-weight:600;cursor:pointer;background:none;border:none;font-family:'Instrument Sans',sans-serif;font-size:13.5px;}
+    .lm-foot button:hover{text-decoration:underline;}
+    .lm-pw-wrap{position:relative;}
+    .lm-pw-toggle{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;color:#8A93A8;font-size:11px;font-weight:600;font-family:'JetBrains Mono',monospace;cursor:pointer;padding:6px 8px;}
+    .lm-pw-toggle:hover{color:var(--accent,#2563EB);}
   </style>
 </head>
 <body>
@@ -105,35 +220,150 @@
         </div>
       </div>
 
-      <!-- live agent terminal -->
-      <div style="background:#FFFFFF;border:1px solid #E2E8F1;border-radius:14px;overflow:hidden;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #ECEFF5;">
-          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#59647A;">agent.run() — live</span>
+      <!-- EZVMS Autopilot — live, animated AI automation console -->
+      <div class="ezap" id="ezap" role="img" aria-label="EZVMS Autopilot running the full requisition-to-pay workflow across eight AI agents with zero manual touchpoints — over 1,280 analyst-hours saved per month.">
+        <div class="ezap-head">
+          <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#59647A;">ezvms&nbsp;·&nbsp;autopilot</span>
           <span style="display:flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);">
-            <span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;animation:ez-blink 1.4s infinite;"></span>active
+            <span class="ezap-dot"></span>live&nbsp;·&nbsp;<span id="ezap-clock">00:00</span>
           </span>
         </div>
-        <div id="feed" style="padding:18px;font-family:'JetBrains Mono',monospace;font-size:12.5px;line-height:1.95;color:#37415A;min-height:230px;">
-          <div><span style="color:#8A93A8;">09:41</span> <span style="color:var(--accent);">→</span> created REQ-4827 · Sr. Data Engineer</div>
-          <div><span style="color:#8A93A8;">09:41</span> <span style="color:var(--accent);">→</span> routed to 3 approvers</div>
-          <div><span style="color:#8A93A8;">09:43</span> <span style="color:var(--accent);">→</span> dispatched to 12 suppliers</div>
-          <div><span style="color:#8A93A8;">09:52</span> <span style="color:var(--accent);">→</span> screened 41 submissions</div>
-          <div><span style="color:#8A93A8;">09:53</span> <span style="color:var(--accent);">→</span> shortlisted 6 · flagged 2 compliance</div>
-          <div style="color:#0B1220;"><span style="color:#8A93A8;">09:53</span> <span style="color:var(--accent);">→</span> interviews proposed<span style="display:inline-block;width:8px;height:15px;background:var(--accent);margin-left:3px;vertical-align:-2px;animation:ez-blink 1s infinite;"></span></div>
+        <div class="ezap-body">
+          <div class="ezap-rail" id="ezap-rail" aria-hidden="true"></div>
+          <div class="ezap-feedwrap">
+            <div class="ezap-scene">
+              <span class="ezap-scene-h" id="ezap-scene-h">Intake &amp; requisitions</span>
+              <span class="ezap-saved" id="ezap-saved">saved +0h</span>
+            </div>
+            <div class="ezap-feed" id="ezap-feed"></div>
+          </div>
         </div>
-        <div style="display:flex;border-top:1px solid #ECEFF5;">
-          <div style="flex:1;padding:14px 18px;border-right:1px solid #ECEFF5;">
-            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#0B1220;">12 min</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A93A8;margin-top:2px;">req → shortlist</div>
-          </div>
-          <div style="flex:1;padding:14px 18px;">
-            <div style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:18px;color:#0B1220;">0 manual</div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:#8A93A8;margin-top:2px;">touchpoints</div>
-          </div>
+        <div class="ezap-foot">
+          <div class="ezap-stat"><div class="sv accent" id="ezap-tally">1,284</div><div class="sl">analyst-hrs saved / mo</div></div>
+          <div class="ezap-stat"><div class="sv">8 agents</div><div class="sl">working in parallel</div></div>
+          <div class="ezap-stat"><div class="sv">0</div><div class="sl">manual touchpoints</div></div>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- EZVMS Autopilot console engine -->
+  <script>
+  (function(){
+    const feed=document.getElementById('ezap-feed');
+    if(!feed) return;
+    const rail=document.getElementById('ezap-rail'),
+          sceneH=document.getElementById('ezap-scene-h'),
+          savedEl=document.getElementById('ezap-saved'),
+          clockEl=document.getElementById('ezap-clock'),
+          tallyEl=document.getElementById('ezap-tally');
+    const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+    const MODULES=[
+      {rail:'intake',     title:'Intake & requisitions',  saved:2.4, steps:[
+        ['09:41','created REQ-4827 · Sr. Data Engineer'],
+        ['09:41','parsed JD · extracted 14 must-have skills'],
+        ['09:42','routed to 3 approvers · cleared in 40s']]},
+      {rail:'broadcast',  title:'Supplier broadcast',     saved:3.1, steps:[
+        ['09:43','dispatched to 12 suppliers + internal bench'],
+        ['09:44','matched 4 ready candidates from talent pool'],
+        ['09:46','negotiated bill rate · $82/hr ↓ 6%']]},
+      {rail:'screen',     title:'Screen & match',         saved:6.8, steps:[
+        ['09:50','ingested 41 submissions'],
+        ['09:52','scored & ranked · surfaced top 6'],
+        ['09:52','deduped 3 · flagged 1 rate outlier']]},
+      {rail:'compliance', title:'Compliance & documents', saved:2.0, steps:[
+        ['09:53','verified right-to-work · 6 / 6 clear'],
+        ['09:54','checked certifications & insurance'],
+        ['09:55','flagged 2 documents expiring < 30d']]},
+      {rail:'interview',  title:'Interview coordination',  saved:1.7, steps:[
+        ['09:56','proposed 9 interview slots'],
+        ['09:58','synced 3 calendars · booked 4 panels'],
+        ['10:01','sent prep packs + auto reminders']]},
+      {rail:'onboard',    title:'Offer & onboarding',      saved:2.9, steps:[
+        ['10:03','generated offer · e-signed in 11 min'],
+        ['10:05','provisioned access · day-1 ready'],
+        ['10:06','kicked off background check']]},
+      {rail:'billing',    title:'Timesheets & billing',    saved:4.2, steps:[
+        ['10:08','auto-approved 38 timesheets'],
+        ['10:09','reconciled invoices · 0 exceptions'],
+        ['10:10','flagged 1 overtime breach for review']]},
+      {rail:'insights',   title:'Spend & insights',        saved:1.5, steps:[
+        ['10:12','analyzed $1.2M program spend'],
+        ['10:13','detected bottleneck · approval stage'],
+        ['10:14','recommended 2 cost-saving actions']]}
+    ];
+
+    const mods=MODULES.map(function(m){
+      const el=document.createElement('div');
+      el.className='ezap-mod';
+      el.innerHTML='<span class="md-ic">&#10003;</span><span>'+m.rail+'</span>';
+      rail.appendChild(el);
+      return el;
+    });
+
+    let tally=1284;
+    function setTally(v){ tallyEl.textContent=Math.round(v).toLocaleString('en-US'); }
+    setTally(tally);
+    function bumpTally(amount){
+      const start=tally, end=tally+amount, t0=performance.now(), dur=900;
+      tally=end;
+      (function step(now){
+        const p=Math.max(0,Math.min(1,(now-t0)/dur)), e=1-Math.pow(1-p,3);
+        setTally(start+(end-start)*e);
+        if(p<1) requestAnimationFrame(step);
+      })(t0);
+    }
+
+    function mmss(s){ return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0'); }
+    let clockSec=0, clockTimer=null;
+    function startClock(){ clockSec=0; clockEl.textContent='00:00'; clearInterval(clockTimer); clockTimer=setInterval(function(){clockSec++; clockEl.textContent=mmss(clockSec);},1000); }
+
+    let timers=[];
+    function later(fn,ms){ timers.push(setTimeout(fn,ms)); }
+    function clearTimers(){ timers.forEach(clearTimeout); timers=[]; }
+
+    function addLine(s){
+      const d=document.createElement('div');
+      d.className='ezap-line';
+      d.innerHTML='<span class="ln-t">'+s[0]+'</span><span class="ln-a">&#8594;</span><span>'+s[1]+'</span>';
+      feed.appendChild(d);
+    }
+
+    function runModule(i){
+      clearTimers();
+      const m=MODULES[i];
+      mods.forEach(function(el,k){ el.classList.toggle('is-done',k<i); el.classList.toggle('is-active',k===i); });
+      sceneH.textContent=m.title;
+      savedEl.classList.remove('show');
+      feed.innerHTML='';
+      m.steps.forEach(function(s,si){ later(function(){ addLine(s); }, si*780); });
+      const done=m.steps.length*780;
+      later(function(){ savedEl.textContent='saved +'+m.saved+'h'; savedEl.classList.add('show'); bumpTally(m.saved); }, done+140);
+      later(function(){
+        mods[i].classList.remove('is-active'); mods[i].classList.add('is-done');
+        const next=i+1;
+        if(next>=MODULES.length){ later(function(){ mods.forEach(function(el){el.classList.remove('is-done','is-active');}); startClock(); runModule(0); }, 1700); }
+        else { runModule(next); }
+      }, done+960);
+    }
+
+    if(reduce){
+      mods.forEach(function(el){ el.classList.add('is-done'); });
+      const m=MODULES[2]; sceneH.textContent=m.title; m.steps.forEach(addLine);
+      savedEl.textContent='saved +24.6h'; savedEl.classList.add('show');
+      setTally(1308); clockEl.textContent='33:00';
+      return;
+    }
+
+    let started=false;
+    function go(){ if(started) return; started=true; startClock(); runModule(0); }
+    if('IntersectionObserver' in window){
+      const io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ go(); io.disconnect(); } }); },{threshold:0.2});
+      io.observe(document.getElementById('ezap'));
+    } else { go(); }
+  })();
+  </script>
 
   <!-- VALUE STRIP -->
   <section style="border-top:1px solid #E7EBF3;border-bottom:1px solid #E7EBF3;background:#F5F7FC;">
@@ -462,5 +692,295 @@
     });
   }
 </script>
+
+<!-- ============================================================
+     BOOK A DEMO — SCHEDULING MODAL (mock)
+     To go live: set DEMO_BOOKING_URL in the script below to your
+     Calendly or Cal.com link. When set, the mock is replaced by the
+     real embed automatically.  e.g. "https://calendly.com/ezvms/30min"
+     ============================================================ -->
+<div id="dm-overlay" class="dm-overlay" role="dialog" aria-modal="true" aria-label="Schedule a demo">
+  <div class="dm-card">
+    <button class="dm-close" id="dm-close" aria-label="Close">&times;</button>
+    <div class="dm-body" id="dm-body"><!-- rendered by JS --></div>
+  </div>
+</div>
+<script>
+(function(){
+  /* ====== SET THIS LATER ======================================
+     Paste your real scheduling link to replace the mock calendar:
+       Calendly:  "https://calendly.com/your-org/30min"
+       Cal.com:   "https://cal.com/your-org/demo"
+     Leave empty ("") to keep the interactive mock.
+  =============================================================== */
+  var DEMO_BOOKING_URL = "";
+
+  var overlay = document.getElementById('dm-overlay');
+  var body = document.getElementById('dm-body');
+  if(!overlay || !body) return;
+
+  var MONTHS=['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var DOW=['SUN','MON','TUE','WED','THU','FRI','SAT'];
+  var DOWF=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var SLOTS=['9:00am','9:30am','10:00am','10:30am','11:00am','11:30am','1:00pm','1:30pm','2:00pm','2:30pm','3:00pm','3:30pm','4:00pm','4:30pm'];
+  var ICO_CLOCK='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>';
+  var ICO_CAM='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3"/></svg>';
+  var ICO_CAL='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent,#2563EB)" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>';
+
+  var state={};
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+  function sameDay(a,b){return a&&b&&a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();}
+  function fmtSel(d){return DOWF[d.getDay()]+', '+MONTHS[d.getMonth()]+' '+d.getDate();}
+
+  function open(){
+    var n=new Date();
+    state={step:'pick',view:{y:n.getFullYear(),m:n.getMonth()},sel:null,time:null,name:''};
+    render();
+    overlay.classList.add('dm-open');
+    document.body.style.overflow='hidden';
+  }
+  function close(){overlay.classList.remove('dm-open');document.body.style.overflow='';}
+
+  function info(){
+    return '<div class="dm-info">'
+      +'<div class="dm-brand"><span class="dm-brand-dot">E</span>EZVMS</div>'
+      +'<p class="dm-host">EZVMS Team</p>'
+      +'<h3 class="dm-title">30 Minute Demo</h3>'
+      +'<div class="dm-meta">'+ICO_CLOCK+'<span>30 min</span></div>'
+      +'<div class="dm-meta">'+ICO_CAM+'<span>Web conferencing details provided upon confirmation.</span></div>'
+      +'<p class="dm-desc">See how EZVMS automates requisitions, onboarding and compliance &mdash; plus a free migration assessment for your workforce program.</p>'
+      +'</div>';
+  }
+
+  function renderPick(){
+    var y=state.view.y,m=state.view.m;
+    var first=new Date(y,m,1).getDay();
+    var days=new Date(y,m+1,0).getDate();
+    var today=new Date();today.setHours(0,0,0,0);
+    var canPrev=!(y===today.getFullYear()&&m===today.getMonth());
+    var cells='';
+    for(var i=0;i<first;i++)cells+='<div class="dm-day-empty"></div>';
+    for(var d=1;d<=days;d++){
+      var dt=new Date(y,m,d);
+      var disabled=(dt<today)||dt.getDay()===0||dt.getDay()===6;
+      var cls='dm-day';
+      if(sameDay(dt,today))cls+=' dm-today';
+      if(state.sel&&sameDay(dt,state.sel))cls+=' dm-sel';
+      cells+='<button class="'+cls+'" '+(disabled?'disabled':('data-day="'+d+'"'))+'>'+d+'</button>';
+    }
+    var times;
+    if(state.sel){
+      var dd=state.sel.getDate();
+      var avail=SLOTS.filter(function(s,i){return (dd+i)%6!==0;});
+      times='<div class="dm-times"><p class="dm-times-h">'+fmtSel(state.sel)+'</p><div class="dm-times-scroll">'
+        +avail.map(function(s){return '<button class="dm-slot" data-time="'+s+'">'+s+'</button>';}).join('')
+        +'</div></div>';
+    }else{
+      times='<div class="dm-times"><div class="dm-empty-times">Select a day to see<br>available times</div></div>';
+    }
+    body.innerHTML=info()
+      +'<div class="dm-pick"><div class="dm-cal">'
+      +'<p class="dm-pick-h">Select a Date &amp; Time</p>'
+      +'<div class="dm-cal-nav"><button class="dm-navbtn" id="dm-prev"'+(canPrev?'':' disabled')+'>&lsaquo;</button>'
+      +'<span class="dm-month">'+MONTHS[m]+' '+y+'</span>'
+      +'<button class="dm-navbtn" id="dm-next">&rsaquo;</button></div>'
+      +'<div class="dm-grid">'+DOW.map(function(x){return '<div class="dm-dow">'+x+'</div>';}).join('')+cells+'</div>'
+      +'</div>'+times+'</div>';
+  }
+
+  function renderConfirm(){
+    body.innerHTML=info()
+      +'<div class="dm-confirm">'
+      +'<p class="dm-pick-h">Enter Details</p>'
+      +'<div class="dm-sel-pill">'+ICO_CAL+'<span><strong>'+state.time+'</strong> &middot; '+fmtSel(state.sel)+'</span></div>'
+      +'<div class="dm-field"><label class="dm-label">Name *</label><input class="dm-input" id="dm-name" placeholder="Jane Doe"></div>'
+      +'<div class="dm-field"><label class="dm-label">Email *</label><input class="dm-input" id="dm-email" type="email" placeholder="jane@company.com"></div>'
+      +'<div class="dm-field"><label class="dm-label">Company</label><input class="dm-input" id="dm-company" placeholder="Acme Corp"></div>'
+      +'<button class="dm-cta" id="dm-schedule">Schedule Event</button>'
+      +'<div style="text-align:center;margin-top:4px;"><button class="dm-link" id="dm-back">&lsaquo; Back to calendar</button></div>'
+      +'<p class="dm-note">MOCK CONFIRMATION &mdash; no email is sent yet.</p>'
+      +'</div>';
+  }
+
+  function renderSuccess(){
+    body.innerHTML='<div class="dm-success">'
+      +'<div class="dm-check">&#10003;</div>'
+      +'<h3 class="dm-title">You are scheduled</h3>'
+      +'<p>A calendar invitation for the <strong>30 Minute Demo</strong> '+(state.name?('with '+esc(state.name)+' '):'')+'has been booked for:</p>'
+      +'<p class="dm-when">'+state.time+' &middot; '+fmtSel(state.sel)+'</p>'
+      +'<button class="dm-cta" id="dm-done" style="max-width:200px;margin:18px auto 0;">Done</button>'
+      +'<p class="dm-note" style="margin-top:20px;">This is a mock confirmation. Real booking goes live once the Calendly / Cal.com link is connected.</p>'
+      +'</div>';
+  }
+
+  function render(){
+    if(DEMO_BOOKING_URL){
+      body.innerHTML='<iframe class="dm-iframe" src="'+DEMO_BOOKING_URL+'" title="Schedule a demo" allow="camera;microphone;fullscreen"></iframe>';
+      return;
+    }
+    if(state.step==='confirm')renderConfirm();
+    else if(state.step==='success')renderSuccess();
+    else renderPick();
+  }
+
+  function navMonth(dir){
+    var n=new Date();
+    var m=state.view.m+dir,y=state.view.y;
+    if(m<0){m=11;y--;}if(m>11){m=0;y++;}
+    if(y<n.getFullYear()||(y===n.getFullYear()&&m<n.getMonth()))return;
+    state.view={y:y,m:m};renderPick();
+  }
+
+  body.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    if(t.id==='dm-prev')navMonth(-1);
+    else if(t.id==='dm-next')navMonth(1);
+    else if(t.hasAttribute('data-day')){state.sel=new Date(state.view.y,state.view.m,parseInt(t.getAttribute('data-day'),10));state.time=null;renderPick();}
+    else if(t.hasAttribute('data-time')){state.time=t.getAttribute('data-time');state.step='confirm';render();}
+    else if(t.id==='dm-schedule'){
+      var nm=document.getElementById('dm-name'),em=document.getElementById('dm-email');
+      if(!nm.value.trim()){nm.style.borderColor='#EF4444';nm.focus();return;}
+      if(!em.value.trim()||em.value.indexOf('@')<1){em.style.borderColor='#EF4444';em.focus();return;}
+      state.name=nm.value.trim();state.step='success';render();
+    }
+    else if(t.id==='dm-back'){state.step='pick';render();}
+    else if(t.id==='dm-done')close();
+  });
+
+  document.getElementById('dm-close').addEventListener('click',close);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('dm-open'))close();});
+
+  // Auto-wire every "Book a demo" CTA (and anything tagged data-book-demo)
+  function isDemo(a){
+    if(a.hasAttribute('data-book-demo'))return true;
+    return /^book a( 30-min)? demo/i.test((a.textContent||'').trim());
+  }
+  document.querySelectorAll('a,button').forEach(function(el){
+    if(isDemo(el))el.addEventListener('click',function(e){e.preventDefault();open();});
+  });
+  window.openDemoModal=open;
+})();
+</script>
+
+<!-- ============================================================
+     LOG IN — MODAL (mock)
+     To wire to the real EZVMS app: set APP_LOGIN_URL in the script
+     below. When set, the "sign in" trigger sends users straight to
+     the live app login; until then it shows this interactive mock.
+     ============================================================ -->
+<div id="lm-overlay" class="dm-overlay" role="dialog" aria-modal="true" aria-label="Sign in">
+  <div class="dm-card lm-card">
+    <button class="dm-close" id="lm-close" aria-label="Close">&times;</button>
+    <div id="lm-body"><!-- rendered by JS --></div>
+  </div>
+</div>
+<script>
+(function(){
+  /* ====== SET THIS LATER ======================================
+     URL of the real EZVMS app login. When set, the sign-in button
+     sends users there instead of showing the mock.
+       e.g. "https://app.ezvms.com/login"
+  =============================================================== */
+  var APP_LOGIN_URL = "";
+
+  var overlay=document.getElementById('lm-overlay');
+  var body=document.getElementById('lm-body');
+  if(!overlay||!body)return;
+
+  var state={view:'login'};
+  function esc(s){var d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+
+  function open(){
+    if(APP_LOGIN_URL){window.location.href=APP_LOGIN_URL;return;}
+    state={view:'login'};render();
+    overlay.classList.add('dm-open');document.body.style.overflow='hidden';
+  }
+  function close(){overlay.classList.remove('dm-open');document.body.style.overflow='';}
+
+  function renderLogin(){
+    body.innerHTML='<div class="lm-wrap">'
+      +'<div class="dm-brand" style="justify-content:center;margin-bottom:18px;"><span class="dm-brand-dot">E</span>EZVMS</div>'
+      +'<h3 class="dm-title" style="text-align:center;font-size:24px;margin-bottom:6px;">Welcome back</h3>'
+      +'<p class="lm-sub" style="text-align:center;">Sign in to your EZVMS workspace</p>'
+      +'<div class="dm-field"><label class="dm-label">Email</label><input class="dm-input" id="lm-email" type="email" placeholder="you@company.com"></div>'
+      +'<div class="dm-field"><label class="dm-label">Password</label><div class="lm-pw-wrap"><input class="dm-input" id="lm-pass" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" style="padding-right:56px;"><button class="lm-pw-toggle" id="lm-pwtog" type="button">Show</button></div></div>'
+      +'<div class="lm-row"><label class="lm-remember"><input type="checkbox" id="lm-remember" checked>Remember me</label><button class="lm-forgot" id="lm-forgot">Forgot password?</button></div>'
+      +'<button class="dm-cta" id="lm-signin">Sign in</button>'
+      +'<div class="lm-div">OR</div>'
+      +'<button class="lm-sso" id="lm-sso">Continue with SSO</button>'
+      +'<p class="lm-foot">Don&rsquo;t have an account? <button id="lm-getstarted">Get started free</button></p>'
+      +'<p class="dm-note" style="margin-top:14px;">MOCK LOGIN &mdash; connect APP_LOGIN_URL to reach the real EZVMS app.</p>'
+      +'</div>';
+  }
+
+  function renderForgot(){
+    body.innerHTML='<div class="lm-wrap">'
+      +'<div style="margin-bottom:8px;"><button class="dm-link" id="lm-back" style="padding-left:0;">&lsaquo; Back to sign in</button></div>'
+      +'<h3 class="dm-title" style="font-size:23px;margin-bottom:6px;">Reset your password</h3>'
+      +'<p class="lm-sub">Enter your account email and we&rsquo;ll send you a reset link.</p>'
+      +'<div class="dm-field"><label class="dm-label">Email</label><input class="dm-input" id="lm-remail" type="email" placeholder="you@company.com"></div>'
+      +'<button class="dm-cta" id="lm-sendreset">Send reset link</button>'
+      +'<p class="dm-note" style="margin-top:16px;">MOCK &mdash; no email is actually sent.</p>'
+      +'</div>';
+  }
+
+  function renderDone(title,msg,showApp){
+    body.innerHTML='<div class="dm-success" style="padding:46px 34px;">'
+      +'<div class="dm-check">&#10003;</div>'
+      +'<h3 class="dm-title">'+title+'</h3>'
+      +'<p>'+msg+'</p>'
+      +(showApp?'<button class="dm-cta" id="lm-continue" style="max-width:220px;margin:22px auto 0;">Continue to app</button>':'<button class="dm-cta" id="lm-okdone" style="max-width:200px;margin:22px auto 0;">Done</button>')
+      +(showApp?'<p class="dm-note" style="margin-top:18px;">Wire APP_LOGIN_URL to the live EZVMS app to enable real sign-in.</p>':'')
+      +'</div>';
+  }
+
+  function render(){
+    if(state.view==='forgot')renderForgot();
+    else if(state.view==='signed')renderDone('You&rsquo;re signed in','Mock authentication succeeded'+(state.email?(' for <strong>'+esc(state.email)+'</strong>'):'')+'.'+(state.remember?' You&rsquo;ll be remembered on this device.':''),true);
+    else if(state.view==='reset')renderDone('Check your email','If an account exists for <strong>'+esc(state.email)+'</strong>, a password reset link is on its way.',false);
+    else renderLogin();
+  }
+
+  body.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    if(t.id==='lm-pwtog'){var p=document.getElementById('lm-pass');if(p){p.type=p.type==='password'?'text':'password';t.textContent=p.type==='password'?'Show':'Hide';}return;}
+    if(t.id==='lm-forgot'){state.view='forgot';render();return;}
+    if(t.id==='lm-back'){state.view='login';render();return;}
+    if(t.id==='lm-signin'){
+      var em=document.getElementById('lm-email'),pw=document.getElementById('lm-pass');
+      if(!em.value.trim()||em.value.indexOf('@')<1){em.style.borderColor='#EF4444';em.focus();return;}
+      if(!pw.value){pw.style.borderColor='#EF4444';pw.focus();return;}
+      if(APP_LOGIN_URL){window.location.href=APP_LOGIN_URL;return;}
+      state.email=em.value.trim();state.remember=document.getElementById('lm-remember').checked;state.view='signed';render();return;
+    }
+    if(t.id==='lm-sso'){if(APP_LOGIN_URL){window.location.href=APP_LOGIN_URL;return;}state.email='';state.remember=true;state.view='signed';render();return;}
+    if(t.id==='lm-sendreset'){
+      var re=document.getElementById('lm-remail');
+      if(!re.value.trim()||re.value.indexOf('@')<1){re.style.borderColor='#EF4444';re.focus();return;}
+      state.email=re.value.trim();state.view='reset';render();return;
+    }
+    if(t.id==='lm-continue'){if(APP_LOGIN_URL){window.location.href=APP_LOGIN_URL;}else{close();}return;}
+    if(t.id==='lm-okdone'){state.view='login';render();return;}
+    if(t.id==='lm-getstarted'){close();if(window.openDemoModal)window.openDemoModal();return;}
+  });
+
+  document.getElementById('lm-close').addEventListener('click',close);
+  overlay.addEventListener('click',function(e){if(e.target===overlay)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&overlay.classList.contains('dm-open'))close();});
+
+  // Auto-wire any "sign in" / "log in" element (and anything tagged data-login)
+  function isLogin(el){
+    if(el.hasAttribute&&el.hasAttribute('data-login'))return true;
+    var x=(el.textContent||'').trim().toLowerCase();
+    return x==='sign in'||x==='log in'||x==='login'||x==='sign in &rarr;';
+  }
+  document.querySelectorAll('a,button,span,[data-login]').forEach(function(el){
+    if(isLogin(el)){el.style.cursor='pointer';el.addEventListener('click',function(e){e.preventDefault();open();});}
+  });
+  window.openLoginModal=open;
+})();
+</script>
+
 </body>
 </html>
