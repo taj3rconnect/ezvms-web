@@ -1,0 +1,12 @@
+{
+  "create-requisitions": "AI captures role requirements, budget, location, duration and approval rules, then drafts complete requisitions with fewer manual fields.",
+  "route-approvals": "Approval paths are triggered automatically based on department, spend level, hiring manager, location and program policy.",
+  "communicate-with-suppliers": "Suppliers receive clear requisition updates, submission requests, interview notes and status changes without manual follow-up.",
+  "screen-submissions": "Candidate submissions are checked against role requirements, compliance needs and program rules before they reach hiring teams.",
+  "coordinate-interviews": "Interview scheduling, reminders, availability checks and feedback collection are coordinated across managers, suppliers and candidates.",
+  "manage-onboarding": "Worker onboarding tasks, documents, start dates, access needs and required checkpoints are organized in one automated flow.",
+  "track-compliance": "Credentials, documents, policy requirements, expirations and audit gaps are monitored continuously across the worker lifecycle.",
+  "validate-timesheets": "Timesheets are reviewed against assignments, rates, schedules, approval rules and exceptions before downstream billing or payroll.",
+  "surface-insights": "Program signals such as cycle time, supplier performance, spend patterns and bottlenecks are surfaced for faster decisions.",
+  "recommend-actions": "The platform suggests next steps for stalled requisitions, compliance risks, pending approvals and supplier follow-ups."
+}

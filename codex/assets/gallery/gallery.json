@@ -1,0 +1,102 @@
+[
+  {
+    "title": "Client dashboard",
+    "image": "assets/gallery/01-client-dashboard.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition list",
+    "image": "assets/gallery/02-requisition-list.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition overview",
+    "image": "assets/gallery/03-requisition-overview.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition - Details & Requirements",
+    "image": "assets/gallery/04-requisition-details-requirements.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition - Rates & Financials",
+    "image": "assets/gallery/05-requisition-rates-financials.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition - Pipeline",
+    "image": "assets/gallery/06-requisition-pipeline.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition - Distribution",
+    "image": "assets/gallery/07-requisition-distribution.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition - Activity",
+    "image": "assets/gallery/08-requisition-activity.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Requisition - Archive",
+    "image": "assets/gallery/09-requisition-archive.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate pipeline",
+    "image": "assets/gallery/10-candidate-pipeline.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate profile overview",
+    "image": "assets/gallery/11-candidate-profile-overview.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate - Resume",
+    "image": "assets/gallery/12-candidate-resume.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate - Experience",
+    "image": "assets/gallery/13-candidate-experience.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate - Submittals",
+    "image": "assets/gallery/14-candidate-submittals.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate - Interviews",
+    "image": "assets/gallery/15-candidate-interviews.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate - Documents",
+    "image": "assets/gallery/16-candidate-documents.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Candidate - Activity",
+    "image": "assets/gallery/17-candidate-activity.png",
+    "url": "https://vms-ai.aptask.com/client"
+  },
+  {
+    "title": "Agent console",
+    "image": "assets/gallery/18-agent-console.png",
+    "url": "https://vms-ai.aptask.com/agent-console.html"
+  },
+  {
+    "title": "Agent detail - ⛏ Candidate Rediscovery Agent Auto Searches ex",
+    "image": "assets/gallery/19-agent-detail-candidate-rediscovery-agent-auto-searches-ex.png",
+    "url": "https://vms-ai.aptask.com/agent-console.html"
+  },
+  {
+    "title": "Agent detail - 🔄 Candidate Re-Engagement Agent Approve Conta",
+    "image": "assets/gallery/20-agent-detail-candidate-re-engagement-agent-approve-conta.png",
+    "url": "https://vms-ai.aptask.com/agent-console.html"
+  }
+]
