@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EZVMS Animated Test Site</title>
+  <meta name="description" content="A kinetic test landing page for EZVMS, the free AI-first vendor management system from ApTask.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#08111f;
+      --text:#36445c;
+      --muted:#78849a;
+      --faint:#a8b1c0;
+      --bg:#fbfcff;
+      --paper:#ffffff;
+      --panel:#f3f6fb;
+      --line:#dfe6f0;
+      --line-strong:#c6d3e4;
+      --blue:#2563eb;
+      --blue-2:#5aa2ff;
+      --green:#16a34a;
+      --green-bg:#e8f7ee;
+      --amber:#d97706;
+      --amber-bg:#fff4e3;
+      --dark:#0d1728;
+      --font-display:"Space Grotesk",sans-serif;
+      --font-body:"Instrument Sans",sans-serif;
+      --font-mono:"JetBrains Mono",monospace;
+      --shadow:0 24px 80px rgba(8,17,31,.12);
+      --shadow-soft:0 12px 34px rgba(8,17,31,.08);
+      --radius:18px;
+    }
+    *,*::before,*::after{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    a{color:inherit;text-decoration:none}
+    button,input,select{font:inherit}
+    img{display:block;max-width:100%}
+    .wrap{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    .eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);font-weight:600}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:46px;border-radius:999px;padding:0 22px;font-family:var(--font-display);font-weight:700;border:1px solid transparent;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease,background .18s ease,border-color .18s ease}
+    .btn:hover{transform:translateY(-2px)}
+    .btn-primary{background:var(--blue);color:#fff;box-shadow:0 14px 34px rgba(37,99,235,.24)}
+    .btn-ghost{background:#fff;color:var(--ink);border-color:var(--line)}
+    .btn-ghost:hover{border-color:var(--line-strong);box-shadow:var(--shadow-soft)}
+    .focusable:focus-visible,a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--blue);outline-offset:3px}
+
+    @keyframes blink{0%,48%{opacity:1}49%,100%{opacity:0}}
+    @keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+    @keyframes marqueeReverse{from{transform:translateX(-50%)}to{transform:translateX(0)}}
+    @keyframes floatA{0%,100%{transform:translateY(0) rotate(-1deg)}50%{transform:translateY(-14px) rotate(1deg)}}
+    @keyframes floatB{0%,100%{transform:translateY(0) rotate(1deg)}50%{transform:translateY(12px) rotate(-1deg)}}
+    @keyframes scan{from{transform:translateY(-110%)}to{transform:translateY(340%)}}
+    @keyframes fill{from{width:0}}
+    @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(37,99,235,.38)}70%{box-shadow:0 0 0 12px rgba(37,99,235,0)}100%{box-shadow:0 0 0 0 rgba(37,99,235,0)}}
+    @keyframes cardPop{from{opacity:0;transform:translateY(18px) scale(.98)}to{opacity:1;transform:none}}
+    @keyframes stream{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+    .topbar{position:sticky;top:0;z-index:30;background:rgba(251,252,255,.82);backdrop-filter:blur(18px);border-bottom:1px solid rgba(223,230,240,.8)}
+    .nav{height:74px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+    .brand{display:flex;align-items:center;gap:12px;font-family:var(--font-display);font-size:22px;font-weight:800;letter-spacing:-.03em}
+    .brand img{height:31px;width:auto}
+    .navlinks{display:flex;align-items:center;gap:28px;font-family:var(--font-mono);font-size:12px;color:var(--text)}
+    .navlinks a:hover{color:var(--blue)}
+    .nav-actions{display:flex;align-items:center;gap:12px}
+
+    .hero{position:relative;padding:86px 0 42px;overflow:hidden}
+    .hero::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:52px 52px;opacity:.52;mask-image:linear-gradient(#000,transparent 74%);pointer-events:none}
+    .hero-inner{position:relative;text-align:center}
+    .hero-pill{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:8px 14px;margin-bottom:28px;box-shadow:var(--shadow-soft)}
+    .hero-dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.9s infinite}
+    .hero h1{font-family:var(--font-display);font-size:clamp(58px,13vw,176px);line-height:.84;letter-spacing:-.065em;margin:0;color:var(--ink)}
+    .hero h1 .blue{display:block;color:var(--blue)}
+    .hero-copy{max-width:690px;margin:28px auto 0;font-size:clamp(18px,2.1vw,24px);line-height:1.42;color:var(--text)}
+    .hero-copy strong{color:var(--ink);font-weight:700}
+    .hero-cta{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin:30px 0 0}
+    .prompt-card{max-width:860px;margin:42px auto 0;background:#fff;border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);overflow:hidden;text-align:left}
+    .prompt-head{display:flex;align-items:center;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding:14px 18px;background:linear-gradient(180deg,#fff,#f8faff)}
+    .traffic{display:flex;gap:7px}
+    .traffic span{width:10px;height:10px;border-radius:50%;background:var(--line-strong)}
+    .traffic span:nth-child(1){background:#ff6b6b}.traffic span:nth-child(2){background:#f6bd3d}.traffic span:nth-child(3){background:#2dcc70}
+    .prompt-mode{font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+    .prompt-body{display:grid;grid-template-columns:1fr auto;gap:14px;padding:18px}
+    .prompt-input{min-height:64px;border:1px solid var(--line);border-radius:16px;padding:18px 18px;font-size:17px;color:var(--ink);background:var(--panel);display:flex;align-items:center}
+    .prompt-input span::after{content:"";display:inline-block;width:9px;height:20px;background:var(--blue);margin-left:4px;vertical-align:-4px;animation:blink 1s infinite}
+    .prompt-send{width:64px;height:64px;border-radius:18px;border:none;background:var(--ink);color:#fff;font-size:23px;cursor:pointer;transition:transform .18s ease,background .18s ease}
+    .prompt-send:hover{transform:translateY(-2px);background:var(--blue)}
+    .prompt-foot{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+    .prompt-stat{padding:14px 18px;border-right:1px solid var(--line)}
+    .prompt-stat:last-child{border-right:0}
+    .prompt-stat strong{display:block;font-family:var(--font-display);font-size:24px;color:var(--ink);line-height:1}
+    .prompt-stat span{display:block;margin-top:5px;font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+
+    .wall{padding:24px 0 80px;overflow:hidden}
+    .lane{display:flex;width:max-content;gap:18px;margin:18px 0;animation:marquee 34s linear infinite}
+    .lane.reverse{animation:marqueeReverse 38s linear infinite}
+    .wall:hover .lane{animation-play-state:paused}
+    .media-card{position:relative;flex:0 0 248px;height:330px;border-radius:22px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-soft);animation:cardPop .7s ease both}
+    .media-card:nth-child(2n){height:292px;margin-top:34px}
+    .media-card:nth-child(3n){height:350px;margin-top:8px}
+    .scene{position:absolute;inset:0;padding:18px;background:linear-gradient(180deg,#fff 0%,#f4f7fc 58%,#eef4ff 100%)}
+    .scene.dark{background:linear-gradient(180deg,#111b2d 0%,#0b1220 100%);color:#fff}
+    .scene.warm{background:linear-gradient(180deg,#fff 0%,#fff8ed 100%)}
+    .card-label{position:absolute;left:14px;top:14px;z-index:3;display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:6px 10px;background:rgba(255,255,255,.88);font-family:var(--font-mono);font-size:10px;color:var(--ink);box-shadow:0 8px 18px rgba(8,17,31,.08)}
+    .scene.dark .card-label{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.14)}
+    .card-label i{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 1.2s infinite}
+    .mini-title{position:absolute;left:18px;right:18px;bottom:18px;z-index:3;font-family:var(--font-display);font-weight:800;font-size:26px;line-height:1;letter-spacing:-.03em}
+    .mini-sub{display:block;margin-top:8px;font-family:var(--font-body);font-size:13px;font-weight:500;color:var(--muted);line-height:1.35;letter-spacing:0}
+    .scene.dark .mini-sub{color:rgba(255,255,255,.68)}
+    .fake-table{position:absolute;left:18px;right:18px;top:62px;display:grid;gap:8px}
+    .fake-row{height:30px;border-radius:10px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;gap:8px;padding:0 10px}
+    .fake-row::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--blue)}
+    .fake-row::after{content:"";height:7px;border-radius:999px;background:#cbd5e1;flex:1}
+    .scene.dark .fake-row{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14)}
+    .orbit{position:absolute;width:170px;height:170px;border:1px dashed rgba(37,99,235,.28);border-radius:50%;left:39px;top:70px;animation:floatA 6s ease-in-out infinite}
+    .orbit::before,.orbit::after{content:"";position:absolute;width:42px;height:42px;border-radius:14px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-soft)}
+    .orbit::before{left:-8px;top:35px}.orbit::after{right:8px;bottom:18px}
+    .score{position:absolute;top:82px;left:32px;right:32px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow-soft);animation:floatB 6.2s ease-in-out infinite}
+    .score strong{font-family:var(--font-display);font-size:46px;color:var(--blue);letter-spacing:-.04em}
+    .meter{height:8px;background:var(--line);border-radius:999px;overflow:hidden;margin-top:10px}
+    .meter span{display:block;height:100%;background:var(--green);border-radius:999px;animation:fill 1.2s ease both}
+    .scan-card{position:absolute;inset:70px 20px 84px;border-radius:18px;background:#fff;border:1px solid var(--line);overflow:hidden;box-shadow:var(--shadow-soft)}
+    .scan-card::before{content:"";position:absolute;left:0;right:0;height:40px;background:linear-gradient(180deg,transparent,rgba(37,99,235,.2),transparent);animation:scan 2.8s linear infinite}
+    .scan-line{height:13px;border-radius:999px;background:#d9e2ef;margin:14px}
+    .scan-line.short{width:56%}.scan-line.mid{width:78%}
+
+    section{padding:92px 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:28px;margin-bottom:36px}
+    .section-head h2{font-family:var(--font-display);font-size:clamp(38px,5.5vw,74px);line-height:.94;letter-spacing:-.052em;margin:10px 0 0;max-width:760px}
+    .section-head p{max-width:390px;margin:0;color:var(--text);font-size:17px;line-height:1.55}
+    .logos{border-block:1px solid var(--line);background:#fff;padding:30px 0}
+    .logo-row{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+    .logo-chip{border:1px solid var(--line);border-radius:999px;background:var(--panel);padding:10px 14px;font-family:var(--font-mono);font-size:12px;color:var(--text)}
+    .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .step-card{position:relative;min-height:410px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:24px;box-shadow:var(--shadow-soft);overflow:hidden}
+    .step-card h3{font-family:var(--font-display);font-size:30px;line-height:1;letter-spacing:-.035em;margin:0 0 12px}
+    .step-card p{color:var(--text);line-height:1.55;margin:0}
+    .step-visual{position:absolute;left:24px;right:24px;bottom:24px;height:190px;border-radius:20px;background:var(--panel);border:1px solid var(--line);overflow:hidden}
+    .pipe{position:absolute;left:22px;right:22px;top:26px;display:grid;gap:12px}
+    .pipe-row{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:13px;padding:11px 12px;animation:stream .55s ease both}
+    .pipe-row:nth-child(2){animation-delay:.16s}.pipe-row:nth-child(3){animation-delay:.32s}.pipe-row:nth-child(4){animation-delay:.48s}
+    .check{width:19px;height:19px;border-radius:7px;background:var(--green-bg);color:var(--green);display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+    .bar-visual{position:absolute;left:24px;right:24px;top:42px;display:grid;gap:16px}
+    .bar-item span:first-child{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;color:var(--muted);margin-bottom:7px}
+    .bar-track{height:11px;background:#e4eaf3;border-radius:999px;overflow:hidden}
+    .bar-fill{height:100%;background:var(--blue);border-radius:999px;animation:fill 1.4s ease both}
+    .bar-fill.warn{background:var(--amber)}
+    .network{position:absolute;inset:0}
+    .node{position:absolute;width:46px;height:46px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow-soft);display:grid;place-items:center;font-family:var(--font-display);font-weight:800;color:var(--blue);animation:floatA 5.5s ease-in-out infinite}
+    .node:nth-child(1){left:28px;top:35px}.node:nth-child(2){right:32px;top:52px;animation-name:floatB}.node:nth-child(3){left:88px;bottom:38px;animation-delay:.4s}.node:nth-child(4){right:86px;bottom:34px;animation-name:floatB;animation-delay:.2s}
+    .link{position:absolute;height:1px;background:var(--line-strong);transform-origin:left center}
+    .l1{left:72px;top:58px;width:122px;transform:rotate(8deg)}.l2{left:71px;top:78px;width:84px;transform:rotate(56deg)}.l3{left:137px;bottom:58px;width:114px;transform:rotate(-2deg)}
+
+    .dark-band{background:var(--dark);color:#fff;overflow:hidden}
+    .dark-band .eyebrow{color:#8db6ff}
+    .dark-band .section-head p{color:rgba(255,255,255,.7)}
+    .agent-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:stretch}
+    .agent-stage{position:relative;min-height:520px;background:linear-gradient(180deg,#15223a,#0b1220);border:1px solid rgba(255,255,255,.12);border-radius:26px;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.24)}
+    .agent-stage::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:42px 42px;opacity:.4}
+    .console{position:absolute;left:26px;right:26px;top:26px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:20px;backdrop-filter:blur(16px);overflow:hidden}
+    .console-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.12);font-family:var(--font-mono);font-size:12px;color:rgba(255,255,255,.74)}
+    .console-body{padding:16px;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:rgba(255,255,255,.82)}
+    .console-line{animation:stream .45s ease both}
+    .console-line:nth-child(2){animation-delay:.18s}.console-line:nth-child(3){animation-delay:.36s}.console-line:nth-child(4){animation-delay:.54s}.console-line:nth-child(5){animation-delay:.72s}.console-line:nth-child(6){animation-delay:.9s}
+    .console-line b{color:#8db6ff;font-weight:500}
+    .result-pill{position:absolute;left:26px;right:26px;bottom:26px;background:#fff;color:var(--ink);border-radius:22px;padding:22px;display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .result-pill strong{font-family:var(--font-display);font-size:38px;letter-spacing:-.04em;color:var(--green)}
+    .agent-list{display:grid;gap:12px}
+    .agent-item{display:flex;gap:13px;align-items:flex-start;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:16px}
+    .agent-num{width:31px;height:31px;border-radius:11px;background:#fff;color:var(--blue);display:grid;place-items:center;font-family:var(--font-display);font-weight:800;flex:none}
+    .agent-item strong{display:block;font-family:var(--font-display);font-size:17px;margin-bottom:3px}
+    .agent-item span{display:block;color:rgba(255,255,255,.67);font-size:14px;line-height:1.42}
+
+    .calc{display:grid;grid-template-columns:.95fr 1.05fr;gap:22px}
+    .calc-panel,.calc-result{background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px;box-shadow:var(--shadow-soft)}
+    .field{margin-bottom:22px}
+    .field label{display:flex;justify-content:space-between;gap:20px;margin-bottom:10px;font-family:var(--font-display);font-weight:700}
+    .field output{font-family:var(--font-mono);font-size:12px;color:var(--blue);background:#eef4ff;border-radius:999px;padding:4px 9px;white-space:nowrap}
+    input[type=range]{width:100%;accent-color:var(--blue)}
+    .save-number{font-family:var(--font-display);font-size:clamp(46px,7vw,86px);line-height:.9;letter-spacing:-.06em;color:var(--blue);margin:8px 0 18px}
+    .save-label{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+    .cost-bars{display:grid;gap:18px;margin:28px 0}
+    .cost-label{display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:12px;color:var(--text);margin-bottom:8px}
+    .cost-track{height:19px;background:var(--panel);border-radius:999px;overflow:hidden;border:1px solid var(--line)}
+    .cost-fill{height:100%;border-radius:999px;background:var(--amber);width:100%;transition:width .7s cubic-bezier(.22,1,.36,1)}
+    .cost-fill.ez{background:var(--blue);width:2%}
+    .result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    .result-tile{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px}
+    .result-tile strong{display:block;font-family:var(--font-display);font-size:22px;color:var(--ink);letter-spacing:-.03em}
+    .result-tile span{display:block;margin-top:4px;font-family:var(--font-mono);font-size:10px;color:var(--muted);text-transform:uppercase;line-height:1.3}
+
+    .faq{display:grid;grid-template-columns:.82fr 1.18fr;gap:36px}
+    .faq-list{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow-soft)}
+    .faq-item+ .faq-item{border-top:1px solid var(--line)}
+    .faq-q{width:100%;background:#fff;border:0;padding:20px 22px;display:flex;justify-content:space-between;gap:20px;text-align:left;font-family:var(--font-display);font-weight:700;font-size:18px;color:var(--ink);cursor:pointer}
+    .faq-q span:last-child{color:var(--blue);transition:transform .2s ease}
+    .faq-q[aria-expanded=true] span:last-child{transform:rotate(45deg)}
+    .faq-a{max-height:0;overflow:hidden;transition:max-height .28s ease}
+    .faq-a div{padding:0 22px 22px;color:var(--text);line-height:1.6}
+    .cta{padding:72px 0 92px}
+    .cta-box{position:relative;overflow:hidden;background:var(--ink);color:#fff;border-radius:34px;padding:56px;text-align:center;box-shadow:var(--shadow)}
+    .cta-box::before{content:"";position:absolute;inset:auto 0 0 0;height:6px;background:linear-gradient(90deg,var(--blue),var(--green),var(--amber),var(--blue))}
+    .cta-box h2{position:relative;font-family:var(--font-display);font-size:clamp(42px,7vw,86px);line-height:.92;letter-spacing:-.055em;margin:0 auto 22px;max-width:850px}
+    .cta-box p{position:relative;color:rgba(255,255,255,.72);font-size:18px;line-height:1.55;margin:0 auto 30px;max-width:610px}
+    footer{border-top:1px solid var(--line);padding:28px 0;color:var(--muted);font-family:var(--font-mono);font-size:12px}
+    .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+
+    @media (max-width:900px){
+      .navlinks{display:none}
+      .prompt-body{grid-template-columns:1fr}
+      .prompt-send{width:100%}
+      .prompt-foot,.steps,.calc,.faq,.agent-grid{grid-template-columns:1fr}
+      .section-head{display:block}
+      .section-head p{margin-top:16px}
+      .agent-stage{min-height:500px}
+    }
+    @media (max-width:620px){
+      .wrap{width:min(100% - 28px,1180px)}
+      .hero{padding-top:58px}
+      .nav-actions .btn-ghost{display:none}
+      .brand img{height:26px}
+      .prompt-foot{display:block}
+      .prompt-stat{border-right:0;border-bottom:1px solid var(--line)}
+      .media-card{flex-basis:218px;height:292px}
+      .result-grid{grid-template-columns:1fr}
+      .cta-box{padding:42px 24px;border-radius:24px}
+      section{padding:70px 0}
+    }
+    @media (prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+      .lane{animation:none}
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap nav">
+      <a class="brand" href="#">
+        <img src="../assets/ezvms-logo.svg" alt="ezVMS">
+      </a>
+      <nav class="navlinks" aria-label="Primary navigation">
+        <a href="#create">Create</a>
+        <a href="#agents">Agents</a>
+        <a href="#savings">Savings</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="btn btn-ghost" href="../index.html">Existing site</a>
+        <a class="btn btn-primary" href="#demo">Get assessment</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="create">
+      <div class="wrap hero-inner">
+        <div class="hero-pill"><span class="hero-dot"></span><span class="eyebrow">AI workforce operations studio</span></div>
+        <h1>EZVMS<span class="blue">runs the work.</span></h1>
+        <p class="hero-copy"><strong>Describe a workforce program once.</strong> EZVMS turns it into requisitions, supplier broadcasts, ranked submissions, compliance checks, onboarding, billing, and spend visibility.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#demo">Get a free migration assessment</a>
+          <a class="btn btn-ghost" href="#savings">See your savings</a>
+        </div>
+
+        <div class="prompt-card" role="group" aria-label="Animated EZVMS prompt builder">
+          <div class="prompt-head">
+            <div class="traffic" aria-hidden="true"><span></span><span></span><span></span></div>
+            <div class="prompt-mode">ezvms.ai / program-builder</div>
+          </div>
+          <div class="prompt-body">
+            <div class="prompt-input"><span id="promptText">Build a multi-supplier data engineering program with SOW controls.</span></div>
+            <button class="prompt-send" id="promptButton" aria-label="Run prompt">-></button>
+          </div>
+          <div class="prompt-foot">
+            <div class="prompt-stat"><strong id="statReqs">41</strong><span>submissions screened</span></div>
+            <div class="prompt-stat"><strong id="statTime">14m</strong><span>req to shortlist</span></div>
+            <div class="prompt-stat"><strong>$0</strong><span>platform fee</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="wall" aria-label="Animated EZVMS workflow cards">
+      <div class="lane" aria-hidden="true">
+        <div class="media-card"><div class="scene"><div class="card-label"><i></i>Agent live</div><div class="fake-table"><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div></div><div class="mini-title">Req intake<span class="mini-sub">Plain English to approved requisition.</span></div></div></div>
+        <div class="media-card"><div class="scene dark"><div class="card-label"><i></i>Broadcast</div><div class="orbit"></div><div class="mini-title">12 suppliers<span class="mini-sub">Released by tier, fit, SLA, and rate card.</span></div></div></div>
+        <div class="media-card"><div class="scene warm"><div class="card-label"><i></i>Screening</div><div class="scan-card"><div class="scan-line"></div><div class="scan-line short"></div><div class="scan-line mid"></div><div class="scan-line"></div></div><div class="mini-title">41 ranked<span class="mini-sub">Shortlist with fit rationale and exceptions.</span></div></div></div>
+        <div class="media-card"><div class="scene"><div class="card-label"><i></i>Compliance</div><div class="score"><strong>98%</strong><div class="meter"><span style="width:98%"></span></div></div><div class="mini-title">Audit ready<span class="mini-sub">Docs, certs, rates, and approvals tracked.</span></div></div></div>
+        <div class="media-card"><div class="scene dark"><div class="card-label"><i></i>Scheduling</div><div class="fake-table"><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div></div><div class="mini-title">5 interviews<span class="mini-sub">Calendar coordination without email ping-pong.</span></div></div></div>
+        <div class="media-card"><div class="scene warm"><div class="card-label"><i></i>Spend</div><div class="score"><strong>-22%</strong><div class="meter"><span style="width:78%;background:var(--amber)"></span></div></div><div class="mini-title">Rate control<span class="mini-sub">Anomalies surfaced before invoices hit.</span></div></div></div>
+        <div class="media-card"><div class="scene"><div class="card-label"><i></i>Agent live</div><div class="fake-table"><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div></div><div class="mini-title">Req intake<span class="mini-sub">Plain English to approved requisition.</span></div></div></div>
+        <div class="media-card"><div class="scene dark"><div class="card-label"><i></i>Broadcast</div><div class="orbit"></div><div class="mini-title">12 suppliers<span class="mini-sub">Released by tier, fit, SLA, and rate card.</span></div></div></div>
+        <div class="media-card"><div class="scene warm"><div class="card-label"><i></i>Screening</div><div class="scan-card"><div class="scan-line"></div><div class="scan-line short"></div><div class="scan-line mid"></div><div class="scan-line"></div></div><div class="mini-title">41 ranked<span class="mini-sub">Shortlist with fit rationale and exceptions.</span></div></div></div>
+      </div>
+      <div class="lane reverse" aria-hidden="true">
+        <div class="media-card"><div class="scene warm"><div class="card-label"><i></i>Onboarding</div><div class="fake-table"><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div></div><div class="mini-title">No dropped steps<span class="mini-sub">Offer to start date, fully tracked.</span></div></div></div>
+        <div class="media-card"><div class="scene"><div class="card-label"><i></i>Timesheets</div><div class="score"><strong>0</strong><div class="meter"><span style="width:12%"></span></div></div><div class="mini-title">Exceptions only<span class="mini-sub">Validated time and invoice reconciliation.</span></div></div></div>
+        <div class="media-card"><div class="scene dark"><div class="card-label"><i></i>Insights</div><div class="scan-card"><div class="scan-line"></div><div class="scan-line mid"></div><div class="scan-line short"></div><div class="scan-line"></div></div><div class="mini-title">Always on<span class="mini-sub">Savings, SLA, and supplier signals.</span></div></div></div>
+        <div class="media-card"><div class="scene"><div class="card-label"><i></i>Open API</div><div class="orbit"></div><div class="mini-title">ERP ready<span class="mini-sub">SAP, Workday, Oracle, payroll, and BI.</span></div></div></div>
+        <div class="media-card"><div class="scene warm"><div class="card-label"><i></i>Free forever</div><div class="score"><strong>$0</strong><div class="meter"><span style="width:3%;background:var(--green)"></span></div></div><div class="mini-title">No VMS tax<span class="mini-sub">No seats, no req fees, no percent of spend.</span></div></div></div>
+        <div class="media-card"><div class="scene dark"><div class="card-label"><i></i>Escrow</div><div class="fake-table"><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div></div><div class="mini-title">No lock-in<span class="mini-sub">Open export and source-code escrow.</span></div></div></div>
+        <div class="media-card"><div class="scene warm"><div class="card-label"><i></i>Onboarding</div><div class="fake-table"><div class="fake-row"></div><div class="fake-row"></div><div class="fake-row"></div></div><div class="mini-title">No dropped steps<span class="mini-sub">Offer to start date, fully tracked.</span></div></div></div>
+        <div class="media-card"><div class="scene"><div class="card-label"><i></i>Timesheets</div><div class="score"><strong>0</strong><div class="meter"><span style="width:12%"></span></div></div><div class="mini-title">Exceptions only<span class="mini-sub">Validated time and invoice reconciliation.</span></div></div></div>
+      </div>
+    </section>
+
+    <div class="logos">
+      <div class="wrap logo-row" aria-label="Enterprise trust categories">
+        <span class="logo-chip">Global MSP programs</span>
+        <span class="logo-chip">Healthcare staffing</span>
+        <span class="logo-chip">IT services</span>
+        <span class="logo-chip">Public sector</span>
+        <span class="logo-chip">SOW procurement</span>
+        <span class="logo-chip">Supplier networks</span>
+      </div>
+    </div>
+
+    <section>
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">The process changed</div>
+            <h2>From manual VMS administration to agent-run operations.</h2>
+          </div>
+          <p>The page is animated like a product studio, but every motion has a job: show what EZVMS does, what it replaces, and why the free model is different.</p>
+        </div>
+        <div class="steps">
+          <article class="step-card">
+            <h3>Launch a requisition.</h3>
+            <p>Managers describe the need. EZVMS structures the req, checks rate cards, and routes approvals.</p>
+            <div class="step-visual">
+              <div class="pipe">
+                <div class="pipe-row"><span class="check">✓</span><span>Parse manager request</span></div>
+                <div class="pipe-row"><span class="check">✓</span><span>Apply policy and rate card</span></div>
+                <div class="pipe-row"><span class="check">✓</span><span>Route approval chain</span></div>
+                <div class="pipe-row"><span class="check">✓</span><span>Release to suppliers</span></div>
+              </div>
+            </div>
+          </article>
+          <article class="step-card">
+            <h3>Crush the busywork.</h3>
+            <p>Submissions, screening, follow-ups, scheduling, and compliance run as coordinated agent workflows.</p>
+            <div class="step-visual">
+              <div class="network">
+                <span class="link l1"></span><span class="link l2"></span><span class="link l3"></span>
+                <span class="node">AI</span><span class="node">HR</span><span class="node">AP</span><span class="node">BI</span>
+              </div>
+            </div>
+          </article>
+          <article class="step-card">
+            <h3>See savings live.</h3>
+            <p>Legacy VMS fees disappear because EZVMS does not charge seats, requisitions, or a cut of spend.</p>
+            <div class="step-visual">
+              <div class="bar-visual">
+                <div class="bar-item"><span><b>Legacy VMS</b><b>$500k</b></span><div class="bar-track"><div class="bar-fill warn" style="width:100%"></div></div></div>
+                <div class="bar-item"><span><b>EZVMS</b><b>$0</b></span><div class="bar-track"><div class="bar-fill" style="width:3%"></div></div></div>
+                <div class="bar-item"><span><b>Admin work</b><b>-50%</b></span><div class="bar-track"><div class="bar-fill" style="width:50%;background:var(--green)"></div></div></div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark-band" id="agents">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Watch agents work</div>
+            <h2>Not a chatbot. A workforce operations team.</h2>
+          </div>
+          <p>Eight agents coordinate the requisition-to-pay workflow. They complete tasks, hand off context, and leave an audit trail.</p>
+        </div>
+        <div class="agent-grid">
+          <div class="agent-stage">
+            <div class="console">
+              <div class="console-head"><span>autopilot run / REQ-4827</span><span>live</span></div>
+              <div class="console-body">
+                <div class="console-line"><b>09:41</b> created Sr. Data Engineer requisition</div>
+                <div class="console-line"><b>09:42</b> checked rate card and SOW controls</div>
+                <div class="console-line"><b>09:43</b> released to 12 approved suppliers</div>
+                <div class="console-line"><b>09:49</b> screened 41 submissions</div>
+                <div class="console-line"><b>09:52</b> shortlisted 6 with fit rationale</div>
+                <div class="console-line"><b>09:53</b> proposed interview slots to hiring manager</div>
+              </div>
+            </div>
+            <div class="result-pill">
+              <div>
+                <div class="save-label">result</div>
+                <strong>8.7 hrs saved</strong>
+              </div>
+              <a class="btn btn-primary" href="#demo">Run assessment</a>
+            </div>
+          </div>
+          <div class="agent-list">
+            <div class="agent-item"><span class="agent-num">1</span><div><strong>Intake agent</strong><span>Turns a plain-English manager request into a compliant requisition.</span></div></div>
+            <div class="agent-item"><span class="agent-num">2</span><div><strong>Supplier agent</strong><span>Broadcasts to the right supplier tiers and follows SLA rules.</span></div></div>
+            <div class="agent-item"><span class="agent-num">3</span><div><strong>Screening agent</strong><span>Ranks submissions, explains fit, and flags exceptions.</span></div></div>
+            <div class="agent-item"><span class="agent-num">4</span><div><strong>Compliance agent</strong><span>Checks documents, certs, rate adherence, and audit history.</span></div></div>
+            <div class="agent-item"><span class="agent-num">5</span><div><strong>Spend agent</strong><span>Finds rate drift, supplier variance, and hidden program cost.</span></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="savings">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Cost to zero</div>
+            <h2>Put in your spend. Watch the VMS line disappear.</h2>
+          </div>
+          <p>The calculator uses your inputs. The fee rate is illustrative and editable, not a claim about any specific vendor contract.</p>
+        </div>
+        <div class="calc">
+          <div class="calc-panel">
+            <div class="field">
+              <label for="spend">Annual contingent spend <output id="spendOut">$25M</output></label>
+              <input id="spend" type="range" min="1" max="500" value="25" aria-label="Annual contingent spend in millions">
+            </div>
+            <div class="field">
+              <label for="fee">Current VMS fee <output id="feeOut">2.0%</output></label>
+              <input id="fee" type="range" min="5" max="30" value="20" aria-label="Current VMS fee percent">
+            </div>
+            <div class="field">
+              <label for="reqs">Requisitions per year <output id="reqOut">2,500</output></label>
+              <input id="reqs" type="range" min="100" max="25000" step="100" value="2500" aria-label="Requisitions per year">
+            </div>
+            <p style="margin:0;color:var(--muted);font-size:14px;line-height:1.55">EZVMS core platform cost is $0. Migration, if needed, is a one-time assessment-driven project instead of an annual VMS tax.</p>
+          </div>
+          <div class="calc-result">
+            <div class="save-label">you save per year</div>
+            <div class="save-number" id="saveNumber">$500,000</div>
+            <div class="cost-bars">
+              <div>
+                <div class="cost-label"><span>Current VMS</span><span id="legacyCost">$500k/yr</span></div>
+                <div class="cost-track"><div class="cost-fill" id="legacyBar"></div></div>
+              </div>
+              <div>
+                <div class="cost-label"><span>EZVMS</span><span>$0/yr</span></div>
+                <div class="cost-track"><div class="cost-fill ez"></div></div>
+              </div>
+            </div>
+            <div class="result-grid">
+              <div class="result-tile"><strong id="hoursOut">3,250</strong><span>analyst hrs saved</span></div>
+              <div class="result-tile"><strong>$0</strong><span>annual platform fee</span></div>
+              <div class="result-tile"><strong>Open</strong><span>API and export</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="wrap faq">
+        <div>
+          <div class="eyebrow">The part buyers ask</div>
+          <h2 style="font-family:var(--font-display);font-size:clamp(38px,5vw,64px);line-height:.96;letter-spacing:-.05em;margin:10px 0 16px">What is the catch?</h2>
+          <p style="color:var(--text);font-size:17px;line-height:1.6;margin:0">The short answer: EZVMS is free because ApTask makes money through staffing and workforce solutions, not by taxing your VMS spend.</p>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="true"><span>Is EZVMS really free?</span><span>+</span></button>
+            <div class="faq-a"><div>Yes. No per-seat fee, no per-requisition fee, and no percentage of spend. The only possible cost is one-time migration help if you need it.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>How does ApTask make money?</span><span>+</span></button>
+            <div class="faq-a"><div>ApTask has operated in staffing and workforce solutions for 16+ years. EZVMS is the relationship-builder. Staffing is the business.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>Do I have to use ApTask suppliers?</span><span>+</span></button>
+            <div class="faq-a"><div>No. Use any suppliers you want. EZVMS stays free regardless, and your supplier network remains yours.</div></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>What prevents lock-in?</span><span>+</span></button>
+            <div class="faq-a"><div>Open APIs, full data export, and source-code escrow are built into the positioning so you are not held hostage by the platform.</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta" id="demo">
+      <div class="wrap">
+        <div class="cta-box">
+          <h2>Modernize your VMS in a 30-minute assessment.</h2>
+          <p>Map your current Fieldglass, Beeline, Flextrack, IQNavigator, or generic VMS setup. Get the hidden-cost estimate, migration path, and go-live timeline.</p>
+          <a class="btn btn-primary" href="mailto:info@ezvms.com?subject=EZVMS%20Migration%20Assessment">Request assessment</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot">
+      <span>© 2026 EZVMS. Animated test page.</span>
+      <span><a href="../index.html">Existing site</a> · <a href="../newweb/index.html">Newweb site</a></span>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var prompts=[
+        "Build a multi-supplier data engineering program with SOW controls.",
+        "Move our Fieldglass supplier network into a free AI-first VMS.",
+        "Create a healthcare staffing workflow with compliance checks.",
+        "Screen 40 submissions, shortlist 6, and schedule interviews.",
+        "Find hidden VMS fees on a 25M contingent labor program."
+      ];
+      var i=0;
+      var promptText=document.getElementById("promptText");
+      var statReqs=document.getElementById("statReqs");
+      var statTime=document.getElementById("statTime");
+      var promptButton=document.getElementById("promptButton");
+      function rotate(){
+        i=(i+1)%prompts.length;
+        promptText.textContent=prompts[i];
+        statReqs.textContent=[41,58,27,44,19][i];
+        statTime.textContent=["14m","18m","11m","9m","7m"][i];
+      }
+      var timer=setInterval(rotate,3300);
+      promptButton.addEventListener("click",function(){
+        clearInterval(timer);
+        rotate();
+        timer=setInterval(rotate,3300);
+      });
+    })();
+
+    (function(){
+      var spend=document.getElementById("spend");
+      var fee=document.getElementById("fee");
+      var reqs=document.getElementById("reqs");
+      var spendOut=document.getElementById("spendOut");
+      var feeOut=document.getElementById("feeOut");
+      var reqOut=document.getElementById("reqOut");
+      var saveNumber=document.getElementById("saveNumber");
+      var legacyCost=document.getElementById("legacyCost");
+      var legacyBar=document.getElementById("legacyBar");
+      var hoursOut=document.getElementById("hoursOut");
+      var fmtMoney=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:0});
+      var fmtCompact=new Intl.NumberFormat("en-US",{notation:"compact",maximumFractionDigits:1});
+      var fmtNum=new Intl.NumberFormat("en-US");
+      function update(){
+        var spendVal=Number(spend.value)*1000000;
+        var pct=Number(fee.value)/1000;
+        var reqVal=Number(reqs.value);
+        var save=spendVal*pct;
+        var hours=Math.round(reqVal*1.3);
+        spendOut.textContent="$"+spend.value+"M";
+        feeOut.textContent=(pct*100).toFixed(1)+"%";
+        reqOut.textContent=fmtNum.format(reqVal);
+        saveNumber.textContent=fmtMoney.format(save);
+        legacyCost.textContent="$"+fmtCompact.format(save)+"/yr";
+        hoursOut.textContent=fmtNum.format(hours);
+        legacyBar.style.width=Math.min(100,Math.max(14,(Number(fee.value)/30)*100))+"%";
+      }
+      [spend,fee,reqs].forEach(function(el){el.addEventListener("input",update)});
+      update();
+    })();
+
+    (function(){
+      var items=document.querySelectorAll(".faq-item");
+      items.forEach(function(item){
+        var btn=item.querySelector(".faq-q");
+        var panel=item.querySelector(".faq-a");
+        function sync(){
+          if(btn.getAttribute("aria-expanded")==="true"){
+            panel.style.maxHeight=panel.scrollHeight+"px";
+          }else{
+            panel.style.maxHeight="0px";
+          }
+        }
+        btn.addEventListener("click",function(){
+          btn.setAttribute("aria-expanded",btn.getAttribute("aria-expanded")==="true"?"false":"true");
+          sync();
+        });
+        sync();
+      });
+      window.addEventListener("resize",function(){
+        items.forEach(function(item){
+          var btn=item.querySelector(".faq-q");
+          var panel=item.querySelector(".faq-a");
+          if(btn.getAttribute("aria-expanded")==="true") panel.style.maxHeight=panel.scrollHeight+"px";
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
