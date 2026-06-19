@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>EZVMS 3D - AI/API-First Workforce OS</title>
   <meta name="description" content="100% Free VMS. No Catch. No Fine Print. AI/API-first VMS that works for you 24x7.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet">
@@ -14,9 +15,13 @@
   <div class="ambient" aria-hidden="true"></div>
 
   <header class="topbar">
-    <a class="brand" href="#home" aria-label="EZVMS 3D home">
-      <span>EZ</span>
-      <strong>EZVMS</strong>
+    <a class="brand" href="#home" aria-label="ezVMS home">
+      <span class="brand-mark" aria-hidden="true">
+        <i></i>
+        <i></i>
+        <i></i>
+      </span>
+      <strong>ezVMS</strong>
     </a>
     <button class="menu-button" type="button" aria-label="Toggle navigation" aria-expanded="false">
       <span></span>
@@ -28,6 +33,7 @@
       <a href="#pricing">Pricing</a>
       <a href="#api">API</a>
       <a href="#gallery">Gallery</a>
+      <a class="nav-login" href="#login" data-open-login>Login</a>
       <button type="button" data-open-demo>Book a demo</button>
     </nav>
   </header>
@@ -45,12 +51,13 @@
         <p class="subcopy">No licensing fees. No percentage of spend. No fine print, no hidden charges. The only thing you'll ever pay for is a small data-migration fee - and only if you need it.</p>
         <div class="actions">
           <button class="primary" type="button" data-open-demo>Get started free</button>
-          <a class="secondary" href="#gallery">Watch the product flow</a>
+          <a class="secondary" href="#gallery" data-start-gallery>Watch the product flow</a>
         </div>
         <div class="promise-strip">
           <span>no credit card</span>
           <span>no lock-in</span>
           <span>migrate from any platform</span>
+          <span class="spend-promise">Zero % of Spend</span>
           <span>You own your data</span>
           <span>Host on cloud of your choice</span>
         </div>
@@ -73,7 +80,6 @@
           <div class="hero-callout callout-left">Always Free</div>
           <div class="hero-callout callout-right">AI First</div>
           <div class="hero-callout callout-top">API Enabled</div>
-          <div class="hero-callout callout-bottom">No % of Spend Fee</div>
           <div class="orbit orbit-a">
             <span style="--i:0">Requisitions</span>
             <span style="--i:1">Approvals</span>
@@ -85,10 +91,6 @@
             <span style="--i:1">Timesheets</span>
             <span style="--i:2">Insights</span>
             <span style="--i:3">Actions</span>
-          </div>
-          <div class="depth-card card-two">
-            <b>8</b>
-            <span>AI workforce agents</span>
           </div>
         </div>
       </div>
@@ -222,15 +224,84 @@
   </footer>
 
   <dialog class="demo-modal" id="demo-modal">
-    <form method="dialog">
-      <button class="modal-close" aria-label="Close">&times;</button>
-      <p class="eyebrow">// 30 MINUTE DEMO</p>
-      <h2>See EZVMS in motion.</h2>
-      <label>Name<input required placeholder="Jane Doe"></label>
-      <label>Email<input required type="email" placeholder="jane@company.com"></label>
-      <label>Company<input placeholder="Acme Corp"></label>
-      <button class="primary" type="submit">Schedule Event</button>
-      <small>Mock confirmation - connect Calendly / Cal.com for production booking.</small>
+    <form method="dialog" class="scheduler" id="demo-form">
+      <button class="modal-close" type="button" data-close-demo aria-label="Close">&times;</button>
+      <div class="scheduler-info">
+        <p class="eyebrow">// 30 MINUTE DEMO</p>
+        <h2>See ezVMS in motion.</h2>
+        <p>Pick a mock time to preview the booking flow. Connect Calendly or Cal.com for production scheduling.</p>
+        <div class="meeting-meta">
+          <span>30 min</span>
+          <span>Video call</span>
+          <span>America/New_York</span>
+        </div>
+      </div>
+      <div class="scheduler-booking" data-scheduler-view="booking">
+        <h3>Select a time</h3>
+        <div class="date-strip" aria-label="Available demo dates">
+          <button type="button" class="selected" data-demo-date="06/22/26">Mon <strong>22</strong></button>
+          <button type="button" data-demo-date="06/23/26">Tue <strong>23</strong></button>
+          <button type="button" data-demo-date="06/24/26">Wed <strong>24</strong></button>
+        </div>
+        <div class="time-picker" aria-label="Available demo times">
+          <button class="time-arrow" type="button" data-time-prev aria-label="Show earlier times">‹</button>
+          <div class="slot-grid">
+            <button type="button" data-demo-time="08:30 AM">08:30 AM</button>
+            <button type="button" data-demo-time="09:00 AM">09:00 AM</button>
+            <button type="button" data-demo-time="09:30 AM">09:30 AM</button>
+            <button type="button" data-demo-time="10:00 AM">10:00 AM</button>
+            <button type="button" data-demo-time="10:30 AM">10:30 AM</button>
+            <button type="button" data-demo-time="11:00 AM">11:00 AM</button>
+            <button type="button" data-demo-time="11:30 AM">11:30 AM</button>
+            <button type="button" data-demo-time="01:00 PM">01:00 PM</button>
+            <button type="button" data-demo-time="01:30 PM">01:30 PM</button>
+            <button type="button" data-demo-time="02:00 PM">02:00 PM</button>
+            <button type="button" data-demo-time="02:30 PM">02:30 PM</button>
+            <button type="button" data-demo-time="03:00 PM">03:00 PM</button>
+            <button type="button" data-demo-time="03:30 PM">03:30 PM</button>
+            <button type="button" data-demo-time="04:00 PM">04:00 PM</button>
+          </div>
+          <button class="time-arrow" type="button" data-time-next aria-label="Show later times">›</button>
+        </div>
+        <label>Name<input id="demo-name" placeholder="Jane Doe"></label>
+        <label>Email<input id="demo-email" type="email" placeholder="jane@company.com"></label>
+        <button class="primary" type="submit">Schedule Event</button>
+        <small id="demo-status">Select a time to schedule this mock event.</small>
+      </div>
+      <div class="scheduler-confirm hidden" data-scheduler-view="confirm">
+        <span class="confirm-icon">✓</span>
+        <h3>Demo scheduled</h3>
+        <p id="demo-confirmation">Your mock demo is booked.</p>
+        <button class="secondary" type="button" data-demo-reset>Book another time</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="login-modal" id="login-modal">
+    <form method="dialog" class="login-panel" id="login-form">
+      <button class="modal-close" type="button" data-close-login aria-label="Close">&times;</button>
+      <div class="login-view" data-login-view="signin">
+        <p class="eyebrow">// SECURE WORKSPACE</p>
+        <h2>Sign in to ezVMS.</h2>
+        <p class="last-login" id="last-login">Last logged in: Not available</p>
+        <label>Email<input id="login-email" type="email" autocomplete="email" placeholder="you@company.com"></label>
+        <label>Password<input id="login-password" type="password" autocomplete="current-password" placeholder="Password"></label>
+        <div class="login-options">
+          <label class="remember"><input id="remember-login" type="checkbox" checked>Remember me</label>
+          <button class="text-button" type="button" data-forgot-password>Forgot password?</button>
+        </div>
+        <button class="primary" type="submit">Sign in</button>
+        <small id="login-status">Mock login stores this browser's latest sign-in details.</small>
+      </div>
+      <div class="login-view hidden" data-login-view="forgot">
+        <p class="eyebrow">// PASSWORD RESET</p>
+        <h2>Reset password.</h2>
+        <p class="login-help">Enter your account email and we'll send reset instructions.</p>
+        <label>Email<input id="reset-email" type="email" autocomplete="email" placeholder="you@company.com"></label>
+        <button class="primary" type="button" data-send-reset>Send reset link</button>
+        <button class="text-button back-button" type="button" data-back-login>Back to sign in</button>
+        <small id="reset-status"></small>
+      </div>
     </form>
   </dialog>
 

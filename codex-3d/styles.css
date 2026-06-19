@@ -56,7 +56,8 @@ input {
   z-index: 20;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 34px;
   width: min(1220px, calc(100% - 28px));
   margin: 16px auto 0;
   padding: 10px 10px 10px 16px;
@@ -78,33 +79,100 @@ input {
 }
 
 .brand {
-  gap: 10px;
-  font-size: 22px;
+  gap: 12px;
+  font-size: 25px;
   font-weight: 900;
-  letter-spacing: -0.06em;
+  letter-spacing: -0.045em;
 }
 
-.brand span {
-  display: grid;
-  width: 42px;
-  height: 42px;
-  place-items: center;
-  border-radius: 50%;
+.brand strong {
+  font-weight: 900;
+}
+
+.brand-mark {
+  position: relative;
+  display: block;
+  width: 46px;
+  height: 34px;
+  flex: 0 0 46px;
+}
+
+.brand-mark i {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  background: var(--ember);
+  box-shadow: 0 10px 24px rgba(242, 91, 46, 0.26);
+}
+
+.brand-mark i:nth-child(1) {
+  top: 3px;
+  left: 0;
+  width: 32px;
+  height: 13px;
+  transform: rotate(-18deg);
+}
+
+.brand-mark i:nth-child(2) {
+  top: 10px;
+  right: 0;
+  width: 32px;
+  height: 13px;
+  background: var(--ink);
+  transform: rotate(-18deg);
+}
+
+.brand-mark i:nth-child(3) {
+  bottom: 2px;
+  left: 8px;
+  width: 30px;
+  height: 13px;
   background: var(--acid);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 13px;
+  transform: rotate(-18deg);
 }
 
 .nav {
   gap: 24px;
+  flex: 1;
   color: var(--muted);
   font-size: 15px;
   font-weight: 900;
   letter-spacing: -0.035em;
 }
 
+.nav a {
+  position: relative;
+  padding: 10px 0;
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.nav a::after {
+  position: absolute;
+  right: 0;
+  bottom: 2px;
+  left: 0;
+  height: 3px;
+  border-radius: 999px;
+  background: var(--ember);
+  content: "";
+  opacity: 0;
+  transform: scaleX(0.35) translateY(4px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
 .nav a:hover {
   color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.nav a:hover::after {
+  opacity: 1;
+  transform: scaleX(1) translateY(0);
+}
+
+.nav-login {
+  color: var(--ink);
+  margin-left: auto;
 }
 
 .nav button,
@@ -205,9 +273,9 @@ h1 span:nth-child(n+2),
 }
 
 .primary {
-  color: var(--ink);
-  background: var(--acid);
-  box-shadow: var(--glow);
+  color: #fff9ec;
+  background: var(--ember);
+  box-shadow: 0 30px 110px rgba(242, 91, 46, 0.24);
 }
 
 .secondary {
@@ -228,6 +296,13 @@ h1 span:nth-child(n+2),
   box-shadow: 0 8px 24px rgba(9, 9, 7, 0.07);
   font-size: 14px;
   font-weight: 900;
+}
+
+.promise-strip .spend-promise {
+  border-color: transparent;
+  color: #fff9ec;
+  background: var(--ember);
+  box-shadow: 0 10px 28px rgba(242, 91, 46, 0.22);
 }
 
 .hero-stage {
@@ -360,15 +435,6 @@ h1 span:nth-child(n+2),
   animation-delay: -1.6s;
 }
 
-.callout-bottom {
-  bottom: 124px;
-  left: 50%;
-  color: #fff9ec;
-  background: var(--ember);
-  transform: translateX(-50%) translateZ(210px) rotateX(-10deg);
-  animation-delay: -2.4s;
-}
-
 .orbit {
   position: absolute;
   inset: 48px;
@@ -402,39 +468,6 @@ h1 span:nth-child(n+2),
 
 .orbit-b span {
   transform: rotate(calc(var(--i) * 90deg)) translateX(185px) rotate(calc(var(--i) * -90deg));
-}
-
-.depth-card {
-  position: absolute;
-  display: grid;
-  gap: 8px;
-  width: 190px;
-  padding: 18px;
-  border: 1px solid rgba(255, 249, 236, 0.12);
-  border-radius: 24px;
-  color: #fff9ec;
-  background: rgba(17, 21, 16, 0.92);
-  box-shadow: 0 30px 90px rgba(9, 9, 7, 0.22);
-  transform-style: preserve-3d;
-}
-
-.depth-card b {
-  color: var(--acid);
-  font-size: 54px;
-  line-height: 0.85;
-  letter-spacing: -0.08em;
-}
-
-.depth-card span {
-  color: rgba(255, 249, 236, 0.68);
-  font-family: "IBM Plex Mono", monospace;
-  font-size: 11px;
-}
-
-.card-two {
-  right: 12px;
-  bottom: 74px;
-  transform: translateZ(120px) rotateY(16deg);
 }
 
 .section {
@@ -777,8 +810,9 @@ h2 {
   color: var(--ember);
 }
 
-.demo-modal {
-  width: min(480px, calc(100% - 28px));
+.demo-modal,
+.login-modal {
+  width: min(860px, calc(100% - 28px));
   border: 0;
   border-radius: 34px;
   padding: 0;
@@ -786,35 +820,253 @@ h2 {
   box-shadow: 0 40px 120px rgba(9, 9, 7, 0.28);
 }
 
-.demo-modal::backdrop {
+.demo-modal::backdrop,
+.login-modal::backdrop {
   background: rgba(9, 9, 7, 0.62);
   backdrop-filter: blur(10px);
 }
 
-.demo-modal form {
+.demo-modal form,
+.login-panel {
   position: relative;
   display: grid;
   gap: 15px;
   padding: 38px;
 }
 
-.demo-modal h2 {
+.demo-modal .scheduler {
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 28px;
+  padding: 34px;
+}
+
+.demo-modal h2,
+.login-modal h2 {
   font-size: 42px;
 }
 
-.demo-modal label {
+.scheduler h3 {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+.scheduler-info {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 8px 22px 8px 0;
+  border-right: 1px solid var(--line);
+}
+
+.scheduler-info p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.meeting-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.meeting-meta span {
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 250, 240, 0.7);
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.scheduler-booking,
+.scheduler-confirm {
+  display: grid;
+  gap: 15px;
+}
+
+.scheduler-booking.hidden,
+.scheduler-confirm.hidden {
+  display: none;
+}
+
+.date-strip {
+  display: grid;
+  gap: 10px;
+}
+
+.date-strip {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.date-strip button,
+.slot-grid button,
+.time-arrow {
+  min-height: 52px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255, 250, 240, 0.72);
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 900;
+}
+
+.date-strip button {
+  display: grid;
+  place-items: center;
+  gap: 2px;
+}
+
+.date-strip strong {
+  font-size: 23px;
+  line-height: 1;
+}
+
+.date-strip button.selected,
+.slot-grid button.selected {
+  border-color: transparent;
+  color: #fff9ec;
+  background: var(--ember);
+  box-shadow: 0 12px 28px rgba(242, 91, 46, 0.22);
+}
+
+.time-picker {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) 42px;
+  gap: 10px;
+  align-items: center;
+}
+
+.slot-grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(112px, 1fr);
+  gap: 10px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+
+.slot-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.slot-grid button {
+  scroll-snap-align: start;
+  white-space: nowrap;
+}
+
+.time-arrow {
+  display: grid;
+  width: 42px;
+  min-height: 42px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: #fff9ec;
+  font-size: 25px;
+  line-height: 1;
+  box-shadow: 0 10px 24px rgba(9, 9, 7, 0.16);
+}
+
+.scheduler-confirm {
+  align-content: center;
+  min-height: 410px;
+  text-align: center;
+}
+
+.confirm-icon {
+  display: grid;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--ink);
+  background: var(--acid);
+  font-size: 32px;
+  font-weight: 900;
+}
+
+.scheduler-confirm p {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.demo-modal label,
+.login-modal label {
   display: grid;
   gap: 7px;
   color: var(--muted);
   font-weight: 900;
 }
 
-.demo-modal input {
+.demo-modal input,
+.login-modal input[type="email"],
+.login-modal input[type="password"] {
   min-height: 48px;
   padding: 0 14px;
   border: 1px solid var(--line);
   border-radius: 16px;
   background: rgba(255, 255, 255, 0.54);
+}
+
+.login-view {
+  display: grid;
+  gap: 15px;
+}
+
+.login-view.hidden {
+  display: none;
+}
+
+.last-login,
+.login-help {
+  margin: -2px 0 2px;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.login-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.login-options .remember {
+  display: inline-flex;
+  grid-template-columns: none;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.remember input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--ember);
+}
+
+.text-button {
+  border: 0;
+  padding: 0;
+  color: var(--ember);
+  background: transparent;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.back-button {
+  justify-self: start;
+}
+
+.login-modal small {
+  color: var(--muted);
+  line-height: 1.4;
 }
 
 .modal-close {
@@ -888,6 +1140,7 @@ h2 {
 
 @media (max-width: 1040px) {
   .menu-button {
+    margin-left: auto;
     display: grid;
     gap: 5px;
     width: 42px;
@@ -909,6 +1162,7 @@ h2 {
     top: calc(100% + 10px);
     right: 0;
     display: none;
+    flex: none;
     width: min(320px, calc(100vw - 28px));
     padding: 18px;
     border: 1px solid var(--line);
@@ -919,6 +1173,11 @@ h2 {
 
   .nav.open {
     display: grid;
+  }
+
+  .nav-login,
+  .nav button {
+    margin-left: 0;
   }
 
   .hero,
@@ -1002,6 +1261,28 @@ h2 {
   .secondary {
     width: 100%;
   }
+
+  .demo-modal .scheduler {
+    grid-template-columns: 1fr;
+  }
+
+  .scheduler-info {
+    padding: 0;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .date-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .time-picker {
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+  }
+
+  .slot-grid {
+    grid-auto-columns: minmax(104px, 1fr);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1011,5 +1292,9 @@ h2 {
     scroll-behavior: auto !important;
     animation-duration: 1ms !important;
     transition-duration: 1ms !important;
+  }
+
+  .nav a:hover {
+    transform: none;
   }
 }
