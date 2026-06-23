@@ -242,7 +242,7 @@
     if (!frame || !slides.length) return;
     const slide = slides[active];
     frame.innerHTML = `
-      <img src="../codex/${slide.image}" alt="${slide.title}">
+      <img src="./${slide.image}" alt="${slide.title}">
       <figcaption>${slide.title}</figcaption>
     `;
     if (count) count.textContent = `${String(active + 1).padStart(2, "0")} / ${String(slides.length).padStart(2, "0")}`;
@@ -307,7 +307,7 @@
     window.setTimeout(startGalleryFromBeginning, 120);
   });
 
-  fetch("../codex/assets/gallery/gallery.json")
+  fetch("./assets/gallery/gallery.json")
     .then((response) => (response.ok ? response.json() : Promise.reject(new Error("Missing gallery JSON"))))
     .then((items) => {
       slides = items;
